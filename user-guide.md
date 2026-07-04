@@ -64,7 +64,7 @@ Looking for hands-on examples? Check out:
   - Slack bots with MCP
   - Multimodal workflows
 
-- **[Examples Directory](https://github.com/linyiru/model-compose/tree/4812ab15c0bf645fa6fd2dd55585102f6e94225c/examples)** - Ready-to-run YAML configurations
+- **[Examples Directory](https://github.com/linyiru/model-compose/tree/c6076f9fa75bf8fd541ec897d6369e0aa7145c77/examples)** - Ready-to-run YAML configurations
 
 ---
 
@@ -111,7 +111,7 @@ Looking for specific configuration options?
 1. **Start Simple**: Begin with the [Getting Started](/model-compose/user-guide/01-getting-started.md) guide
 2. **Hands-On**: Try the [Practical Examples](/model-compose/user-guide/17-practical-examples.md)
 3. **Incremental**: Add features one at a time
-4. **Explore**: Check the [examples directory](https://github.com/linyiru/model-compose/tree/4812ab15c0bf645fa6fd2dd55585102f6e94225c/examples) for inspiration
+4. **Explore**: Check the [examples directory](https://github.com/linyiru/model-compose/tree/c6076f9fa75bf8fd541ec897d6369e0aa7145c77/examples) for inspiration
 5. **Ask**: Open an [issue](https://github.com/hanyeol/model-compose/issues) if you're stuck
 
 ---

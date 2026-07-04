@@ -64,7 +64,7 @@
   - 使用 MCP 的 Slack 机器人
   - 多模态工作流
 
-- **[示例目录](https://github.com/linyiru/model-compose/tree/4812ab15c0bf645fa6fd2dd55585102f6e94225c/examples)** - 可直接运行的 YAML 配置
+- **[示例目录](https://github.com/linyiru/model-compose/tree/c6076f9fa75bf8fd541ec897d6369e0aa7145c77/examples)** - 可直接运行的 YAML 配置
 
 ---
 
@@ -111,7 +111,7 @@
 1. **从简单开始**：从[入门指南](/model-compose/zh-cn/user-guide/01-getting-started.md)开始
 2. **实践操作**：尝试[实践示例](/model-compose/zh-cn/user-guide/17-practical-examples.md)
 3. **循序渐进**：一次添加一个功能
-4. **探索**：查看[示例目录](https://github.com/linyiru/model-compose/tree/4812ab15c0bf645fa6fd2dd55585102f6e94225c/examples)获取灵感
+4. **探索**：查看[示例目录](https://github.com/linyiru/model-compose/tree/c6076f9fa75bf8fd541ec897d6369e0aa7145c77/examples)获取灵感
 5. **提问**：如果遇到困难，请提交[问题](https://github.com/hanyeol/model-compose/issues)
 
 ---

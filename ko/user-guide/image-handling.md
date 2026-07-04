@@ -328,7 +328,7 @@ workflows:
 
 - [CLI Reference](/model-compose/ko/reference/cli.md)
 - [Model Component](/model-compose/ko/reference/compose/components/model.md)
-- [Image-to-Text Example](https://github.com/linyiru/model-compose/blob/4812ab15c0bf645fa6fd2dd55585102f6e94225c/examples/model-tasks/image-to-text/README.md)
-- [Image Upscaling Example](https://github.com/linyiru/model-compose/blob/4812ab15c0bf645fa6fd2dd55585102f6e94225c/examples/model-tasks/image-upscale/README.md)
+- [Image-to-Text Example](https://github.com/linyiru/model-compose/blob/c6076f9fa75bf8fd541ec897d6369e0aa7145c77/examples/model-tasks/image-to-text/README.md)
+- [Image Upscaling Example](https://github.com/linyiru/model-compose/blob/c6076f9fa75bf8fd541ec897d6369e0aa7145c77/examples/model-tasks/image-upscale/README.md)
 - [Computer Vision Guide](computer-vision.md)
 - [Performance Optimization](performance/optimization.md)

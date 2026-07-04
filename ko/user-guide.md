@@ -64,7 +64,7 @@ model-compose가 처음이신가요? 여기서 시작하세요:
   - MCP를 활용한 Slack 봇
   - 멀티모달 워크플로우
 
-- **[Examples 디렉토리](https://github.com/linyiru/model-compose/tree/4812ab15c0bf645fa6fd2dd55585102f6e94225c/examples)** - 바로 실행 가능한 YAML 설정
+- **[Examples 디렉토리](https://github.com/linyiru/model-compose/tree/c6076f9fa75bf8fd541ec897d6369e0aa7145c77/examples)** - 바로 실행 가능한 YAML 설정
 
 ---
 
@@ -111,7 +111,7 @@ model-compose가 처음이신가요? 여기서 시작하세요:
 1. **간단하게 시작**: [시작하기](/model-compose/ko/user-guide/01-getting-started.md) 가이드부터 시작하세요
 2. **실습**: [실전 예제](/model-compose/ko/user-guide/17-practical-examples.md)를 시도해보세요
 3. **점진적으로**: 한 번에 하나씩 기능을 추가하세요
-4. **탐색**: 영감을 얻기 위해 [examples 디렉토리](https://github.com/linyiru/model-compose/tree/4812ab15c0bf645fa6fd2dd55585102f6e94225c/examples)를 확인하세요
+4. **탐색**: 영감을 얻기 위해 [examples 디렉토리](https://github.com/linyiru/model-compose/tree/c6076f9fa75bf8fd541ec897d6369e0aa7145c77/examples)를 확인하세요
 5. **질문**: 막히면 [이슈](https://github.com/hanyeol/model-compose/issues)를 열어주세요
 
 ---
