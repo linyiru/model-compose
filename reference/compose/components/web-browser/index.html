@@ -1,0 +1,1016 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="icon" href="/model-compose/favicon.svg" type="image/svg+xml"/><title>Web Browser Component - model-compose</title><meta name="description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><link rel="alternate" hrefLang="en" href="/reference/compose/components/web-browser"/><link rel="alternate" hrefLang="zh-cn" href="/zh-cn/reference/compose/components/web-browser"/><link rel="alternate" hrefLang="ko" href="/ko/reference/compose/components/web-browser"/><link rel="alternate" hrefLang="x-default" href="/reference/compose/components/web-browser"/><meta property="og:title" content="Web Browser Component"/><meta property="og:description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><meta property="og:type" content="article"/><script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}]}</script><script>(function(){if(HTMLScriptElement.supports&&HTMLScriptElement.supports('speculationrules'))return;var seen=new Set();document.addEventListener('pointerover',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||seen.has(u.pathname)||u.pathname===location.pathname)return;if(/.(md|json)$/.test(u.pathname)||u.pathname==='/mcp')return;seen.add(u.pathname);var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname+u.search;document.head.appendChild(l);},{passive:true});})();</script><style>
+          @view-transition { navigation: auto; }
+          ::view-transition-group(root),
+          ::view-transition-old(root),
+          ::view-transition-new(root) { animation-duration: 120ms; }
+          @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) { animation: none !important; }
+          }
+</style><link rel="stylesheet" href="/model-compose/_june/global.ab0a5eb2.css"/></head><body><script>(function(){try{var p=localStorage.getItem('kura-theme')||'system';var d=document.documentElement;d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',(p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches))?'dark':'light');}catch(e){}})();</script><header class="sticky top-0 z-20 flex items-center gap-4 h-14 px-5 bg-topbar-bg backdrop-blur-sm border-b border-border max-md:px-4 max-md:gap-2.5"><a class="flex items-center gap-1.5 font-bold text-[1.05rem]" href="/model-compose/">model-compose<!-- --> <span class="font-normal text-muted text-[.85rem]">Docs</span></a><form class="ml-auto max-md:ml-2 max-md:flex-1 max-md:min-w-0" action="/model-compose/search" method="get"><input class="w-[280px] max-w-[40vw] px-3 py-2 text-[.9rem] border border-border rounded-lg bg-surface-2 text-fg max-md:w-full max-md:max-w-none search-box" placeholder="Search docs…  (press /)" aria-label="Search" data-search-endpoint="/model-compose/search.json" data-doc-base="/model-compose/" data-search-static="1" data-locale="en" name="q"/></form><nav class="flex items-center gap-4 text-muted text-[.9rem]"><details class="relative" data-menu="true"><summary class="chevron cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 border border-border rounded-lg text-fg-soft text-[.85rem] whitespace-nowrap hover:text-fg">English</summary><div class="absolute right-0 top-[calc(100%+.4rem)] min-w-36 flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl z-30"><a data-june-no-router="true" data-locale-home="/model-compose" data-locale-active="" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-accent font-semibold" href="/model-compose" hrefLang="en">English</a><a data-june-no-router="true" data-locale-home="/model-compose/zh-cn" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/zh-cn" hrefLang="zh-cn">简体中文</a><a data-june-no-router="true" data-locale-home="/model-compose/ko" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/ko" hrefLang="ko">한국어</a></div></details></nav></header><button class="hidden max-md:flex items-center gap-2.5 w-full px-4 py-2.5 bg-bg border-0 border-b border-border text-fg-soft text-[.9rem] text-left cursor-pointer focus-visible:outline-none focus-visible:bg-hover" data-drawer-open="true" aria-controls="docs-nav" aria-expanded="false"><span class="text-[1.05rem] leading-none" aria-hidden="true">☰</span><span class="font-semibold text-fg flex-none">Navigation</span><span class="nav-bar-context text-muted flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" data-nav-context="true"></span></button><div class="drawer-backdrop" data-drawer-close="true" aria-hidden="true"></div><div class="grid grid-cols-[248px_minmax(0,1fr)_220px] max-lg:grid-cols-[248px_minmax(0,1fr)] max-md:grid-cols-1 items-start max-w-[1280px] mx-auto"><aside class="sidebar sticky top-14 h-[calc(100vh-56px)] overflow-y-auto px-4 py-6 border-r border-border" id="docs-nav"><div data-tab="_"><div class="mb-5"><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/">model-compose</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">Reference</p><ul class="flex flex-col gap-px"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><a class="flex-1 min-w-0 text-inherit" href="/model-compose/reference/compose">Compose</a></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><span class="flex-1 min-w-0">Components</span></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/agent">Agent Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/datasets">Datasets Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/file-store">File Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/graph-store">Graph Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/http-client">HTTP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/http-server">HTTP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/image-processor">Image Processor Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/key-value-store">Key-Value Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/mcp-client">MCP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/mcp-server">MCP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model">Model Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model-memory">Model Memory Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model-tokenizer">Model Tokenizer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model-trainer">Model Trainer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/search-engine">Search Engine Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/shell">Shell Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/text-splitter">Text Splitter Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/vector-store">Vector Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/video-scene-detector">Video Scene Detector Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/web-browser">Web Browser Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/web-scraper">Web Scraper Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/workflow">Workflow Component</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/component">Component Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/controller">Controller Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/gateway">Gateway Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/language-codes">Language Codes</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/listener">Listener Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/logger">Logger Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/system">System Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/tracer">Tracer Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/workflow">Workflow Configuration Reference</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/cli">Model-Compose CLI Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/websocket">WebSocket Interface Reference</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">User guide</p><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide">Model-Compose User Guide</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/00-table-of-contents">Table of Contents</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/01-getting-started">Chapter 1: Getting Started</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/02-core-concepts">Chapter 2: Core Concepts</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/03-cli-usage">Chapter 3: CLI Usage</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/04-component-configuration">Chapter 4: Component Configuration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/05-writing-workflows">Chapter 5: Writing Workflows</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/06-workflow-schema">Chapter 6: Workflow Schema</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/07-controller-configuration">Chapter 7: Controller Configuration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/08-websocket-interface">Chapter 8: WebSocket Interface</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/09-webui-configuration">Chapter 9: Web UI Configuration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/10-local-ai-models">Chapter 10: Working with Local AI Models</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/11-model-training">11. Model Training</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/12-external-service-integration">Chapter 12: External Service Integration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/13-streaming-mode">13. Streaming Mode</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/14-variable-binding">14. Variable Binding</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/15-system-integration">15. System Integration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/16-deployment">16. Deployment</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/17-practical-examples">17. Practical Examples</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/18-troubleshooting">18. Troubleshooting</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/19-appendix">19. Appendix</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/image-handling">Image Handling Guide</a></li></ul></div></div></aside><div data-june-outlet=""><main class="w-auto max-w-none m-0 min-w-0 px-10 pt-8 pb-20 max-md:px-4 max-md:pt-5 max-md:pb-12"><details class="hidden max-lg:block mb-5 border border-border rounded-xl overflow-hidden"><summary class="chevron flex justify-between items-center cursor-pointer px-3.5 py-2.5 text-[.85rem] font-semibold text-fg-soft">On this page</summary><div class="flex flex-col px-3.5 pt-1 pb-2.5 border-t border-border"><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#basic-configuration">Basic Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#configuration-options">Configuration Options</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#component-settings">Component Settings</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#driver-types">Driver Types</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#chrome-driver">Chrome Driver</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#playwright-driver">Playwright Driver</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#common-action-configuration">Common Action Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#action-methods">Action Methods</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#navigate">Navigate</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#click">Click</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#input-text">Input Text</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#screenshot">Screenshot</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#evaluate">Evaluate</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#wait-for">Wait For</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#extract">Extract</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#get-cookies">Get Cookies</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#set-cookies">Set Cookies</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#scroll">Scroll</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#multiple-actions-configuration">Multiple Actions Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#usage-examples">Usage Examples</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#simple-page-navigation-and-extraction">Simple Page Navigation and Extraction</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#form-login">Form Login</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#captcha-detection-with-javascript">CAPTCHA Detection with JavaScript</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#element-extraction-with-xpath">Element Extraction with XPath</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#full-page-screenshot">Full Page Screenshot</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#cookie-management">Cookie Management</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#integration-with-workflows">Integration with Workflows</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#scrape-with-captcha-human-fallback">Scrape with CAPTCHA Human Fallback</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#login-and-scrape-protected-content">Login and Scrape Protected Content</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#chrome-connection">Chrome Connection</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#connection-methods">Connection Methods</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#timeout-configuration">Timeout Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#component-level-timeout">Component-Level Timeout</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#action-level-timeout">Action-Level Timeout</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#human-in-the-loop-with-novnc">Human-in-the-Loop with noVNC</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#variable-interpolation">Variable Interpolation</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#best-practices">Best Practices</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#common-use-cases">Common Use Cases</a></div></details><div class="flex items-center justify-between gap-4 mb-6"><div class="prose"><h1 class="!m-0">Web Browser Component</h1></div><div class="relative inline-flex items-stretch flex-none"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[.85rem] border border-border border-r-0 rounded-l-lg bg-surface text-fg-soft cursor-pointer hover:bg-hover hover:text-fg" data-copy-md="/model-compose/reference/compose/components/web-browser.md"><svg class="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>Copy Markdown</button><details class="relative inline-flex items-stretch" data-menu="true"><summary class="chevron inline-flex items-center justify-center w-[30px] border border-border rounded-r-lg bg-surface text-muted cursor-pointer hover:bg-hover hover:text-fg" aria-label="More actions"></summary><div class="absolute right-0 top-[calc(100%+.4rem)] z-30 min-w-[17rem] flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl"><button class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" data-copy-md="/model-compose/reference/compose/components/web-browser.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg><span class="flex flex-col min-w-0"><span class="font-semibold text-[.9rem] text-fg">Copy Markdown</span><span class="text-[.8rem] text-muted">Copy this page as Markdown for LLMs</span></span></button><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="/model-compose/reference/compose/components/web-browser.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M16 21H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6l4 4v12a2 2 0 0 1-2 2z"></path><path d="M9 13h6M9 17h4"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">View as Markdown<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">View this page as plain text</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://chatgpt.com/?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20Web%20Browser%20Component" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in ChatGPT<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask ChatGPT about this page</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://claude.ai/new?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20Web%20Browser%20Component" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in Claude<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask Claude about this page</span></span></a></div></details></div></div><article class="prose"><p>The web browser component provides full browser automation with pluggable drivers. It supports navigation, clicking, text input, screenshots, JavaScript evaluation, element extraction, cookie management, scrolling, and waiting for elements.</p>
+<h2 id="basic-configuration">Basic Configuration</h2>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">30s</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://example.com</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    wait_until</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">load</span></span></code></pre>
+<h2 id="configuration-options">Configuration Options</h2>
+<h3 id="component-settings">Component Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>Must be <code>web-browser</code></td>
+</tr>
+<tr>
+<td><code>driver</code></td>
+<td>string</td>
+<td><code>chrome</code></td>
+<td>Browser driver: <code>chrome</code>, <code>playwright</code></td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td>string</td>
+<td><code>30s</code></td>
+<td>Default timeout for all actions</td>
+</tr>
+<tr>
+<td><code>actions</code></td>
+<td>array</td>
+<td><code>[]</code></td>
+<td>List of browser actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="driver-types">Driver Types</h3>
+<h4 id="chrome-driver">Chrome Driver</h4>
+<p>Connects to a running Chrome/Chromium instance via the Chrome DevTools Protocol.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>driver</code></td>
+<td>string</td>
+<td><code>chrome</code></td>
+<td>Must be <code>chrome</code></td>
+</tr>
+<tr>
+<td><code>endpoint</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Full WebSocket debugger URL (e.g. <code>ws://localhost:9222/devtools/page/&lt;id&gt;</code>). If set, <code>host</code>/<code>port</code> are ignored</td>
+</tr>
+<tr>
+<td><code>host</code></td>
+<td>string</td>
+<td><code>localhost</code></td>
+<td>Host where Chrome remote debugging port is exposed</td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>integer</td>
+<td><code>9222</code></td>
+<td>Chrome remote debugging port</td>
+</tr>
+<tr>
+<td><code>target_index</code></td>
+<td>integer</td>
+<td><code>0</code></td>
+<td>Index of the browser target to attach to when auto-discovering via <code>host</code>/<code>port</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="playwright-driver">Playwright Driver</h4>
+<p>Launches a browser instance using Playwright.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">playwright</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  browser</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chromium</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  headless</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>driver</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>Must be <code>playwright</code></td>
+</tr>
+<tr>
+<td><code>browser</code></td>
+<td>string</td>
+<td><code>chromium</code></td>
+<td>Browser engine: <code>chromium</code>, <code>firefox</code>, <code>webkit</code></td>
+</tr>
+<tr>
+<td><code>headless</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>Whether to run the browser in headless mode</td>
+</tr>
+<tr>
+<td><code>args</code></td>
+<td>array</td>
+<td><code>[]</code></td>
+<td>Additional command-line arguments passed to the browser process</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-action-configuration">Common Action Configuration</h3>
+<p>All web browser actions share these common settings:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>method</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>Action method: <code>navigate</code>, <code>click</code>, <code>input-text</code>, <code>screenshot</code>, <code>evaluate</code>, <code>wait-for</code>, <code>extract</code>, <code>get-cookies</code>, <code>set-cookies</code>, <code>scroll</code></td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Per-action timeout override. Falls back to component-level timeout</td>
+</tr>
+<tr>
+<td><code>output</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Output variable mapping</td>
+</tr>
+</tbody>
+</table>
+<h2 id="action-methods">Action Methods</h2>
+<h3 id="navigate">Navigate</h3>
+<p>Navigate to a URL and wait for a page lifecycle event:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://example.com</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    wait_until</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">load</span></span></code></pre>
+<p><strong>Navigate Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>URL to navigate to</td>
+</tr>
+<tr>
+<td><code>wait_until</code></td>
+<td>string</td>
+<td><code>load</code></td>
+<td>Event to wait for: <code>load</code>, <code>domcontentloaded</code>, <code>networkidle</code>, <code>commit</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>{ &quot;url&quot;: &quot;...&quot;, &quot;frameId&quot;: &quot;...&quot; }</code></p>
+<h3 id="click">Click</h3>
+<p>Click an element by CSS selector, XPath, or coordinates:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">click</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"button#submit"</span></span></code></pre>
+<p><strong>Click Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>selector</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>CSS selector of the element to click</td>
+</tr>
+<tr>
+<td><code>xpath</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>XPath of the element to click</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>integer</td>
+<td><code>null</code></td>
+<td>Absolute X coordinate for direct mouse click</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td>integer</td>
+<td><code>null</code></td>
+<td>Absolute Y coordinate for direct mouse click</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Exactly one of <code>selector</code>, <code>xpath</code>, or <code>x</code>+<code>y</code> must be provided.</p>
+</blockquote>
+<p><strong>Returns:</strong> <code>{ &quot;x&quot;: 100, &quot;y&quot;: 200 }</code></p>
+<h3 id="input-text">Input Text</h3>
+<p>Type text into an input element:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">input-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"input[name='search']"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"hello world"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    clear_first</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span></code></pre>
+<p><strong>Input Text Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>selector</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>CSS selector of the target input</td>
+</tr>
+<tr>
+<td><code>xpath</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>XPath of the target input</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>Text to type into the element</td>
+</tr>
+<tr>
+<td><code>clear_first</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>Clear existing content before typing</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Either <code>selector</code> or <code>xpath</code> must be provided (not both).</p>
+</blockquote>
+<p><strong>Returns:</strong> <code>{ &quot;typed&quot;: &quot;hello world&quot; }</code></p>
+<h3 id="screenshot">Screenshot</h3>
+<p>Capture a screenshot of the page or a specific element:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">screenshot</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    full_page</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    format</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">png</span></span></code></pre>
+<p><strong>Screenshot Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>full_page</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Capture the full scrollable page</td>
+</tr>
+<tr>
+<td><code>selector</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>CSS selector to capture only a specific element</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td>string</td>
+<td><code>png</code></td>
+<td>Image format: <code>png</code> or <code>jpeg</code></td>
+</tr>
+<tr>
+<td><code>quality</code></td>
+<td>integer</td>
+<td><code>null</code></td>
+<td>JPEG quality (0-100). Only applicable when <code>format=jpeg</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> base64-encoded image string</p>
+<h3 id="evaluate">Evaluate</h3>
+<p>Execute JavaScript in the page context:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">evaluate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    expression</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"document.title"</span></span></code></pre>
+<p><strong>Evaluate Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>expression</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>JavaScript expression to evaluate</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> the evaluated JavaScript value</p>
+<h3 id="wait-for">Wait For</h3>
+<p>Wait for an element to appear, become visible, or become hidden:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">wait-for</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">".results-loaded"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    condition</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">visible</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">10s</span></span></code></pre>
+<p><strong>Wait For Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>selector</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>CSS selector to wait for</td>
+</tr>
+<tr>
+<td><code>xpath</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>XPath to wait for</td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>string</td>
+<td><code>present</code></td>
+<td>Condition: <code>present</code>, <code>visible</code>, <code>hidden</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Either <code>selector</code> or <code>xpath</code> must be provided (not both).</p>
+</blockquote>
+<p><strong>Returns:</strong> <code>{ &quot;found&quot;: true }</code></p>
+<h3 id="extract">Extract</h3>
+<p>Extract text, HTML, or attributes from page elements:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">".article-body"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    extract_mode</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text</span></span></code></pre>
+<p><strong>Extract Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>selector</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>CSS selector</td>
+</tr>
+<tr>
+<td><code>xpath</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>XPath expression</td>
+</tr>
+<tr>
+<td><code>extract_mode</code></td>
+<td>string</td>
+<td><code>text</code></td>
+<td>Extraction mode: <code>text</code>, <code>html</code>, <code>attribute</code></td>
+</tr>
+<tr>
+<td><code>attribute</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Attribute name (required when <code>extract_mode=attribute</code>)</td>
+</tr>
+<tr>
+<td><code>multiple</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Return all matches as a list</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Either <code>selector</code> or <code>xpath</code> must be provided (not both).</p>
+</blockquote>
+<p><strong>Returns:</strong> extracted string (or list of strings when <code>multiple=true</code>)</p>
+<h3 id="get-cookies">Get Cookies</h3>
+<p>Retrieve cookies from the browser:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">get-cookies</span></span></code></pre>
+<p><strong>Get Cookies Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>urls</code></td>
+<td>array</td>
+<td><code>null</code></td>
+<td>Restrict returned cookies to these URLs. If omitted, returns all cookies</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> list of cookie objects</p>
+<h3 id="set-cookies">Set Cookies</h3>
+<p>Set cookies in the browser:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">set-cookies</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    cookies</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">session</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        value</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">abc123</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        domain</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">example.com</span></span></code></pre>
+<p><strong>Set Cookies Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cookies</code></td>
+<td>array</td>
+<td><strong>required</strong></td>
+<td>List of cookie dicts (<code>name</code>, <code>value</code>, <code>domain</code>, <code>path</code>, ...)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>{ &quot;set&quot;: &lt;count&gt; }</code></p>
+<h3 id="scroll">Scroll</h3>
+<p>Scroll the page or a specific element. The behavior depends on the combination of parameters:</p>
+<ul>
+<li><strong>No selector/xpath</strong>: Scrolls the page by <code>x</code> and <code>y</code> pixels (<code>window.scrollBy</code>)</li>
+<li><strong>selector/xpath without x/y</strong>: Scrolls the element into view (<code>scrollIntoView</code>)</li>
+<li><strong>selector/xpath with x/y</strong>: Scrolls the element's internal content (<code>element.scrollBy</code>)</li>
+</ul>
+<p><strong>Page scroll:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">scroll</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">    y</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">500</span></span></code></pre>
+<p><strong>Scroll element into view:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">scroll</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"#target-section"</span></span></code></pre>
+<p><strong>Scroll element's internal content:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">scroll</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">".scrollable-container"</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">    y</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">300</span></span></code></pre>
+<p><strong>Scroll Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>selector</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>CSS selector of the target element</td>
+</tr>
+<tr>
+<td><code>xpath</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>XPath of the target element</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>integer</td>
+<td><code>null</code></td>
+<td>Horizontal scroll amount in pixels</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td>integer</td>
+<td><code>null</code></td>
+<td>Vertical scroll amount in pixels</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Only one of <code>selector</code> or <code>xpath</code> can be provided.</p>
+</blockquote>
+<p><strong>Returns:</strong> <code>{ &quot;scrolled_x&quot;: 0, &quot;scrolled_y&quot;: 500 }</code></p>
+<h2 id="multiple-actions-configuration">Multiple Actions Configuration</h2>
+<p>Define multiple browser actions in a single component:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">30s</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.url}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      wait_until</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">networkidle</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">click</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">click</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.selector}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">type-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">input-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.selector}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.text}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">screenshot</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">screenshot</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      full_page</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">false</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      format</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">png</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.selector}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      extract_mode</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text</span></span></code></pre>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="simple-page-navigation-and-extraction">Simple Page Navigation and Extraction</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">go</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"https://example.com"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      wait_until</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">load</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">get-title</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">evaluate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      expression</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"document.title"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        title</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result}</span></span></code></pre>
+<h3 id="form-login">Form Login</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">30s</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.login_url}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      wait_until</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">networkidle</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">fill-username</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">input-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"input[name='username']"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.username}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">fill-password</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">input-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"input[name='password']"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.password}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">submit</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">click</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"button[type='submit']"</span></span></code></pre>
+<h3 id="captcha-detection-with-javascript">CAPTCHA Detection with JavaScript</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">check-captcha</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">evaluate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      expression</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">></span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        !!(document.querySelector('[id*=captcha],[class*=captcha]')</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">          || document.querySelector('iframe[src*=captcha]')</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">          || document.querySelector('#cf-challenge-running'))</span></span></code></pre>
+<h3 id="element-extraction-with-xpath">Element Extraction with XPath</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract-links</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      xpath</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"//a[@class='product-link']"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      extract_mode</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">attribute</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      attribute</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">href</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      multiple</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        links</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result}</span></span></code></pre>
+<h3 id="full-page-screenshot">Full Page Screenshot</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">capture</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">screenshot</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      full_page</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      format</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">jpeg</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      quality</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">80</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        image</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result}</span></span></code></pre>
+<h3 id="cookie-management">Cookie Management</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">inject-cookies</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">set-cookies</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      cookies</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">        - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">session_id</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          value</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.session}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          domain</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">example.com</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">read-cookies</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">get-cookies</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      urls</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">        - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"https://example.com"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        cookies</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result}</span></span></code></pre>
+<h2 id="integration-with-workflows">Integration with Workflows</h2>
+<h3 id="scrape-with-captcha-human-fallback">Scrape with CAPTCHA Human Fallback</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflows</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">scrape-with-fallback</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.url}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">detect-captcha</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">check-captcha</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        interrupt</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          after</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">            condition</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">              operator</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">eq</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">              input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">              value</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">            message</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">></span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">              CAPTCHA detected! Please solve it via noVNC at:</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">              http://localhost:6080/vnc.html</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        depends_on</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.selector}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        depends_on</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">detect-captcha</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">30s</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.url}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        wait_until</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">networkidle</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">check-captcha</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">evaluate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        expression</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">></span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">          !!(document.querySelector('[id*=captcha],[class*=captcha]')</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">            || document.querySelector('iframe[src*=captcha]'))</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.selector}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        extract_mode</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text</span></span></code></pre>
+<h3 id="login-and-scrape-protected-content">Login and Scrape Protected Content</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflows</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">login-and-scrape</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">open-login</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.login_url}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">fill-username</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">type-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"input[name='username']"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.username}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        depends_on</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">open-login</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">fill-password</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">type-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"input[name='password']"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.password}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        depends_on</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">fill-username</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">submit</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">click</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"button[type='submit']"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        depends_on</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">fill-password</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate-content</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.content_url}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        depends_on</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">submit</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract-content</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.selector}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        depends_on</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate-content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output as text}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">30s</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.url}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        wait_until</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">networkidle</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">type-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">input-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.selector}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.text}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">click</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">click</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.selector}"</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"${input.selector}"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        extract_mode</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text</span></span></code></pre>
+<h2 id="chrome-connection">Chrome Connection</h2>
+<p>When using the chrome driver, the component connects to a running Chrome/Chromium instance via the Chrome DevTools Protocol. Chrome must be started with remote debugging enabled:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-bash"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Start Chrome with remote debugging</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#FFA657">google-chrome</span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF"> --remote-debugging-port=9222</span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF"> --headless</span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF"> --no-sandbox</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Or using Docker</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#FFA657">docker</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> run</span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF"> -d</span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF"> -p</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> 9222:9222</span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF"> -p</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> 6080:6080</span><span style="--shiki-light:#005CC5;--shiki-dark:#FF7B72"> \</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">  chromedp/headless-shell:latest</span></span></code></pre>
+<h3 id="connection-methods">Connection Methods</h3>
+<p><strong>Auto-discovery (default):</strong>
+The component queries <code>http://&lt;host&gt;:&lt;port&gt;/json</code> to discover browser targets and connects via WebSocket.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">9222</span></span></code></pre>
+<p><strong>Direct WebSocket URL:</strong>
+Skip auto-discovery by providing the full WebSocket URL.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chrome</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"ws://localhost:9222/devtools/page/ABC123"</span></span></code></pre>
+<h2 id="timeout-configuration">Timeout Configuration</h2>
+<h3 id="component-level-timeout">Component-Level Timeout</h3>
+<p>Apply to all actions:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">30s</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"https://example.com"</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">extract</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">".content"</span></span></code></pre>
+<h3 id="action-level-timeout">Action-Level Timeout</h3>
+<p>Override for specific actions:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">30s</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">quick-check</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">evaluate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      expression</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"document.readyState"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">5s</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">slow-navigation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">navigate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"https://slow-site.example.com"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      wait_until</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">networkidle</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">120s</span></span></code></pre>
+<h2 id="human-in-the-loop-with-novnc">Human-in-the-Loop with noVNC</h2>
+<p>For human-in-the-loop workflows (e.g., CAPTCHA resolution), use the workflow <code>interrupt</code> feature with <code>metadata</code> to provide the noVNC URL. This keeps the VNC connection details in the workflow definition where the interrupt occurs, rather than in the component configuration.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">detect-captcha</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">check-captcha</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    interrupt</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      after</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        condition</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          operator</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">eq</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${job.output}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          value</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        message</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"CAPTCHA detected! Please solve it via noVNC."</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        metadata</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          novnc_url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"http://localhost:6080/vnc.html"</span></span></code></pre>
+<p>The <code>metadata</code> is included in the interrupt response, allowing UIs to show a direct link to the browser session.</p>
+<h2 id="variable-interpolation">Variable Interpolation</h2>
+<p>Web browser actions support dynamic configuration:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.action_method | "navigate"}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.target_url}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    selector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.css_selector}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text_to_type}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    wait_until</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.wait_event | "load"}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.timeout | "30s"}</span></span></code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Use <code>networkidle</code> for SPAs</strong>: For single-page applications, use <code>wait_until: networkidle</code> to ensure content is fully loaded</li>
+<li><strong>Prefer CSS Selectors</strong>: CSS selectors are generally faster than XPath expressions</li>
+<li><strong>Set Appropriate Timeouts</strong>: Increase timeout for slow pages, reduce for quick checks</li>
+<li><strong>Use <code>wait-for</code> Before Extraction</strong>: Wait for dynamic content to render before extracting</li>
+<li><strong>Clear Fields Before Typing</strong>: Keep <code>clear_first: true</code> (default) to avoid appending to existing input values</li>
+<li><strong>Manage Cookies</strong>: Use <code>get-cookies</code>/<code>set-cookies</code> to preserve login state across sessions</li>
+<li><strong>Human Fallback</strong>: Use workflow <code>interrupt</code> with <code>metadata.novnc_url</code> for CAPTCHA or MFA scenarios</li>
+<li><strong>Headless Chrome</strong>: Run Chrome headless in production for better performance</li>
+</ol>
+<h2 id="common-use-cases">Common Use Cases</h2>
+<ul>
+<li><strong>Web Scraping</strong>: Navigate and extract content from dynamic JavaScript-heavy sites</li>
+<li><strong>Form Automation</strong>: Fill and submit web forms programmatically</li>
+<li><strong>CAPTCHA Handling</strong>: Detect CAPTCHAs and pause for human resolution</li>
+<li><strong>Login Automation</strong>: Automate login flows to access protected content</li>
+<li><strong>Visual Testing</strong>: Capture screenshots for visual comparison</li>
+<li><strong>Cookie Management</strong>: Inject or export cookies for authenticated sessions</li>
+<li><strong>Page Monitoring</strong>: Periodically check page content for changes</li>
+<li><strong>Data Extraction</strong>: Extract structured data from web pages using CSS/XPath</li>
+</ul>
+</article><nav class="flex justify-between gap-4 mt-12 pt-6 border-t border-border"><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent" href="/model-compose/reference/compose/components/video-scene-detector"><div class="text-muted text-[.78rem]">← <!-- -->Previous</div><div class="font-semibold text-accent">Video Scene Detector Component</div></a><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent text-right" href="/model-compose/reference/compose/components/web-scraper"><div class="text-muted text-[.78rem]">Next<!-- --> →</div><div class="font-semibold text-accent">Web Scraper Component</div></a></nav><script>document.querySelectorAll('[data-copy-md]').forEach(function(b){b.addEventListener('click',async function(){try{var r=await fetch(b.getAttribute('data-copy-md'));var t=await r.text();await navigator.clipboard.writeText(t);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1500);}catch(e){alert('Copy failed: '+e);}});});document.querySelectorAll('.prose pre').forEach(function(pre){if(pre.querySelector('.copy-code'))return;var b=document.createElement('button');b.className='copy-code';b.textContent='Copy';b.addEventListener('click',async function(){var c=pre.querySelector('code');try{await navigator.clipboard.writeText(c?c.innerText:pre.innerText);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1200);}catch(e){}});pre.appendChild(b);});document.querySelectorAll('.tabs').forEach(function(t){t.querySelectorAll('.tab-btn').forEach(function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-tab');t.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-tab')===i);});t.querySelectorAll('.tab-panel').forEach(function(p){p.hidden=p.getAttribute('data-tab')!==i;});});});});(function(){var blocks=document.querySelectorAll('code.language-mermaid');if(!blocks.length)return;var items=[];blocks.forEach(function(c){var pre=c.closest('pre')||c;var h=document.createElement('div');h.className='mermaid-diagram';pre.replaceWith(h);items.push({src:c.textContent,holder:h});});var lib,id=0;function load(){return lib||(lib=import("https://esm.sh/mermaid@11").then(function(m){return m.default;}));}function theme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'default';}function run(){load().then(function(mermaid){mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:theme()});items.forEach(function(it){mermaid.render('kura-mmd-'+(id++),it.src).then(function(r){it.holder.innerHTML=r.svg;}).catch(function(e){it.holder.innerHTML='<pre class="mermaid-error">'+String((e&&e.message)||e)+'</pre>';});});}).catch(function(){});}run();var cur=document.documentElement.getAttribute('data-theme');new MutationObserver(function(){var t=document.documentElement.getAttribute('data-theme');if(t!==cur){cur=t;run();}}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></main><aside class="sticky top-14 max-h-[calc(100vh-56px)] overflow-y-auto px-4 py-8 max-lg:hidden"><p class="text-[.72rem] font-bold tracking-wider uppercase text-muted mb-2.5">On this page</p><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#basic-configuration">Basic Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#configuration-options">Configuration Options</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#component-settings">Component Settings</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#driver-types">Driver Types</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#chrome-driver">Chrome Driver</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#playwright-driver">Playwright Driver</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#common-action-configuration">Common Action Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#action-methods">Action Methods</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#navigate">Navigate</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#click">Click</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#input-text">Input Text</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#screenshot">Screenshot</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#evaluate">Evaluate</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#wait-for">Wait For</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#extract">Extract</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#get-cookies">Get Cookies</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#set-cookies">Set Cookies</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#scroll">Scroll</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#multiple-actions-configuration">Multiple Actions Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#usage-examples">Usage Examples</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#simple-page-navigation-and-extraction">Simple Page Navigation and Extraction</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#form-login">Form Login</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#captcha-detection-with-javascript">CAPTCHA Detection with JavaScript</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#element-extraction-with-xpath">Element Extraction with XPath</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#full-page-screenshot">Full Page Screenshot</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#cookie-management">Cookie Management</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#integration-with-workflows">Integration with Workflows</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#scrape-with-captcha-human-fallback">Scrape with CAPTCHA Human Fallback</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#login-and-scrape-protected-content">Login and Scrape Protected Content</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#chrome-connection">Chrome Connection</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#connection-methods">Connection Methods</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#timeout-configuration">Timeout Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#component-level-timeout">Component-Level Timeout</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#action-level-timeout">Action-Level Timeout</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#human-in-the-loop-with-novnc">Human-in-the-Loop with noVNC</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#variable-interpolation">Variable Interpolation</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#best-practices">Best Practices</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#common-use-cases">Common Use Cases</a></aside></div></div><footer class="border-t border-border mt-8"><div class="flex items-center justify-between flex-wrap gap-4 max-w-[1280px] mx-auto px-6 py-5 max-md:px-4"><nav class="flex items-center gap-[1.1rem] text-[.85rem]"><a class="text-muted hover:text-fg" href="/model-compose/llms.txt">llms.txt</a><button type="button" class="inline-flex items-center justify-center w-[30px] h-[30px] p-0 text-[.95rem] leading-none border border-border rounded-lg bg-surface text-fg cursor-pointer hover:bg-hover" data-theme-toggle="true" aria-label="Toggle theme"></button></nav><a class="text-muted text-[.85rem] hover:text-accent" href="https://kura.build/" target="_blank" rel="noreferrer">Powered by Kura</a></div></footer><script>document.addEventListener('keydown',function(e){if(e.key==='/' && !document.documentElement.dataset.ctrlk && !/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){e.preventDefault();var s=document.querySelector('.search-box');if(s)s.focus();}});(function(){var b=document.querySelector('[data-theme-toggle]');if(!b)return;var d=document.documentElement,order=['system','light','dark'],icon={system:'🖥',light:'☀',dark:'☾'};function pref(){return d.getAttribute('data-theme-pref')||'system';}function res(p){return p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';}function set(p){d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',res(p));try{localStorage.setItem('kura-theme',p);}catch(e){}b.textContent=icon[p];b.setAttribute('title','Theme: '+p);}set(pref());b.addEventListener('click',function(){set(order[(order.indexOf(pref())+1)%order.length]);});try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(pref()==='system')d.setAttribute('data-theme',res('system'));});}catch(e){}})();document.addEventListener('click',function(e){var t=e.target;document.querySelectorAll('details[data-menu][open]').forEach(function(d){if(!d.contains(t))d.removeAttribute('open');});var it=t.closest&&t.closest('details[data-menu] a, details[data-menu] [data-copy-md]');if(it){var dd=it.closest('details[data-menu]');if(dd)setTimeout(function(){dd.removeAttribute('open');},0);}});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details[data-menu][open]').forEach(function(d){d.removeAttribute('open');});});(function(){var root=document.documentElement;function opener(){return document.querySelector('[data-drawer-open]');}function items(){var d=document.getElementById('docs-nav');if(!d)return[];return[].filter.call(d.querySelectorAll('a[href],button:not([disabled]),summary,[tabindex]:not([tabindex="-1"])'),function(el){return el.offsetParent!==null;});}function set(o){var was=root.classList.contains('drawer-open');root.classList.toggle('drawer-open',o);var b=opener();if(b)b.setAttribute('aria-expanded',o?'true':'false');if(o){var f=items();if(f[0])f[0].focus();}else if(was&&b)b.focus();}document.addEventListener('click',function(e){if(e.target.closest('[data-drawer-open]')){e.preventDefault();set(!root.classList.contains('drawer-open'));return;}if(e.target.closest('[data-drawer-close]')){set(false);return;}if(e.target.closest('#docs-nav a'))set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);return;}if(e.key==='Tab'&&root.classList.contains('drawer-open')){var f=items();if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}else if(f.indexOf(document.activeElement)<0){e.preventDefault();first.focus();}}});})();(function(){
+  function trim(p){return p.length>1&&p.endsWith('/')?p.slice(0,-1):p;}
+  function sync(){
+    var path=trim(location.pathname), tab=null;
+    var links=document.querySelectorAll('.sidebar a[href],[data-tabbar] a[href]');
+    for(var i=0;i<links.length;i++){var a=links[i],on=trim(a.getAttribute('href'))===path;
+      if(on){a.setAttribute('aria-current','page');var g=a.closest('[data-tab]');if(g)tab=g.getAttribute('data-tab');}
+      else a.removeAttribute('aria-current');}
+    if(tab!=null){
+      document.querySelectorAll('[data-tab]').forEach(function(g){g.hidden=g.getAttribute('data-tab')!==tab;});
+      document.querySelectorAll('[data-tabbar] a').forEach(function(a){
+        if(a.getAttribute('data-tab-key')===tab)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    }
+    // expand the folder(s) holding the active page. Iterate EVERY aria-current sidebar link, not
+    // just the first: a folder-as-page link lives in a <details>, but the mobile tab-bar link (also
+    // in .sidebar, earlier in the DOM) has no folder ancestor — querySelector would pick that one
+    // and expand nothing. forEach opens each link's folder chain; tab links are harmless no-ops.
+    document.querySelectorAll('.sidebar a[aria-current="page"]').forEach(function(cur){
+      var d=cur.closest('details.folder');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details.folder');}});
+    // rewrite the locale-switch links to THIS page's equivalent path (swap the locale prefix)
+    var ll=document.querySelectorAll('[data-locale-home]');
+    if(ll.length){var lc=document.querySelector('[data-locale-home][data-locale-active]'),cp=lc?lc.getAttribute('data-locale-home'):'/';cp=cp==='/'?'':cp;
+      var rest=location.pathname;if(cp&&rest.indexOf(cp)===0)rest=rest.slice(cp.length)||'/';
+      ll.forEach(function(a){var h=a.getAttribute('data-locale-home'),p=h==='/'?'':h;a.setAttribute('href',rest==='/'?(p||'/'):(p+rest));});}
+    // mobile nav-context: "Active tab / Page title" (the shell can't know the page server-side)
+    var nc=document.querySelector('[data-nav-context]');
+    if(nc){var at=document.querySelector('[data-tabbar] a[aria-current="page"]'),h1=document.querySelector('main h1');
+      nc.textContent=[at&&at.textContent.trim(),h1&&h1.textContent.trim()].filter(Boolean).join(' / ');}
+  }
+  sync();
+  var outlet=document.querySelector('[data-june-outlet]');
+  if(outlet) new MutationObserver(sync).observe(outlet,{childList:true,subtree:true});
+})();</script><script type="module" src="/model-compose/_june/client.519429d3.js"></script><script type="application/json" id="june-webmcp">[{"name":"search_docs","description":"Hybrid keyword + semantic search over the docs. Returns the most relevant passages with their doc slug, title, and relevance score.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"A natural-language question or keywords."},"topK":{"type":"integer","description":"Number of results to return (default 5)."},"locale":{"type":"string","description":"Optional locale — scopes results to that locale's view (its translations plus untranslated defaults)."}},"required":["query"]}},{"name":"get_page","description":"Fetch one doc page as the authored Markdown source by its slug (e.g. introduction, search, agents).","inputSchema":{"type":"object","properties":{"slug":{"type":"string","description":"The page slug."},"locale":{"type":"string","description":"Optional locale — returns that variant when it exists."}},"required":["slug"]}},{"name":"list_docs","description":"List every doc page with its slug, title, section, and `sources` (the code paths it documents). The map for finding which pages a code change affects.","inputSchema":{"type":"object","properties":{}}}]</script><script>(function(){var mc=navigator.modelContext;if(!mc||!mc.registerTool)return;var el=document.getElementById('june-webmcp');if(!el)return;var tools;try{tools=JSON.parse(el.textContent)}catch(e){return}var ac=new AbortController();tools.forEach(function(t){mc.registerTool({name:t.name,description:t.description,inputSchema:t.inputSchema,execute:function(args){return fetch('/mcp',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:t.name,arguments:args}})}).then(function(r){return r.json()}).then(function(j){return j.result})}},{signal:ac.signal})})})();</script></body></html>

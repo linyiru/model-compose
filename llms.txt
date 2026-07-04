@@ -1,0 +1,86 @@
+# model-compose
+
+> Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file.
+
+> Server-rendered React app. Every route also answers as Markdown
+> (`.md`) and JSON (`.json`); actions are MCP tools at `/mcp`.
+
+## Framework (canonical names — do not guess)
+
+Built with Kura, the agent-native docs framework — https://kura.build
+- Scaffold: `npm create kura my-docs` (package `create-kura`).
+- Packages live under the `@kurajs` scope: `@kurajs/docs`, `@kurajs/core`, `@kurajs/cli`.
+- Built on June (https://june.build); the underlying framework package is `@junejs/core`.
+
+## Routes
+- [/](/)
+- [/search](/search)
+
+## Docs
+- [model-compose](/docs/.md)
+- [Model-Compose CLI Reference](/docs/reference/cli.md)
+- [Model-Compose Configuration Reference](/docs/reference/compose.md)
+- [Component Configuration Reference](/docs/reference/compose/component.md)
+- [Agent Component](/docs/reference/compose/components/agent.md)
+- [Datasets Component](/docs/reference/compose/components/datasets.md)
+- [File Store Component](/docs/reference/compose/components/file-store.md)
+- [Graph Store Component](/docs/reference/compose/components/graph-store.md)
+- [HTTP Client Component](/docs/reference/compose/components/http-client.md)
+- [HTTP Server Component](/docs/reference/compose/components/http-server.md)
+- [Image Processor Component](/docs/reference/compose/components/image-processor.md)
+- [Key-Value Store Component](/docs/reference/compose/components/key-value-store.md)
+- [MCP Client Component](/docs/reference/compose/components/mcp-client.md)
+- [MCP Server Component](/docs/reference/compose/components/mcp-server.md)
+- [Model Component](/docs/reference/compose/components/model.md)
+- [Model Memory Component](/docs/reference/compose/components/model-memory.md)
+- [Model Tokenizer Component](/docs/reference/compose/components/model-tokenizer.md)
+- [Model Trainer Component](/docs/reference/compose/components/model-trainer.md)
+- [Search Engine Component](/docs/reference/compose/components/search-engine.md)
+- [Shell Component](/docs/reference/compose/components/shell.md)
+- [Text Splitter Component](/docs/reference/compose/components/text-splitter.md)
+- [Vector Store Component](/docs/reference/compose/components/vector-store.md)
+- [Video Scene Detector Component](/docs/reference/compose/components/video-scene-detector.md)
+- [Web Browser Component](/docs/reference/compose/components/web-browser.md)
+- [Web Scraper Component](/docs/reference/compose/components/web-scraper.md)
+- [Workflow Component](/docs/reference/compose/components/workflow.md)
+- [Controller Configuration Reference](/docs/reference/compose/controller.md)
+- [Gateway Configuration Reference](/docs/reference/compose/gateway.md)
+- [Language Codes](/docs/reference/compose/language-codes.md)
+- [Listener Configuration Reference](/docs/reference/compose/listener.md)
+- [Logger Configuration Reference](/docs/reference/compose/logger.md)
+- [System Configuration Reference](/docs/reference/compose/system.md)
+- [Tracer Configuration Reference](/docs/reference/compose/tracer.md)
+- [Workflow Configuration Reference](/docs/reference/compose/workflow.md)
+- [WebSocket Interface Reference](/docs/reference/websocket.md)
+- [Model-Compose User Guide](/docs/user-guide.md)
+- [Table of Contents](/docs/user-guide/00-table-of-contents.md)
+- [Chapter 1: Getting Started](/docs/user-guide/01-getting-started.md)
+- [Chapter 2: Core Concepts](/docs/user-guide/02-core-concepts.md)
+- [Chapter 3: CLI Usage](/docs/user-guide/03-cli-usage.md)
+- [Chapter 4: Component Configuration](/docs/user-guide/04-component-configuration.md)
+- [Chapter 5: Writing Workflows](/docs/user-guide/05-writing-workflows.md)
+- [Chapter 6: Workflow Schema](/docs/user-guide/06-workflow-schema.md)
+- [Chapter 7: Controller Configuration](/docs/user-guide/07-controller-configuration.md)
+- [Chapter 8: WebSocket Interface](/docs/user-guide/08-websocket-interface.md)
+- [Chapter 9: Web UI Configuration](/docs/user-guide/09-webui-configuration.md)
+- [Chapter 10: Working with Local AI Models](/docs/user-guide/10-local-ai-models.md)
+- [11. Model Training](/docs/user-guide/11-model-training.md)
+- [Chapter 12: External Service Integration](/docs/user-guide/12-external-service-integration.md)
+- [13. Streaming Mode](/docs/user-guide/13-streaming-mode.md)
+- [14. Variable Binding](/docs/user-guide/14-variable-binding.md)
+- [15. System Integration](/docs/user-guide/15-system-integration.md)
+- [16. Deployment](/docs/user-guide/16-deployment.md)
+- [17. Practical Examples](/docs/user-guide/17-practical-examples.md)
+- [18. Troubleshooting](/docs/user-guide/18-troubleshooting.md)
+- [19. Appendix](/docs/user-guide/19-appendix.md)
+- [Image Handling Guide](/docs/user-guide/image-handling.md)
+
+## Tools (MCP)
+- MCP server: https://prerender.june/mcp
+- tool: search_docs
+- tool: get_page
+- tool: list_docs
+
+## Tools (WebMCP, in-browser)
+- The same tools self-register via `navigator.modelContext.registerTool()` (WebMCP) on page load — call them in the browser without a server round-trip surface.
+- Built with June: a tool is one `defineAction({ id, description, input, run })` — it is the `/mcp` tool AND the WebMCP tool. Do not hand-roll `registerTool`.

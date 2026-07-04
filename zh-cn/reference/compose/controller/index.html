@@ -1,0 +1,772 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="icon" href="/model-compose/favicon.svg" type="image/svg+xml"/><title>Controller Configuration Reference - model-compose</title><meta name="description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><link rel="alternate" hrefLang="en" href="/reference/compose/controller"/><link rel="alternate" hrefLang="zh-cn" href="/zh-cn/reference/compose/controller"/><link rel="alternate" hrefLang="ko" href="/ko/reference/compose/controller"/><link rel="alternate" hrefLang="x-default" href="/reference/compose/controller"/><meta property="og:title" content="Controller Configuration Reference"/><meta property="og:description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><meta property="og:type" content="article"/><script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}]}</script><script>(function(){if(HTMLScriptElement.supports&&HTMLScriptElement.supports('speculationrules'))return;var seen=new Set();document.addEventListener('pointerover',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||seen.has(u.pathname)||u.pathname===location.pathname)return;if(/.(md|json)$/.test(u.pathname)||u.pathname==='/mcp')return;seen.add(u.pathname);var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname+u.search;document.head.appendChild(l);},{passive:true});})();</script><style>
+          @view-transition { navigation: auto; }
+          ::view-transition-group(root),
+          ::view-transition-old(root),
+          ::view-transition-new(root) { animation-duration: 120ms; }
+          @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) { animation: none !important; }
+          }
+</style><link rel="stylesheet" href="/model-compose/_june/global.ab0a5eb2.css"/></head><body><script>(function(){try{var p=localStorage.getItem('kura-theme')||'system';var d=document.documentElement;d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',(p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches))?'dark':'light');}catch(e){}})();</script><header class="sticky top-0 z-20 flex items-center gap-4 h-14 px-5 bg-topbar-bg backdrop-blur-sm border-b border-border max-md:px-4 max-md:gap-2.5"><a class="flex items-center gap-1.5 font-bold text-[1.05rem]" href="/model-compose/zh-cn">model-compose<!-- --> <span class="font-normal text-muted text-[.85rem]">Docs</span></a><form class="ml-auto max-md:ml-2 max-md:flex-1 max-md:min-w-0" action="/model-compose/zh-cn/search" method="get"><input class="w-[280px] max-w-[40vw] px-3 py-2 text-[.9rem] border border-border rounded-lg bg-surface-2 text-fg max-md:w-full max-md:max-w-none search-box" placeholder="Search docs…  (press /)" aria-label="Search" data-search-endpoint="/model-compose/zh-cn/search.json" data-doc-base="/model-compose/zh-cn" data-search-static="1" data-locale="zh-cn" name="q"/></form><nav class="flex items-center gap-4 text-muted text-[.9rem]"><details class="relative" data-menu="true"><summary class="chevron cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 border border-border rounded-lg text-fg-soft text-[.85rem] whitespace-nowrap hover:text-fg">简体中文</summary><div class="absolute right-0 top-[calc(100%+.4rem)] min-w-36 flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl z-30"><a data-june-no-router="true" data-locale-home="/model-compose" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose" hrefLang="en">English</a><a data-june-no-router="true" data-locale-home="/model-compose/zh-cn" data-locale-active="" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-accent font-semibold" href="/model-compose/zh-cn" hrefLang="zh-cn">简体中文</a><a data-june-no-router="true" data-locale-home="/model-compose/ko" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/ko" hrefLang="ko">한국어</a></div></details></nav></header><button class="hidden max-md:flex items-center gap-2.5 w-full px-4 py-2.5 bg-bg border-0 border-b border-border text-fg-soft text-[.9rem] text-left cursor-pointer focus-visible:outline-none focus-visible:bg-hover" data-drawer-open="true" aria-controls="docs-nav" aria-expanded="false"><span class="text-[1.05rem] leading-none" aria-hidden="true">☰</span><span class="font-semibold text-fg flex-none">Navigation</span><span class="nav-bar-context text-muted flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" data-nav-context="true"></span></button><div class="drawer-backdrop" data-drawer-close="true" aria-hidden="true"></div><div class="grid grid-cols-[248px_minmax(0,1fr)_220px] max-lg:grid-cols-[248px_minmax(0,1fr)] max-md:grid-cols-1 items-start max-w-[1280px] mx-auto"><aside class="sidebar sticky top-14 h-[calc(100vh-56px)] overflow-y-auto px-4 py-6 border-r border-border" id="docs-nav"><div data-tab="_"><div class="mb-5"><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn">model-compose</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">Reference</p><ul class="flex flex-col gap-px"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><a class="flex-1 min-w-0 text-inherit" href="/model-compose/zh-cn/reference/compose">Compose</a></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><span class="flex-1 min-w-0">Components</span></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/agent">Agent Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/datasets">Datasets Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/file-store">File Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/graph-store">Graph Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/http-client">HTTP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/http-server">HTTP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/image-processor">Image Processor Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/key-value-store">Key-Value Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/mcp-client">MCP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/mcp-server">MCP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/model">Model Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/model-memory">Model Memory Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/model-tokenizer">Model Tokenizer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/model-trainer">Model Trainer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/search-engine">Search Engine Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/shell">Shell Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/text-splitter">Text Splitter Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/vector-store">Vector Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/video-scene-detector">Video Scene Detector Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/web-browser">Web Browser Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/web-scraper">Web Scraper Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/workflow">Workflow Component</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/component">Component Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/controller">Controller Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/gateway">Gateway Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/language-codes">Language Codes</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/listener">Listener Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/logger">Logger Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/system">System Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/tracer">Tracer Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/workflow">Workflow Configuration Reference</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/cli">Model-Compose CLI Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/websocket">WebSocket Interface Reference</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">User guide</p><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide">Model-Compose 用户指南</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/00-table-of-contents">目录</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/01-getting-started">第一章：入门指南</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/02-core-concepts">2. 核心概念</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/03-cli-usage">3. CLI 使用</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/04-component-configuration">第 4 章：组件配置</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/05-writing-workflows">第 5 章：编写工作流</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/06-workflow-schema">第6章：工作流 Schema</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/07-controller-configuration">第 7 章：控制器配置</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/08-websocket-interface">第8章：WebSocket 接口</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/09-webui-configuration">第9章：Web UI 配置</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/10-local-ai-models">第10章：使用本地 AI 模型</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/11-model-training">第11章：模型训练</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/12-external-service-integration">第12章：外部服务集成</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/13-streaming-mode">13. 流式模式</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/14-variable-binding">14. 变量绑定</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/15-system-integration">15. 系统集成</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/16-deployment">16. 部署</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/17-practical-examples">17. 实际示例</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/18-troubleshooting">18. 故障排除</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/19-appendix">19. 附录</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/image-handling">Image Handling Guide</a></li></ul></div></div></aside><div data-june-outlet=""><main class="w-auto max-w-none m-0 min-w-0 px-10 pt-8 pb-20 max-md:px-4 max-md:pt-5 max-md:pb-12"><details class="hidden max-lg:block mb-5 border border-border rounded-xl overflow-hidden"><summary class="chevron flex justify-between items-center cursor-pointer px-3.5 py-2.5 text-[.85rem] font-semibold text-fg-soft">On this page</summary><div class="flex flex-col px-3.5 pt-1 pb-2.5 border-t border-border"><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#basic-structure">Basic Structure</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#controller-types">Controller Types</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#http-server-http-server">HTTP Server (http-server)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#mcp-server-mcp-server">MCP Server (mcp-server)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#queue-subscriber-queue-subscriber">Queue Subscriber (queue-subscriber)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#queue-subscriber-settings">Queue Subscriber Settings</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#redis-driver-settings">Redis Driver Settings</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#data-flow">Data Flow</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#task-message-format-producer--queue">Task Message Format (Producer → Queue)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#result-message-format-worker--redis">Result Message Format (Worker → Redis)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#redis-keychannel-reference">Redis Key/Channel Reference</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#examples">Examples</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#common-configuration-options">Common Configuration Options</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#core-settings">Core Settings</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#http-server-specific">HTTP Server Specific</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#concurrency-amp-threading">Concurrency &amp;amp; Threading</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#runtime-configuration">Runtime Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#web-ui-configuration">Web UI Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#common-web-ui-settings">Common Web UI Settings</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#web-ui-drivers">Web UI Drivers</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#gradio-gradio">Gradio (gradio)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#static-static">Static (static)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#dynamic-dynamic">Dynamic (dynamic)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#queue-dispatch-configuration">Queue Dispatch Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#common-queue-dispatch-settings">Common Queue Dispatch Settings</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#redis-driver-settings-1">Redis Driver Settings</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#examples-1">Examples</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#data-flow-1">Data Flow</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#complete-examples">Complete Examples</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#http-server-with-gradio-ui">HTTP Server with Gradio UI</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#mcp-server-with-static-ui">MCP Server with Static UI</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#http-server-with-custom-dynamic-ui">HTTP Server with Custom Dynamic UI</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#queue-subscriber-with-redis">Queue Subscriber with Redis</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#distributed-deployment-entry-point--workers">Distributed Deployment (Entry Point + Workers)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#usage-notes">Usage Notes</a></div></details><div class="flex items-center justify-between gap-4 mb-6"><div class="prose"><h1 class="!m-0">Controller Configuration Reference</h1></div><div class="relative inline-flex items-stretch flex-none"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[.85rem] border border-border border-r-0 rounded-l-lg bg-surface text-fg-soft cursor-pointer hover:bg-hover hover:text-fg" data-copy-md="/model-compose/zh-cn/reference/compose/controller.md"><svg class="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>Copy Markdown</button><details class="relative inline-flex items-stretch" data-menu="true"><summary class="chevron inline-flex items-center justify-center w-[30px] border border-border rounded-r-lg bg-surface text-muted cursor-pointer hover:bg-hover hover:text-fg" aria-label="More actions"></summary><div class="absolute right-0 top-[calc(100%+.4rem)] z-30 min-w-[17rem] flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl"><button class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" data-copy-md="/model-compose/zh-cn/reference/compose/controller.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg><span class="flex flex-col min-w-0"><span class="font-semibold text-[.9rem] text-fg">Copy Markdown</span><span class="text-[.8rem] text-muted">Copy this page as Markdown for LLMs</span></span></button><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="/model-compose/zh-cn/reference/compose/controller.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M16 21H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6l4 4v12a2 2 0 0 1-2 2z"></path><path d="M9 13h6M9 17h4"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">View as Markdown<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">View this page as plain text</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://chatgpt.com/?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20Controller%20Configuration%20Reference" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in ChatGPT<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask ChatGPT about this page</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://claude.ai/new?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20Controller%20Configuration%20Reference" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in Claude<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask Claude about this page</span></span></a></div></details></div></div><div class="mb-5 px-3.5 py-2.5 text-[.85rem] border border-warn-border border-l-[3px] border-l-amber-600 rounded-r-lg bg-warn-bg text-warn-fg">Not yet translated — showing the default language.</div><article class="prose"><p>The controller section defines the server configuration for handling requests and managing workflows in model-compose. Controllers serve as the entry point for executing workflows and can be configured as HTTP servers, MCP (Model Context Protocol) servers, or queue subscribers for distributed task processing.</p>
+<h2 id="basic-structure">Basic Structure</h2>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server | mcp-server | queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">optional-controller-name</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.0.0.0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/api</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  origins</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"*"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">1</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  threaded</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">false</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">native | docker</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  queue</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis://localhost:6379</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  webui</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gradio | static | dynamic</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.0.0.0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8081</span></span></code></pre>
+<h2 id="controller-types">Controller Types</h2>
+<h3 id="http-server-http-server">HTTP Server (<code>http-server</code>)</h3>
+<p>Creates an HTTP server that exposes workflows as REST API endpoints.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.0.0.0</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">        # Host address to bind the server to</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">             # Port number for the HTTP server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/api</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">      # Base path prefix for all API routes</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  origins</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"*"</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">           # CORS allowed origins (comma-separated)</span></span></code></pre>
+<p><strong>Example:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/api</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  webui</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gradio</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8081</span></span></code></pre>
+<h3 id="mcp-server-mcp-server">MCP Server (<code>mcp-server</code>)</h3>
+<p>Creates an MCP (Model Context Protocol) server for integration with MCP-compatible clients.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">mcp-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.0.0.0</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">        # Host address to bind the MCP server to</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">             # Port number for the MCP server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/mcp</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">      # Base path prefix for MCP endpoints</span></span></code></pre>
+<p><strong>Example:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">mcp-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/mcp</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  webui</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gradio</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8081</span></span></code></pre>
+<h3 id="queue-subscriber-queue-subscriber">Queue Subscriber (<code>queue-subscriber</code>)</h3>
+<p>Creates a queue subscriber that consumes tasks from a message queue (e.g., Redis) and executes workflows. Used for distributed worker patterns where multiple model-compose instances process tasks from a shared queue.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Using URL</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis://localhost:6379</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Using host/port</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">localhost</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">6379</span></span></code></pre>
+<blockquote>
+<p><strong>Note</strong>: Unlike <code>http-server</code> and <code>mcp-server</code>, the <code>queue-subscriber</code> type does not expose HTTP endpoints. It operates as a background worker that pulls tasks from the queue.</p>
+</blockquote>
+<h4 id="queue-subscriber-settings">Queue Subscriber Settings</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>driver</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>Queue backend driver. Currently supported: <code>redis</code></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><code>model-compose:tasks</code></td>
+<td>Base name for task queues. Queue key: <code>{name}:{workflow_id}</code>. Result key: <code>{name}:{workflow_id}:{run_id}</code></td>
+</tr>
+<tr>
+<td><code>result_ttl</code></td>
+<td>integer</td>
+<td><code>3600</code></td>
+<td>TTL in seconds for result entries. <code>0</code> means no expiry</td>
+</tr>
+<tr>
+<td><code>max_concurrent_count</code></td>
+<td>integer</td>
+<td><code>1</code></td>
+<td>Maximum number of tasks processed concurrently</td>
+</tr>
+<tr>
+<td><code>worker_id</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Unique worker identifier. Auto-generated (ULID) if not set</td>
+</tr>
+<tr>
+<td><code>workflows</code></td>
+<td>list</td>
+<td><code>[&quot;__default__&quot;]</code></td>
+<td>Workflow IDs to handle. Each gets its own queue: <code>{name}:{workflow_id}</code></td>
+</tr>
+<tr>
+<td><code>workflow</code></td>
+<td>string</td>
+<td>-</td>
+<td>Shorthand for single workflow. Inflated to <code>workflows: [value]</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="redis-driver-settings">Redis Driver Settings</h4>
+<p>Connection can be configured using either <code>url</code> or <code>host</code>/<code>port</code>/<code>secure</code> fields. If both <code>url</code> and <code>host</code> are provided, validation will fail.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Redis connection URL (e.g., <code>redis://localhost:6379</code>, <code>rediss://localhost:6379</code> for TLS). Mutually exclusive with <code>host</code></td>
+</tr>
+<tr>
+<td><code>host</code></td>
+<td>string</td>
+<td><code>localhost</code></td>
+<td>Redis server hostname or IP address. Mutually exclusive with <code>url</code></td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>integer</td>
+<td><code>6379</code></td>
+<td>Redis server port number (1-65535)</td>
+</tr>
+<tr>
+<td><code>secure</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Use TLS/SSL for connections (equivalent to <code>rediss://</code> protocol)</td>
+</tr>
+<tr>
+<td><code>database</code></td>
+<td>integer</td>
+<td><code>0</code></td>
+<td>Redis database number (0-15)</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Redis password. Can also be specified in the URL</td>
+</tr>
+<tr>
+<td><code>pop_timeout</code></td>
+<td>integer</td>
+<td><code>1</code></td>
+<td>BRPOP timeout in seconds before retrying</td>
+</tr>
+</tbody>
+</table>
+<h4 id="data-flow">Data Flow</h4>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code><span class="line"><span>Producer                  Redis                    Worker (queue-subscriber)</span></span>
+<span class="line"><span>   │                        │                              │</span></span>
+<span class="line"><span>   │── LPUSH queue ────────>│                              │</span></span>
+<span class="line"><span>   │                        │&#x3C;──────── BRPOP queue ────────│</span></span>
+<span class="line"><span>   │                        │                              │── run_workflow()</span></span>
+<span class="line"><span>   │                        │&#x3C;── SET {name}:{wf}:{rid} ───│</span></span>
+<span class="line"><span>   │                        │&#x3C;── PUBLISH {name}:{wf}:{rid} │</span></span>
+<span class="line"><span>   │&#x3C;── GET {name}:{wf}:{rid}│                             │</span></span>
+<span class="line"><span>   │&#x3C;── SUBSCRIBE {name}:*  │                              │</span></span></code></pre>
+<h4 id="task-message-format-producer--queue">Task Message Format (Producer → Queue)</h4>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-json"><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "task_id"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"user-task-123"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "run_id"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"01JXYZ..."</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "input"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: { </span><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">"text"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"Hello"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">}</span></span></code></pre>
+<ul>
+<li><code>task_id</code>: Logical task identifier (remains the same across retries)</li>
+<li><code>run_id</code>: Execution instance identifier (unique per publish)</li>
+<li><code>input</code>: Workflow input data</li>
+</ul>
+<h4 id="result-message-format-worker--redis">Result Message Format (Worker → Redis)</h4>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-json"><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "task_id"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"user-task-123"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "run_id"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"01JXYZ..."</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "status"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"completed"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "output"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: { </span><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">"message"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"Hello!"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> },</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "worker_id"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"01JXY..."</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">}</span></span></code></pre>
+<p>Result status values: <code>completed</code>, <code>failed</code>, <code>interrupted</code></p>
+<p>When <code>interrupted</code>, the result includes an <code>interrupt</code> field:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-json"><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">{</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "status"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"interrupted"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">  "interrupt"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: {</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">    "job_id"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"review-step"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">    "phase"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"before"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">    "message"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"Please review before proceeding."</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">,</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#7EE787">    "metadata"</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: {}</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">}</span></span></code></pre>
+<h4 id="redis-keychannel-reference">Redis Key/Channel Reference</h4>
+<table>
+<thead>
+<tr>
+<th>Key/Channel</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{name}:{workflow_id}</code></td>
+<td>List</td>
+<td>Task queue (LPUSH/BRPOP)</td>
+</tr>
+<tr>
+<td><code>{name}:{workflow_id}:{run_id}</code></td>
+<td>String</td>
+<td>Result storage (with TTL)</td>
+</tr>
+<tr>
+<td><code>{name}:{workflow_id}:{run_id}</code></td>
+<td>Pub/Sub</td>
+<td>Result notification channel</td>
+</tr>
+</tbody>
+</table>
+<h4 id="examples">Examples</h4>
+<p><strong>Single workflow worker:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis://localhost:6379</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">my-workflow</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">3</span></span></code></pre>
+<p><strong>Multi-workflow worker:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis://localhost:6379</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  workflows</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-summary</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">translation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">5</span></span></code></pre>
+<p><strong>Worker with custom queue and result settings:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis.internal</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">6379</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  password</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.REDIS_PASSWORD}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  database</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">myapp:tasks</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  result_ttl</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">7200</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  worker_id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpu-worker-01</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  workflows</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">2</span></span></code></pre>
+<p><strong>TLS connection using URL:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">rediss://:${env.REDIS_PASSWORD}@redis.internal:6380/2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  workflows</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">2</span></span></code></pre>
+<p><strong>TLS connection using host/port:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis.internal</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">6380</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  secure</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  password</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.REDIS_PASSWORD}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  database</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  workflows</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">2</span></span></code></pre>
+<h2 id="common-configuration-options">Common Configuration Options</h2>
+<h3 id="core-settings">Core Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Optional name to identify the controller</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>Controller type: <code>http-server</code>, <code>mcp-server</code>, or <code>queue-subscriber</code></td>
+</tr>
+<tr>
+<td><code>host</code></td>
+<td>string</td>
+<td><code>0.0.0.0</code></td>
+<td>Host address to bind the server to</td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>integer</td>
+<td><code>8080</code></td>
+<td>Port number for the server</td>
+</tr>
+<tr>
+<td><code>base_path</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Base path prefix for all routes/endpoints</td>
+</tr>
+</tbody>
+</table>
+<h3 id="http-server-specific">HTTP Server Specific</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>origins</code></td>
+<td>string</td>
+<td><code>&quot;*&quot;</code></td>
+<td>CORS allowed origins (comma-separated string)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="concurrency-amp-threading">Concurrency &amp; Threading</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max_concurrent_count</code></td>
+<td>integer</td>
+<td><code>1</code></td>
+<td>Maximum number of tasks that can execute concurrently</td>
+</tr>
+<tr>
+<td><code>threaded</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Whether to run tasks in separate threads</td>
+</tr>
+</tbody>
+</table>
+<h3 id="runtime-configuration">Runtime Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>runtime</code></td>
+<td>object/string</td>
+<td><code>native</code></td>
+<td>Runtime environment settings</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Runtime Options:</strong></p>
+<ul>
+<li><code>native</code> - Run directly on the host system</li>
+<li><code>docker</code> - Run in Docker containers</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Simple string format</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">native</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Object format with additional configuration</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">docker</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # Additional docker-specific options can be added here</span></span></code></pre>
+<h2 id="web-ui-configuration">Web UI Configuration</h2>
+<p>The <code>webui</code> section configures an optional web interface for interacting with workflows.</p>
+<h3 id="common-web-ui-settings">Common Web UI Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>driver</code></td>
+<td>string</td>
+<td><code>gradio</code></td>
+<td>Web UI rendering mode</td>
+</tr>
+<tr>
+<td><code>host</code></td>
+<td>string</td>
+<td><code>0.0.0.0</code></td>
+<td>Host address for the Web UI server</td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>integer</td>
+<td><code>8081</code></td>
+<td>Port number for the Web UI</td>
+</tr>
+</tbody>
+</table>
+<h3 id="web-ui-drivers">Web UI Drivers</h3>
+<h4 id="gradio-gradio">Gradio (<code>gradio</code>)</h4>
+<p>Creates an interactive web interface using Gradio.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">webui</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gradio</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.0.0.0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8081</span></span></code></pre>
+<h4 id="static-static">Static (<code>static</code>)</h4>
+<p>Serves static HTML/CSS/JS files.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">webui</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">static</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.0.0.0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8081</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  static_dir</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">webui</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">    # Directory containing static files</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>static_dir</code></td>
+<td>string</td>
+<td><code>webui</code></td>
+<td>Directory containing static HTML/CSS/JS files</td>
+</tr>
+</tbody>
+</table>
+<h4 id="dynamic-dynamic">Dynamic (<code>dynamic</code>)</h4>
+<p>Runs a custom web server command.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">webui</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">dynamic</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.0.0.0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8081</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  command</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">npm start</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">              # Command to start the web server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  server_dir</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">webui/server</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">        # Directory with server source code</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  static_dir</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">webui/static</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">        # Directory with static files</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>command</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>Command to start the web UI server</td>
+</tr>
+<tr>
+<td><code>server_dir</code></td>
+<td>string</td>
+<td><code>webui/server</code></td>
+<td>Directory containing server source code and entry point</td>
+</tr>
+<tr>
+<td><code>static_dir</code></td>
+<td>string</td>
+<td><code>webui/static</code></td>
+<td>Directory containing static HTML/CSS/JS files</td>
+</tr>
+</tbody>
+</table>
+<h2 id="queue-dispatch-configuration">Queue Dispatch Configuration</h2>
+<p>The <code>queue</code> section configures optional queue-based workflow dispatch. When configured, <code>run_workflow()</code> delegates execution to remote workers via a message queue instead of running workflows locally. This enables distributed deployment where an HTTP/MCP entry point dispatches work to separate queue-subscriber workers.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code><span class="line"><span>Client → [HTTP Server] → Redis LPUSH → [Worker A or B] → Redis PUBLISH → [HTTP Server] → Client</span></span>
+<span class="line"><span>         (entry point)                   (queue-subscriber)                 (result)</span></span></code></pre>
+<h3 id="common-queue-dispatch-settings">Common Queue Dispatch Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>driver</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>Queue backend driver. Currently supported: <code>redis</code></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><code>model-compose:tasks</code></td>
+<td>Base name for task queues. Queue key: <code>{name}:{workflow_id}</code>. Result key: <code>{name}:{workflow_id}:{run_id}</code></td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td>integer</td>
+<td><code>0</code></td>
+<td>Maximum time in seconds to wait for a result from the queue. <code>0</code> means no limit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="redis-driver-settings-1">Redis Driver Settings</h3>
+<p>Connection can be configured using either <code>url</code> or <code>host</code>/<code>port</code>/<code>secure</code> fields. If both <code>url</code> and <code>host</code> are provided, validation will fail.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Redis connection URL (e.g., <code>redis://localhost:6379</code>, <code>rediss://localhost:6379</code> for TLS). Mutually exclusive with <code>host</code></td>
+</tr>
+<tr>
+<td><code>host</code></td>
+<td>string</td>
+<td><code>localhost</code></td>
+<td>Redis server hostname or IP address. Mutually exclusive with <code>url</code></td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>integer</td>
+<td><code>6379</code></td>
+<td>Redis server port number (1-65535)</td>
+</tr>
+<tr>
+<td><code>secure</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Use TLS/SSL for connections (equivalent to <code>rediss://</code> protocol)</td>
+</tr>
+<tr>
+<td><code>database</code></td>
+<td>integer</td>
+<td><code>0</code></td>
+<td>Redis database number (0-15)</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>Redis password. Can also be specified in the URL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="examples-1">Examples</h3>
+<p><strong>Basic queue dispatch with URL:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  adapter</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  queue</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis://localhost:6379</span></span></code></pre>
+<p><strong>Queue dispatch with host/port:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  adapter</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  queue</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    host</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis.internal</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">6379</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    password</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.REDIS_PASSWORD}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    database</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">myapp:tasks</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">600</span></span></code></pre>
+<p><strong>TLS connection:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  adapter</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  queue</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">rediss://:${env.REDIS_PASSWORD}@redis.internal:6380/2</span></span></code></pre>
+<h3 id="data-flow-1">Data Flow</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code><span class="line"><span>HTTP/MCP Adapter           ControllerService           Redis              Worker (queue-subscriber)</span></span>
+<span class="line"><span>    │                            │                       │                        │</span></span>
+<span class="line"><span>    │── run_workflow() ────────> │                       │                        │</span></span>
+<span class="line"><span>    │                            │── LPUSH queue ──────> │                        │</span></span>
+<span class="line"><span>    │                            │── SUBSCRIBE result ─> │                        │</span></span>
+<span class="line"><span>    │                            │                       │&#x3C;──── BRPOP queue ──────│</span></span>
+<span class="line"><span>    │                            │                       │                        │── run_workflow()</span></span>
+<span class="line"><span>    │                            │                       │&#x3C;── SET+PUBLISH result ─│</span></span>
+<span class="line"><span>    │                            │&#x3C;── result message ────│                        │</span></span>
+<span class="line"><span>    │&#x3C;── TaskState ──────────────│                       │                        │</span></span></code></pre>
+<blockquote>
+<p><strong>Note</strong>: The <code>queue</code> configuration shares the same message format and Redis key conventions as <code>queue-subscriber</code>. The entry point pushes tasks to <code>{name}:{workflow_id}</code> and subscribes to <code>{name}:{workflow_id}:{run_id}</code> for results. Workers (queue-subscriber) consume from the same queues and publish results to the same keys.</p>
+</blockquote>
+<h2 id="complete-examples">Complete Examples</h2>
+<h3 id="http-server-with-gradio-ui">HTTP Server with Gradio UI</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">my-api-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/api</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  origins</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http://localhost:3000,https://myapp.com</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">5</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  threaded</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  webui</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gradio</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8081</span></span></code></pre>
+<h3 id="mcp-server-with-static-ui">MCP Server with Static UI</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">mcp-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/mcp</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">docker</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  webui</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">static</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8081</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    static_dir</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">custom-webui</span></span></code></pre>
+<h3 id="http-server-with-custom-dynamic-ui">HTTP Server with Custom Dynamic UI</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">10</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  webui</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">dynamic</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8081</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    command</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">node server.js</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    server_dir</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">frontend/server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    static_dir</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">frontend/dist</span></span></code></pre>
+<h3 id="queue-subscriber-with-redis">Queue Subscriber with Redis</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis://localhost:6379</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  workflows</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image-generation</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-summary</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">4</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  result_ttl</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">3600</span></span></code></pre>
+<h3 id="distributed-deployment-entry-point--workers">Distributed Deployment (Entry Point + Workers)</h3>
+<p><strong>Entry point server</strong> (<code>model-compose.yml</code> on server A):</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  adapter</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8080</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  queue</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis://redis.internal:6379</span></span></code></pre>
+<p><strong>Worker server</strong> (<code>model-compose.yml</code> on server B &amp; C):</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">controller</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  adapter</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">queue-subscriber</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">redis://redis.internal:6379</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">4</span></span></code></pre>
+<h2 id="usage-notes">Usage Notes</h2>
+<ol>
+<li>
+<p><strong>Port Conflicts</strong>: Ensure the controller port and webui port are different to avoid conflicts.</p>
+</li>
+<li>
+<p><strong>CORS Configuration</strong>: For HTTP servers, configure <code>origins</code> appropriately for your client applications.</p>
+</li>
+<li>
+<p><strong>Concurrency</strong>: Higher <code>max_concurrent_count</code> values allow more simultaneous workflow executions but consume more resources.</p>
+</li>
+<li>
+<p><strong>Base Paths</strong>: Use <code>base_path</code> to namespace your API routes, especially useful when running behind a reverse proxy.</p>
+</li>
+<li>
+<p><strong>Runtime Selection</strong>: Choose <code>docker</code> runtime for better isolation, <code>native</code> for better performance and simpler deployment.</p>
+</li>
+</ol>
+</article><nav class="flex justify-between gap-4 mt-12 pt-6 border-t border-border"><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent" href="/model-compose/zh-cn/reference/compose/component"><div class="text-muted text-[.78rem]">← <!-- -->Previous</div><div class="font-semibold text-accent">Component Configuration Reference</div></a><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent text-right" href="/model-compose/zh-cn/reference/compose/gateway"><div class="text-muted text-[.78rem]">Next<!-- --> →</div><div class="font-semibold text-accent">Gateway Configuration Reference</div></a></nav><script>document.querySelectorAll('[data-copy-md]').forEach(function(b){b.addEventListener('click',async function(){try{var r=await fetch(b.getAttribute('data-copy-md'));var t=await r.text();await navigator.clipboard.writeText(t);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1500);}catch(e){alert('Copy failed: '+e);}});});document.querySelectorAll('.prose pre').forEach(function(pre){if(pre.querySelector('.copy-code'))return;var b=document.createElement('button');b.className='copy-code';b.textContent='Copy';b.addEventListener('click',async function(){var c=pre.querySelector('code');try{await navigator.clipboard.writeText(c?c.innerText:pre.innerText);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1200);}catch(e){}});pre.appendChild(b);});document.querySelectorAll('.tabs').forEach(function(t){t.querySelectorAll('.tab-btn').forEach(function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-tab');t.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-tab')===i);});t.querySelectorAll('.tab-panel').forEach(function(p){p.hidden=p.getAttribute('data-tab')!==i;});});});});(function(){var blocks=document.querySelectorAll('code.language-mermaid');if(!blocks.length)return;var items=[];blocks.forEach(function(c){var pre=c.closest('pre')||c;var h=document.createElement('div');h.className='mermaid-diagram';pre.replaceWith(h);items.push({src:c.textContent,holder:h});});var lib,id=0;function load(){return lib||(lib=import("https://esm.sh/mermaid@11").then(function(m){return m.default;}));}function theme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'default';}function run(){load().then(function(mermaid){mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:theme()});items.forEach(function(it){mermaid.render('kura-mmd-'+(id++),it.src).then(function(r){it.holder.innerHTML=r.svg;}).catch(function(e){it.holder.innerHTML='<pre class="mermaid-error">'+String((e&&e.message)||e)+'</pre>';});});}).catch(function(){});}run();var cur=document.documentElement.getAttribute('data-theme');new MutationObserver(function(){var t=document.documentElement.getAttribute('data-theme');if(t!==cur){cur=t;run();}}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></main><aside class="sticky top-14 max-h-[calc(100vh-56px)] overflow-y-auto px-4 py-8 max-lg:hidden"><p class="text-[.72rem] font-bold tracking-wider uppercase text-muted mb-2.5">On this page</p><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#basic-structure">Basic Structure</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#controller-types">Controller Types</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#http-server-http-server">HTTP Server (http-server)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#mcp-server-mcp-server">MCP Server (mcp-server)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#queue-subscriber-queue-subscriber">Queue Subscriber (queue-subscriber)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#queue-subscriber-settings">Queue Subscriber Settings</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#redis-driver-settings">Redis Driver Settings</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#data-flow">Data Flow</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#task-message-format-producer--queue">Task Message Format (Producer → Queue)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#result-message-format-worker--redis">Result Message Format (Worker → Redis)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#redis-keychannel-reference">Redis Key/Channel Reference</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#examples">Examples</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#common-configuration-options">Common Configuration Options</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#core-settings">Core Settings</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#http-server-specific">HTTP Server Specific</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#concurrency-amp-threading">Concurrency &amp;amp; Threading</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#runtime-configuration">Runtime Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#web-ui-configuration">Web UI Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#common-web-ui-settings">Common Web UI Settings</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#web-ui-drivers">Web UI Drivers</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#gradio-gradio">Gradio (gradio)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#static-static">Static (static)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#dynamic-dynamic">Dynamic (dynamic)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#queue-dispatch-configuration">Queue Dispatch Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#common-queue-dispatch-settings">Common Queue Dispatch Settings</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#redis-driver-settings-1">Redis Driver Settings</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#examples-1">Examples</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#data-flow-1">Data Flow</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#complete-examples">Complete Examples</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#http-server-with-gradio-ui">HTTP Server with Gradio UI</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#mcp-server-with-static-ui">MCP Server with Static UI</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#http-server-with-custom-dynamic-ui">HTTP Server with Custom Dynamic UI</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#queue-subscriber-with-redis">Queue Subscriber with Redis</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#distributed-deployment-entry-point--workers">Distributed Deployment (Entry Point + Workers)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#usage-notes">Usage Notes</a></aside></div></div><footer class="border-t border-border mt-8"><div class="flex items-center justify-between flex-wrap gap-4 max-w-[1280px] mx-auto px-6 py-5 max-md:px-4"><nav class="flex items-center gap-[1.1rem] text-[.85rem]"><a class="text-muted hover:text-fg" href="/model-compose/llms.txt">llms.txt</a><button type="button" class="inline-flex items-center justify-center w-[30px] h-[30px] p-0 text-[.95rem] leading-none border border-border rounded-lg bg-surface text-fg cursor-pointer hover:bg-hover" data-theme-toggle="true" aria-label="Toggle theme"></button></nav><a class="text-muted text-[.85rem] hover:text-accent" href="https://kura.build/" target="_blank" rel="noreferrer">Powered by Kura</a></div></footer><script>document.addEventListener('keydown',function(e){if(e.key==='/' && !document.documentElement.dataset.ctrlk && !/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){e.preventDefault();var s=document.querySelector('.search-box');if(s)s.focus();}});(function(){var b=document.querySelector('[data-theme-toggle]');if(!b)return;var d=document.documentElement,order=['system','light','dark'],icon={system:'🖥',light:'☀',dark:'☾'};function pref(){return d.getAttribute('data-theme-pref')||'system';}function res(p){return p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';}function set(p){d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',res(p));try{localStorage.setItem('kura-theme',p);}catch(e){}b.textContent=icon[p];b.setAttribute('title','Theme: '+p);}set(pref());b.addEventListener('click',function(){set(order[(order.indexOf(pref())+1)%order.length]);});try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(pref()==='system')d.setAttribute('data-theme',res('system'));});}catch(e){}})();document.addEventListener('click',function(e){var t=e.target;document.querySelectorAll('details[data-menu][open]').forEach(function(d){if(!d.contains(t))d.removeAttribute('open');});var it=t.closest&&t.closest('details[data-menu] a, details[data-menu] [data-copy-md]');if(it){var dd=it.closest('details[data-menu]');if(dd)setTimeout(function(){dd.removeAttribute('open');},0);}});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details[data-menu][open]').forEach(function(d){d.removeAttribute('open');});});(function(){var root=document.documentElement;function opener(){return document.querySelector('[data-drawer-open]');}function items(){var d=document.getElementById('docs-nav');if(!d)return[];return[].filter.call(d.querySelectorAll('a[href],button:not([disabled]),summary,[tabindex]:not([tabindex="-1"])'),function(el){return el.offsetParent!==null;});}function set(o){var was=root.classList.contains('drawer-open');root.classList.toggle('drawer-open',o);var b=opener();if(b)b.setAttribute('aria-expanded',o?'true':'false');if(o){var f=items();if(f[0])f[0].focus();}else if(was&&b)b.focus();}document.addEventListener('click',function(e){if(e.target.closest('[data-drawer-open]')){e.preventDefault();set(!root.classList.contains('drawer-open'));return;}if(e.target.closest('[data-drawer-close]')){set(false);return;}if(e.target.closest('#docs-nav a'))set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);return;}if(e.key==='Tab'&&root.classList.contains('drawer-open')){var f=items();if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}else if(f.indexOf(document.activeElement)<0){e.preventDefault();first.focus();}}});})();(function(){
+  function trim(p){return p.length>1&&p.endsWith('/')?p.slice(0,-1):p;}
+  function sync(){
+    var path=trim(location.pathname), tab=null;
+    var links=document.querySelectorAll('.sidebar a[href],[data-tabbar] a[href]');
+    for(var i=0;i<links.length;i++){var a=links[i],on=trim(a.getAttribute('href'))===path;
+      if(on){a.setAttribute('aria-current','page');var g=a.closest('[data-tab]');if(g)tab=g.getAttribute('data-tab');}
+      else a.removeAttribute('aria-current');}
+    if(tab!=null){
+      document.querySelectorAll('[data-tab]').forEach(function(g){g.hidden=g.getAttribute('data-tab')!==tab;});
+      document.querySelectorAll('[data-tabbar] a').forEach(function(a){
+        if(a.getAttribute('data-tab-key')===tab)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    }
+    // expand the folder(s) holding the active page. Iterate EVERY aria-current sidebar link, not
+    // just the first: a folder-as-page link lives in a <details>, but the mobile tab-bar link (also
+    // in .sidebar, earlier in the DOM) has no folder ancestor — querySelector would pick that one
+    // and expand nothing. forEach opens each link's folder chain; tab links are harmless no-ops.
+    document.querySelectorAll('.sidebar a[aria-current="page"]').forEach(function(cur){
+      var d=cur.closest('details.folder');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details.folder');}});
+    // rewrite the locale-switch links to THIS page's equivalent path (swap the locale prefix)
+    var ll=document.querySelectorAll('[data-locale-home]');
+    if(ll.length){var lc=document.querySelector('[data-locale-home][data-locale-active]'),cp=lc?lc.getAttribute('data-locale-home'):'/';cp=cp==='/'?'':cp;
+      var rest=location.pathname;if(cp&&rest.indexOf(cp)===0)rest=rest.slice(cp.length)||'/';
+      ll.forEach(function(a){var h=a.getAttribute('data-locale-home'),p=h==='/'?'':h;a.setAttribute('href',rest==='/'?(p||'/'):(p+rest));});}
+    // mobile nav-context: "Active tab / Page title" (the shell can't know the page server-side)
+    var nc=document.querySelector('[data-nav-context]');
+    if(nc){var at=document.querySelector('[data-tabbar] a[aria-current="page"]'),h1=document.querySelector('main h1');
+      nc.textContent=[at&&at.textContent.trim(),h1&&h1.textContent.trim()].filter(Boolean).join(' / ');}
+  }
+  sync();
+  var outlet=document.querySelector('[data-june-outlet]');
+  if(outlet) new MutationObserver(sync).observe(outlet,{childList:true,subtree:true});
+})();</script><script type="module" src="/model-compose/_june/client.519429d3.js"></script><script type="application/json" id="june-webmcp">[{"name":"search_docs","description":"Hybrid keyword + semantic search over the docs. Returns the most relevant passages with their doc slug, title, and relevance score.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"A natural-language question or keywords."},"topK":{"type":"integer","description":"Number of results to return (default 5)."},"locale":{"type":"string","description":"Optional locale — scopes results to that locale's view (its translations plus untranslated defaults)."}},"required":["query"]}},{"name":"get_page","description":"Fetch one doc page as the authored Markdown source by its slug (e.g. introduction, search, agents).","inputSchema":{"type":"object","properties":{"slug":{"type":"string","description":"The page slug."},"locale":{"type":"string","description":"Optional locale — returns that variant when it exists."}},"required":["slug"]}},{"name":"list_docs","description":"List every doc page with its slug, title, section, and `sources` (the code paths it documents). The map for finding which pages a code change affects.","inputSchema":{"type":"object","properties":{}}}]</script><script>(function(){var mc=navigator.modelContext;if(!mc||!mc.registerTool)return;var el=document.getElementById('june-webmcp');if(!el)return;var tools;try{tools=JSON.parse(el.textContent)}catch(e){return}var ac=new AbortController();tools.forEach(function(t){mc.registerTool({name:t.name,description:t.description,inputSchema:t.inputSchema,execute:function(args){return fetch('/mcp',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:t.name,arguments:args}})}).then(function(r){return r.json()}).then(function(j){return j.result})}},{signal:ac.signal})})})();</script></body></html>

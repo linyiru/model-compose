@@ -1,0 +1,799 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="icon" href="/model-compose/favicon.svg" type="image/svg+xml"/><title>第 4 章：组件配置 - model-compose</title><meta name="description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><link rel="alternate" hrefLang="en" href="/user-guide/04-component-configuration"/><link rel="alternate" hrefLang="zh-cn" href="/zh-cn/user-guide/04-component-configuration"/><link rel="alternate" hrefLang="ko" href="/ko/user-guide/04-component-configuration"/><link rel="alternate" hrefLang="x-default" href="/user-guide/04-component-configuration"/><meta property="og:title" content="第 4 章：组件配置"/><meta property="og:description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><meta property="og:type" content="article"/><script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}]}</script><script>(function(){if(HTMLScriptElement.supports&&HTMLScriptElement.supports('speculationrules'))return;var seen=new Set();document.addEventListener('pointerover',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||seen.has(u.pathname)||u.pathname===location.pathname)return;if(/.(md|json)$/.test(u.pathname)||u.pathname==='/mcp')return;seen.add(u.pathname);var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname+u.search;document.head.appendChild(l);},{passive:true});})();</script><style>
+          @view-transition { navigation: auto; }
+          ::view-transition-group(root),
+          ::view-transition-old(root),
+          ::view-transition-new(root) { animation-duration: 120ms; }
+          @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) { animation: none !important; }
+          }
+</style><link rel="stylesheet" href="/model-compose/_june/global.ab0a5eb2.css"/></head><body><script>(function(){try{var p=localStorage.getItem('kura-theme')||'system';var d=document.documentElement;d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',(p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches))?'dark':'light');}catch(e){}})();</script><header class="sticky top-0 z-20 flex items-center gap-4 h-14 px-5 bg-topbar-bg backdrop-blur-sm border-b border-border max-md:px-4 max-md:gap-2.5"><a class="flex items-center gap-1.5 font-bold text-[1.05rem]" href="/model-compose/zh-cn">model-compose<!-- --> <span class="font-normal text-muted text-[.85rem]">Docs</span></a><form class="ml-auto max-md:ml-2 max-md:flex-1 max-md:min-w-0" action="/model-compose/zh-cn/search" method="get"><input class="w-[280px] max-w-[40vw] px-3 py-2 text-[.9rem] border border-border rounded-lg bg-surface-2 text-fg max-md:w-full max-md:max-w-none search-box" placeholder="Search docs…  (press /)" aria-label="Search" data-search-endpoint="/model-compose/zh-cn/search.json" data-doc-base="/model-compose/zh-cn" data-search-static="1" data-locale="zh-cn" name="q"/></form><nav class="flex items-center gap-4 text-muted text-[.9rem]"><details class="relative" data-menu="true"><summary class="chevron cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 border border-border rounded-lg text-fg-soft text-[.85rem] whitespace-nowrap hover:text-fg">简体中文</summary><div class="absolute right-0 top-[calc(100%+.4rem)] min-w-36 flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl z-30"><a data-june-no-router="true" data-locale-home="/model-compose" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose" hrefLang="en">English</a><a data-june-no-router="true" data-locale-home="/model-compose/zh-cn" data-locale-active="" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-accent font-semibold" href="/model-compose/zh-cn" hrefLang="zh-cn">简体中文</a><a data-june-no-router="true" data-locale-home="/model-compose/ko" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/ko" hrefLang="ko">한국어</a></div></details></nav></header><button class="hidden max-md:flex items-center gap-2.5 w-full px-4 py-2.5 bg-bg border-0 border-b border-border text-fg-soft text-[.9rem] text-left cursor-pointer focus-visible:outline-none focus-visible:bg-hover" data-drawer-open="true" aria-controls="docs-nav" aria-expanded="false"><span class="text-[1.05rem] leading-none" aria-hidden="true">☰</span><span class="font-semibold text-fg flex-none">Navigation</span><span class="nav-bar-context text-muted flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" data-nav-context="true"></span></button><div class="drawer-backdrop" data-drawer-close="true" aria-hidden="true"></div><div class="grid grid-cols-[248px_minmax(0,1fr)_220px] max-lg:grid-cols-[248px_minmax(0,1fr)] max-md:grid-cols-1 items-start max-w-[1280px] mx-auto"><aside class="sidebar sticky top-14 h-[calc(100vh-56px)] overflow-y-auto px-4 py-6 border-r border-border" id="docs-nav"><div data-tab="_"><div class="mb-5"><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn">model-compose</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">Reference</p><ul class="flex flex-col gap-px"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><a class="flex-1 min-w-0 text-inherit" href="/model-compose/zh-cn/reference/compose">Compose</a></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><span class="flex-1 min-w-0">Components</span></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/agent">Agent Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/datasets">Datasets Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/file-store">File Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/graph-store">Graph Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/http-client">HTTP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/http-server">HTTP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/image-processor">Image Processor Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/key-value-store">Key-Value Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/mcp-client">MCP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/mcp-server">MCP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/model">Model Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/model-memory">Model Memory Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/model-tokenizer">Model Tokenizer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/model-trainer">Model Trainer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/search-engine">Search Engine Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/shell">Shell Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/text-splitter">Text Splitter Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/vector-store">Vector Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/video-scene-detector">Video Scene Detector Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/web-browser">Web Browser Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/web-scraper">Web Scraper Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/components/workflow">Workflow Component</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/component">Component Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/controller">Controller Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/gateway">Gateway Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/language-codes">Language Codes</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/listener">Listener Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/logger">Logger Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/system">System Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/tracer">Tracer Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/compose/workflow">Workflow Configuration Reference</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/cli">Model-Compose CLI Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/reference/websocket">WebSocket Interface Reference</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">User guide</p><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide">Model-Compose 用户指南</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/00-table-of-contents">目录</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/01-getting-started">第一章：入门指南</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/02-core-concepts">2. 核心概念</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/03-cli-usage">3. CLI 使用</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/04-component-configuration">第 4 章：组件配置</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/05-writing-workflows">第 5 章：编写工作流</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/06-workflow-schema">第6章：工作流 Schema</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/07-controller-configuration">第 7 章：控制器配置</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/08-websocket-interface">第8章：WebSocket 接口</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/09-webui-configuration">第9章：Web UI 配置</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/10-local-ai-models">第10章：使用本地 AI 模型</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/11-model-training">第11章：模型训练</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/12-external-service-integration">第12章：外部服务集成</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/13-streaming-mode">13. 流式模式</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/14-variable-binding">14. 变量绑定</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/15-system-integration">15. 系统集成</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/16-deployment">16. 部署</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/17-practical-examples">17. 实际示例</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/18-troubleshooting">18. 故障排除</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/19-appendix">19. 附录</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/zh-cn/user-guide/image-handling">Image Handling Guide</a></li></ul></div></div></aside><div data-june-outlet=""><main class="w-auto max-w-none m-0 min-w-0 px-10 pt-8 pb-20 max-md:px-4 max-md:pt-5 max-md:pb-12"><details class="hidden max-lg:block mb-5 border border-border rounded-xl overflow-hidden"><summary class="chevron flex justify-between items-center cursor-pointer px-3.5 py-2.5 text-[.85rem] font-semibold text-fg-soft">On this page</summary><div class="flex flex-col px-3.5 pt-1 pb-2.5 border-t border-border"><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#41-%E7%BB%84%E4%BB%B6%E7%B1%BB%E5%9E%8B">4.1 组件类型</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E5%8F%AF%E7%94%A8%E7%9A%84%E7%BB%84%E4%BB%B6%E7%B1%BB%E5%9E%8B">可用的组件类型</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E7%BB%84%E4%BB%B6%E9%80%89%E6%8B%A9%E6%8C%87%E5%8D%97">组件选择指南</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#42-%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6">4.2 定义组件</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84">基本结构</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E5%BF%85%E9%9C%80%E5%B1%9E%E6%80%A7">必需属性</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E5%8F%AF%E9%80%89%E5%B1%9E%E6%80%A7">可选属性</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E5%8D%95%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6-vs-%E5%A4%9A%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6">单动作组件 vs 多动作组件</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%E5%8D%95%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6">单动作组件</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%E5%A4%9A%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6">多动作组件</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%E4%BD%95%E6%97%B6%E4%BD%BF%E7%94%A8%E5%A4%9A%E5%8A%A8%E4%BD%9C">何时使用多动作？</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#43-%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84">4.3 输入/输出映射</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E8%BE%93%E5%85%A5%E6%98%A0%E5%B0%84">输入映射</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%E6%96%B9%E6%B3%95-1-%E7%9B%B4%E6%8E%A5%E6%98%A0%E5%B0%84">方法 1: 直接映射</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%E6%96%B9%E6%B3%95-2-%E4%BC%A0%E9%80%92%E6%95%B4%E4%B8%AA%E8%BE%93%E5%85%A5">方法 2: 传递整个输入</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84">输出映射</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%E5%9F%BA%E6%9C%AC%E8%BE%93%E5%87%BA">基本输出</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%E5%AE%8C%E6%95%B4%E5%93%8D%E5%BA%94%E8%BE%93%E5%87%BA">完整响应输出</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%E5%B8%A6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2">带类型转换</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81%E7%A4%BA%E4%BE%8B">输入/输出流示例</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#44-%E5%8F%AF%E9%87%8D%E7%94%A8%E6%80%A7%E6%A8%A1%E5%BC%8F">4.4 可重用性模式</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E6%A8%A1%E5%BC%8F-1-%E6%8C%89%E6%A8%A1%E5%9E%8B%E5%88%86%E7%A6%BB%E7%BB%84%E4%BB%B6">模式 1: 按模型分离组件</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E6%A8%A1%E5%BC%8F-2-%E5%A4%9A%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6">模式 2: 多动作组件</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E6%A8%A1%E5%BC%8F-3-%E7%BB%84%E4%BB%B6%E9%93%BE">模式 3: 组件链</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E6%A8%A1%E5%BC%8F-4-%E7%8E%AF%E5%A2%83%E7%89%B9%E5%AE%9A%E7%BB%84%E4%BB%B6">模式 4: 环境特定组件</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E6%A8%A1%E5%BC%8F-5-%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%A8%A1%E5%9D%97%E5%8C%96">模式 5: 工作流模块化</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#45-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%85%8D%E7%BD%AE">4.5 运行时配置</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E5%8F%AF%E7%94%A8%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6">可用的运行时</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#embedded-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%BB%98%E8%AE%A4">Embedded 运行时（默认）</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#process-%E8%BF%90%E8%A1%8C%E6%97%B6">Process 运行时</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#docker-%E8%BF%90%E8%A1%8C%E6%97%B6">Docker 运行时</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E9%80%89%E6%8B%A9%E6%8C%87%E5%8D%97">运行时选择指南</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#46-%E7%BB%84%E4%BB%B6%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">4.6 组件最佳实践</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1-%E6%B8%85%E6%99%B0%E7%9A%84%E5%91%BD%E5%90%8D">1. 清晰的命名</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#2-%E8%AE%B0%E5%BD%95%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA">2. 记录输入/输出</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#3-%E4%BD%BF%E7%94%A8%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F">3. 使用环境变量</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#%E4%B8%8B%E4%B8%80%E6%AD%A5">下一步</a></div></details><div class="flex items-center justify-between gap-4 mb-6"><div class="prose"><h1 class="!m-0">第 4 章：组件配置</h1></div><div class="relative inline-flex items-stretch flex-none"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[.85rem] border border-border border-r-0 rounded-l-lg bg-surface text-fg-soft cursor-pointer hover:bg-hover hover:text-fg" data-copy-md="/model-compose/zh-cn/user-guide/04-component-configuration.md"><svg class="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>Copy Markdown</button><details class="relative inline-flex items-stretch" data-menu="true"><summary class="chevron inline-flex items-center justify-center w-[30px] border border-border rounded-r-lg bg-surface text-muted cursor-pointer hover:bg-hover hover:text-fg" aria-label="More actions"></summary><div class="absolute right-0 top-[calc(100%+.4rem)] z-30 min-w-[17rem] flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl"><button class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" data-copy-md="/model-compose/zh-cn/user-guide/04-component-configuration.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg><span class="flex flex-col min-w-0"><span class="font-semibold text-[.9rem] text-fg">Copy Markdown</span><span class="text-[.8rem] text-muted">Copy this page as Markdown for LLMs</span></span></button><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="/model-compose/zh-cn/user-guide/04-component-configuration.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M16 21H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6l4 4v12a2 2 0 0 1-2 2z"></path><path d="M9 13h6M9 17h4"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">View as Markdown<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">View this page as plain text</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://chatgpt.com/?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20%E7%AC%AC%204%20%E7%AB%A0%EF%BC%9A%E7%BB%84%E4%BB%B6%E9%85%8D%E7%BD%AE" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in ChatGPT<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask ChatGPT about this page</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://claude.ai/new?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20%E7%AC%AC%204%20%E7%AB%A0%EF%BC%9A%E7%BB%84%E4%BB%B6%E9%85%8D%E7%BD%AE" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in Claude<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask Claude about this page</span></span></a></div></details></div></div><article class="prose"><p>本章介绍 model-compose 中的各种组件类型、定义方法、输入/输出映射和可重用性模式。</p>
+<hr />
+<h2 id="41-组件类型">4.1 组件类型</h2>
+<p>model-compose 提供了多种组件类型来执行不同的任务。</p>
+<h3 id="可用的组件类型">可用的组件类型</h3>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>用途</th>
+<th>主要用例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agent</code></td>
+<td>自主 AI 代理</td>
+<td>通过工作流作为工具的 ReAct 循环</td>
+</tr>
+<tr>
+<td><code>http-client</code></td>
+<td>外部 API 调用</td>
+<td>集成 OpenAI、ElevenLabs 等 REST API</td>
+</tr>
+<tr>
+<td><code>http-server</code></td>
+<td>提供 HTTP 服务</td>
+<td>实现自定义 HTTP API 端点</td>
+</tr>
+<tr>
+<td><code>mcp-server</code></td>
+<td>提供 MCP 服务</td>
+<td>实现模型上下文协议服务器</td>
+</tr>
+<tr>
+<td><code>mcp-client</code></td>
+<td>MCP 客户端</td>
+<td>与 MCP 服务器通信</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>运行本地 AI 模型</td>
+<td>本地模型推理，如文本生成、图像分析等</td>
+</tr>
+<tr>
+<td><code>model-memory</code></td>
+<td>模型对话记忆</td>
+<td>基于会话的对话历史存储/窗口/摘要</td>
+</tr>
+<tr>
+<td><code>model-tokenizer</code></td>
+<td>模型分词器</td>
+<td>使用模型分词器进行 token 编码、解码、计数</td>
+</tr>
+<tr>
+<td><code>model-trainer</code></td>
+<td>训练模型</td>
+<td>微调、LoRA 训练</td>
+</tr>
+<tr>
+<td><code>datasets</code></td>
+<td>加载数据集</td>
+<td>加载和处理训练/评估数据集</td>
+</tr>
+<tr>
+<td><code>vector-store</code></td>
+<td>向量数据库集成</td>
+<td>使用 Chroma、Milvus 等的 RAG 系统</td>
+</tr>
+<tr>
+<td><code>graph-store</code></td>
+<td>图数据库集成</td>
+<td>使用 Neo4j、ArangoDB 的知识图谱、社交网络</td>
+</tr>
+<tr>
+<td><code>search-engine</code></td>
+<td>全文搜索</td>
+<td>基于 SQLite FTS5 的 BM25 关键词搜索</td>
+</tr>
+<tr>
+<td><code>key-value-store</code></td>
+<td>键值存储</td>
+<td>使用 Redis 进行缓存、会话管理</td>
+</tr>
+<tr>
+<td><code>workflow</code></td>
+<td>调用工作流</td>
+<td>将其他工作流作为子程序执行</td>
+</tr>
+<tr>
+<td><code>shell</code></td>
+<td>执行 shell 命令</td>
+<td>运行脚本、系统命令</td>
+</tr>
+<tr>
+<td><code>text-splitter</code></td>
+<td>分割文本</td>
+<td>将文档分割成块</td>
+</tr>
+<tr>
+<td><code>image-processor</code></td>
+<td>处理图像</td>
+<td>图像转换、调整大小等</td>
+</tr>
+<tr>
+<td><code>video-scene-detector</code></td>
+<td>视频场景检测</td>
+<td>使用 PySceneDetect、FFmpeg、TransNetV2 检测场景变化</td>
+</tr>
+<tr>
+<td><code>video-frame-extractor</code></td>
+<td>视频帧提取</td>
+<td>将视频解码为 PIL 图像帧，支持采样和时间范围</td>
+</tr>
+<tr>
+<td><code>web-scraper</code></td>
+<td>网页抓取</td>
+<td>使用 CSS/XPath 提取网页数据</td>
+</tr>
+<tr>
+<td><code>web-browser</code></td>
+<td>浏览器自动化</td>
+<td>通过 Chrome DevTools Protocol 控制浏览器</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组件选择指南">组件选择指南</h3>
+<p><strong>外部 API 集成</strong></p>
+<ul>
+<li>OpenAI、Anthropic 等 → <code>http-client</code></li>
+<li>自定义 REST API → <code>http-client</code></li>
+</ul>
+<p><strong>本地 AI 模型</strong></p>
+<ul>
+<li>本地推理 → <code>model</code></li>
+<li>使用 vLLM、Ollama 等后端 → <code>http-server</code></li>
+<li>训练 → <code>model-trainer</code></li>
+</ul>
+<p><strong>数据处理</strong></p>
+<ul>
+<li>对话记忆 → <code>model-memory</code></li>
+<li>向量存储 → <code>vector-store</code></li>
+<li>图存储 → <code>graph-store</code></li>
+<li>全文搜索 → <code>search-engine</code></li>
+<li>键值存储 → <code>key-value-store</code></li>
+<li>文本分割 → <code>text-splitter</code></li>
+<li>图像处理 → <code>image-processor</code></li>
+<li>视频场景检测 → <code>video-scene-detector</code></li>
+<li>视频帧提取 → <code>video-frame-extractor</code></li>
+<li>网页抓取 → <code>web-scraper</code></li>
+</ul>
+<p><strong>浏览器自动化</strong></p>
+<ul>
+<li>浏览器控制 (CDP) → <code>web-browser</code></li>
+</ul>
+<p><strong>AI 代理</strong></p>
+<ul>
+<li>使用工具的自主代理 → <code>agent</code></li>
+</ul>
+<p><strong>工作流组合</strong></p>
+<ul>
+<li>子工作流 → <code>workflow</code></li>
+<li>系统任务 → <code>shell</code></li>
+</ul>
+<hr />
+<h2 id="42-定义组件">4.2 定义组件</h2>
+<h3 id="基本结构">基本结构</h3>
+<p>所有组件都遵循以下基本结构：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">unique-component-id</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">component-type</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">    # 类型特定的设置...</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">      # 输出映射...</span></span></code></pre>
+<h3 id="必需属性">必需属性</h3>
+<ul>
+<li><code>id</code>: 唯一的组件标识符</li>
+<li><code>type</code>: 组件类型</li>
+</ul>
+<h3 id="可选属性">可选属性</h3>
+<ul>
+<li><code>output</code>: 输出数据映射</li>
+<li><code>actions</code>: 多个动作定义（多动作组件）</li>
+</ul>
+<h3 id="单动作组件-vs-多动作组件">单动作组件 vs 多动作组件</h3>
+<p>组件可以定义为单动作或多动作。</p>
+<h4 id="单动作组件">单动作组件</h4>
+<p>只执行一个任务的组件，将操作相关字段包装在 <code>action:</code> 下：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">send-email</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.email.com/send</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        Authorization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Bearer ${env.EMAIL_API_KEY}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        to</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.to}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        subject</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.subject}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.body}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response}</span></span></code></pre>
+<p>使用方式：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">send-email</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        to</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"user@example.com"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        subject</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"Welcome"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"Hello!"</span></span></code></pre>
+<h4 id="多动作组件">多动作组件</h4>
+<p>在单个组件中定义多个任务：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">email-service</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    base_url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.email.com</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      Authorization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Bearer ${env.EMAIL_API_KEY}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      Content-Type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">application/json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">send</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/send</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          to</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.to}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          subject</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.subject}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.body}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">get-status</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/status/${input.message_id}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">GET</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.status}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">list-templates</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/templates</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">GET</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.templates}</span></span></code></pre>
+<p>使用方式：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">send</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">email-service</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">send</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        to</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"user@example.com"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        subject</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"Welcome"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"Hello!"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        message_id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output.id}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">check</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">email-service</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">get-status</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        message_id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${jobs.send.output.message_id}</span></span></code></pre>
+<h4 id="何时使用多动作">何时使用多动作？</h4>
+<p><strong>适合使用多动作的情况：</strong></p>
+<ul>
+<li>使用同一 API 服务的多个端点</li>
+<li>共享通用的身份验证/请求头</li>
+<li>逻辑上相关的任务分组</li>
+</ul>
+<p><strong>适合使用单动作的情况：</strong></p>
+<ul>
+<li>简单且独立的任务</li>
+<li>特定任务的有限重用</li>
+<li>快速原型开发</li>
+</ul>
+<hr />
+<h2 id="43-输入输出映射">4.3 输入/输出映射</h2>
+<h3 id="输入映射">输入映射</h3>
+<p>如何将数据传递给组件：</p>
+<h4 id="方法-1-直接映射">方法 1: 直接映射</h4>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">translator</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.translate.com/v1/translate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        target_lang</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.language}</span></span></code></pre>
+<p>在工作流中使用：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">translator</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"Hello"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        language</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"ko"</span></span></code></pre>
+<h4 id="方法-2-传递整个输入">方法 2: 传递整个输入</h4>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">processor</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.example.com/process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 原样传递整个输入</span></span></code></pre>
+<h3 id="输出映射">输出映射</h3>
+<p>如何提取组件结果：</p>
+<h4 id="基本输出">基本输出</h4>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chatgpt</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.openai.com/v1/chat/completions</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt-4o</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        messages</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.messages}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.choices[0].message.content}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        tokens</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.usage.total_tokens}</span></span></code></pre>
+<p>在工作流中使用：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chatgpt</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        answer</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output.content}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 组件输出的 content 字段</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        usage</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output.tokens}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">     # 组件输出的 tokens 字段</span></span></code></pre>
+<h4 id="完整响应输出">完整响应输出</h4>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">api-call</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.example.com/data</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 完整响应</span></span></code></pre>
+<h4 id="带类型转换">带类型转换</h4>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image-gen</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.images.com/generate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.image as image/png;base64}</span></span></code></pre>
+<h3 id="输入输出流示例">输入/输出流示例</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">step1</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api1.com/process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        data</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.raw_data}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        processed</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.result}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">step2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api2.com/analyze</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        data</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.processed_data}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        analysis</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.insights}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">step1</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        raw_data</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.data}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        result</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output.processed}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">analyze</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">step2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        processed_data</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${jobs.process.output.result}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        final</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output.analysis}</span></span></code></pre>
+<hr />
+<h2 id="44-可重用性模式">4.4 可重用性模式</h2>
+<h3 id="模式-1-按模型分离组件">模式 1: 按模型分离组件</h3>
+<p>通过按模型或服务分离组件来分配明确的职责：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # OpenAI GPT-4o 专用</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt4o</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.openai.com/v1/chat/completions</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        Authorization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Bearer ${env.OPENAI_API_KEY}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        Content-Type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">application/json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt-4o</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        messages</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.messages}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        temperature</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.temperature | 0.7}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.choices[0].message.content}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        tokens</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.usage.total_tokens}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # Anthropic Claude 专用</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">claude</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.anthropic.com/v1/messages</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        x-api-key</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.ANTHROPIC_API_KEY}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        anthropic-version</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"2023-06-01"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        Content-Type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">application/json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">claude-3-5-sonnet-20241022</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        messages</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.messages}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        max_tokens</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.max_tokens | 1024}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.content[0].text}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # TTS 专用</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">elevenlabs-tts</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.elevenlabs.io/v1/text-to-speech/${input.voice_id}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        xi-api-key</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.ELEVENLABS_API_KEY}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        Content-Type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">application/json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        model_id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">eleven_multilingual_v2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response as base64}</span></span></code></pre>
+<h3 id="模式-2-多动作组件">模式 2: 多动作组件</h3>
+<p>为一个服务定义多个动作：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">slack</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    base_url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://slack.com/api</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      Authorization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Bearer ${env.SLACK_TOKEN}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">send-message</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/chat.postMessage</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          channel</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.channel}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">list-channels</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/conversations.list</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">GET</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.channels}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">get-user</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/users.info</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">GET</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        params</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          user</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.user_id}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.user}</span></span></code></pre>
+<p>使用方式：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">send</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">slack</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">send-message</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        channel</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"#general"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"Hello!"</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">list</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">slack</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">list-channels</span></span></code></pre>
+<h3 id="模式-3-组件链">模式 3: 组件链</h3>
+<p>通过组合小组件来构建复杂逻辑：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">fetch-data</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.data.com/fetch</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.data}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process-data</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">shell</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    command</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">python</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">, </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process.py</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">, </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">$</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">{</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">input.data</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">}]</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      result</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${stdout}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">save-result</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.storage.com/save</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        data</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.data}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">fetch</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">fetch-data</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        raw</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process-data</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        data</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${jobs.fetch.output.raw}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        processed</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output.result}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">save</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">save-result</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        data</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${jobs.process.output.processed}</span></span></code></pre>
+<p>结构图：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-mermaid"><span class="line"><span>graph LR</span></span>
+<span class="line"><span>    fetch["作业: fetch"]</span></span>
+<span class="line"><span>    process["作业: process"]</span></span>
+<span class="line"><span>    save["作业: save"]</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    fetch -->|原始数据| process</span></span>
+<span class="line"><span>    process -->|处理后的数据| save</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    fetch -.-> comp1[[组件:&#x3C;br/>fetch-data]]</span></span>
+<span class="line"><span>    process -.-> comp2[[组件:&#x3C;br/>process-data]]</span></span>
+<span class="line"><span>    save -.-> comp3[[组件:&#x3C;br/>save-result]]</span></span></code></pre>
+<h3 id="模式-4-环境特定组件">模式 4: 环境特定组件</h3>
+<p>根据环境使用不同的端点：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># base.yml</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">api-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.API_ENDPOINT}/process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        Authorization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Bearer ${env.API_KEY}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response}</span></span></code></pre>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-bash"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 开发环境</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">export</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> API_ENDPOINT</span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">https://dev-api.example.com</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">export</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> API_KEY</span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">dev-key</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#FFA657">model-compose</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> up</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 生产环境</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">export</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> API_ENDPOINT</span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">https://api.example.com</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">export</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> API_KEY</span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">prod-key</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#FFA657">model-compose</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> up</span></span></code></pre>
+<h3 id="模式-5-工作流模块化">模式 5: 工作流模块化</h3>
+<p>将工作流作为组件重用：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">preprocess</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">workflow</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">preprocessing</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflows</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">preprocessing</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">clean</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">data-cleaner</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">normalize</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">normalizer</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">main</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">preprocess</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">preprocess</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.raw_data}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">analyze</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">analyzer</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${jobs.preprocess.output}</span></span></code></pre>
+<p>结构图：</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-mermaid"><span class="line"><span>graph LR</span></span>
+<span class="line"><span>    subgraph main["工作流: main"]</span></span>
+<span class="line"><span>        direction TB</span></span>
+<span class="line"><span>        job1["作业: preprocess"]</span></span>
+<span class="line"><span>        job2["作业: analyze"]</span></span>
+<span class="line"><span>    end</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    subgraph wf2["工作流: preprocessing"]</span></span>
+<span class="line"><span>        direction TB</span></span>
+<span class="line"><span>        job3["作业: clean"]</span></span>
+<span class="line"><span>        job4["作业: normalize"]</span></span>
+<span class="line"><span>    end</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    comp1[[组件:&#x3C;br/>preprocess]]</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    job1 -.->|①| comp1</span></span>
+<span class="line"><span>    comp1 -.->|②| wf2</span></span>
+<span class="line"><span>    job3 -->|③| job4</span></span>
+<span class="line"><span>    wf2 -.->|④| job1</span></span>
+<span class="line"><span>    job1 -->|⑤| job2</span></span></code></pre>
+<hr />
+<h2 id="45-运行时配置">4.5 运行时配置</h2>
+<p>组件可以在不同的运行时环境中执行，具体取决于您的需求。运行时决定了组件在何处以及如何运行。</p>
+<h3 id="可用的运行时">可用的运行时</h3>
+<p>model-compose 支持三种运行时类型：</p>
+<table>
+<thead>
+<tr>
+<th>运行时</th>
+<th>隔离级别</th>
+<th>速度</th>
+<th>开销</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>embedded</code></td>
+<td>无</td>
+<td>快</td>
+<td>最小</td>
+<td>轻量级任务，默认选择</td>
+</tr>
+<tr>
+<td><code>process</code></td>
+<td>进程级</td>
+<td>中等</td>
+<td>中等</td>
+<td>重型模型，GPU 隔离</td>
+</tr>
+<tr>
+<td><code>docker</code></td>
+<td>容器级</td>
+<td>慢</td>
+<td>高</td>
+<td>生产部署</td>
+</tr>
+</tbody>
+</table>
+<h3 id="embedded-运行时默认">Embedded 运行时（默认）</h3>
+<p>在与控制器相同的进程中运行组件。</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generator</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">embedded</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 或省略（embedded 是默认值）</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt2</span></span></code></pre>
+<p><strong>使用场景：</strong></p>
+<ul>
+<li>简单的 API 调用</li>
+<li>轻量级模型</li>
+<li>需要快速响应</li>
+<li>开发和测试</li>
+</ul>
+<h3 id="process-运行时">Process 运行时</h3>
+<p>在独立的 Python 进程中运行组件，具有隔离的内存。</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">heavy-model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-3.1-70B</span></span></code></pre>
+<p><strong>使用场景：</strong></p>
+<ul>
+<li>大型模型（70B+ 参数）</li>
+<li>多 GPU 利用</li>
+<li>阻塞操作</li>
+<li>需要崩溃隔离</li>
+</ul>
+<p><strong>高级配置：</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model-gpu-0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      env</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        CUDA_VISIBLE_DEVICES</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"0"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      start_timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">120</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      stop_timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">30</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">stabilityai/stable-diffusion-xl-base-1.0</span></span></code></pre>
+<p><strong>多 GPU 示例：</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model-gpu-0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      env</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        CUDA_VISIBLE_DEVICES</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"0"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt2-large</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model-gpu-1</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      env</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        CUDA_VISIBLE_DEVICES</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"1"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">stabilityai/stable-diffusion-v1-5</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflows</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">multi-gpu-workflow</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model-gpu-0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">generate</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model-gpu-1</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">generate</span></span></code></pre>
+<h3 id="docker-运行时">Docker 运行时</h3>
+<p>在隔离的 Docker 容器中运行组件。</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">isolated-model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">docker</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-3.1-70B</span></span></code></pre>
+<p><strong>使用场景：</strong></p>
+<ul>
+<li>生产部署</li>
+<li>安全关键型工作负载</li>
+<li>可重现的环境</li>
+<li>多租户场景</li>
+</ul>
+<h3 id="运行时选择指南">运行时选择指南</h3>
+<p><strong>Embedded</strong> → 大多数用例从这里开始
+<strong>Process</strong> → 当需要隔离或重型工作负载时升级
+<strong>Docker</strong> → 用于生产和安全要求</p>
+<hr />
+<h2 id="46-组件最佳实践">4.6 组件最佳实践</h2>
+<h3 id="1-清晰的命名">1. 清晰的命名</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 好的示例</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">- </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">openai-gpt4o-chat</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">- </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">elevenlabs-tts-multilingual</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">- </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">slack-send-message</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 不好的示例</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">- </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">comp1</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">- </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">api</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">- </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process</span></span></code></pre>
+<h3 id="2-记录输入输出">2. 记录输入/输出</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">translator</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">    # 输入: { text: string, target_lang: string }</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">    # 输出: { translated: string, detected_lang: string }</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.translate.com/v1/translate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        target</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.target_lang}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        translated</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.translation}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        detected_lang</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.source_language}</span></span></code></pre>
+<h3 id="3-使用环境变量">3. 使用环境变量</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 好的示例 - 使用环境变量</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">api-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.API_ENDPOINT}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        Authorization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Bearer ${env.API_KEY}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 不好的示例 - 硬编码</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">api-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.example.com</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        Authorization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Bearer sk-hardcoded-key</span></span></code></pre>
+<hr />
+<h2 id="下一步">下一步</h2>
+<p>尝试以下内容：</p>
+<ul>
+<li>实验不同的组件类型</li>
+<li>构建可重用的组件库</li>
+<li>将复杂的工作流分解为小组件</li>
+</ul>
+<hr />
+<p><strong>下一章</strong>: <a href="/model-compose/zh-cn/user-guide/05-writing-workflows">5. 编写工作流</a></p>
+</article><nav class="flex justify-between gap-4 mt-12 pt-6 border-t border-border"><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent" href="/model-compose/zh-cn/user-guide/03-cli-usage"><div class="text-muted text-[.78rem]">← <!-- -->Previous</div><div class="font-semibold text-accent">3. CLI 使用</div></a><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent text-right" href="/model-compose/zh-cn/user-guide/05-writing-workflows"><div class="text-muted text-[.78rem]">Next<!-- --> →</div><div class="font-semibold text-accent">第 5 章：编写工作流</div></a></nav><script>document.querySelectorAll('[data-copy-md]').forEach(function(b){b.addEventListener('click',async function(){try{var r=await fetch(b.getAttribute('data-copy-md'));var t=await r.text();await navigator.clipboard.writeText(t);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1500);}catch(e){alert('Copy failed: '+e);}});});document.querySelectorAll('.prose pre').forEach(function(pre){if(pre.querySelector('.copy-code'))return;var b=document.createElement('button');b.className='copy-code';b.textContent='Copy';b.addEventListener('click',async function(){var c=pre.querySelector('code');try{await navigator.clipboard.writeText(c?c.innerText:pre.innerText);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1200);}catch(e){}});pre.appendChild(b);});document.querySelectorAll('.tabs').forEach(function(t){t.querySelectorAll('.tab-btn').forEach(function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-tab');t.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-tab')===i);});t.querySelectorAll('.tab-panel').forEach(function(p){p.hidden=p.getAttribute('data-tab')!==i;});});});});(function(){var blocks=document.querySelectorAll('code.language-mermaid');if(!blocks.length)return;var items=[];blocks.forEach(function(c){var pre=c.closest('pre')||c;var h=document.createElement('div');h.className='mermaid-diagram';pre.replaceWith(h);items.push({src:c.textContent,holder:h});});var lib,id=0;function load(){return lib||(lib=import("https://esm.sh/mermaid@11").then(function(m){return m.default;}));}function theme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'default';}function run(){load().then(function(mermaid){mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:theme()});items.forEach(function(it){mermaid.render('kura-mmd-'+(id++),it.src).then(function(r){it.holder.innerHTML=r.svg;}).catch(function(e){it.holder.innerHTML='<pre class="mermaid-error">'+String((e&&e.message)||e)+'</pre>';});});}).catch(function(){});}run();var cur=document.documentElement.getAttribute('data-theme');new MutationObserver(function(){var t=document.documentElement.getAttribute('data-theme');if(t!==cur){cur=t;run();}}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></main><aside class="sticky top-14 max-h-[calc(100vh-56px)] overflow-y-auto px-4 py-8 max-lg:hidden"><p class="text-[.72rem] font-bold tracking-wider uppercase text-muted mb-2.5">On this page</p><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#41-%E7%BB%84%E4%BB%B6%E7%B1%BB%E5%9E%8B">4.1 组件类型</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E5%8F%AF%E7%94%A8%E7%9A%84%E7%BB%84%E4%BB%B6%E7%B1%BB%E5%9E%8B">可用的组件类型</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E7%BB%84%E4%BB%B6%E9%80%89%E6%8B%A9%E6%8C%87%E5%8D%97">组件选择指南</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#42-%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6">4.2 定义组件</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84">基本结构</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E5%BF%85%E9%9C%80%E5%B1%9E%E6%80%A7">必需属性</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E5%8F%AF%E9%80%89%E5%B1%9E%E6%80%A7">可选属性</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E5%8D%95%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6-vs-%E5%A4%9A%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6">单动作组件 vs 多动作组件</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%E5%8D%95%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6">单动作组件</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%E5%A4%9A%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6">多动作组件</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%E4%BD%95%E6%97%B6%E4%BD%BF%E7%94%A8%E5%A4%9A%E5%8A%A8%E4%BD%9C">何时使用多动作？</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#43-%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84">4.3 输入/输出映射</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E8%BE%93%E5%85%A5%E6%98%A0%E5%B0%84">输入映射</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%E6%96%B9%E6%B3%95-1-%E7%9B%B4%E6%8E%A5%E6%98%A0%E5%B0%84">方法 1: 直接映射</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%E6%96%B9%E6%B3%95-2-%E4%BC%A0%E9%80%92%E6%95%B4%E4%B8%AA%E8%BE%93%E5%85%A5">方法 2: 传递整个输入</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E8%BE%93%E5%87%BA%E6%98%A0%E5%B0%84">输出映射</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%E5%9F%BA%E6%9C%AC%E8%BE%93%E5%87%BA">基本输出</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%E5%AE%8C%E6%95%B4%E5%93%8D%E5%BA%94%E8%BE%93%E5%87%BA">完整响应输出</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%E5%B8%A6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2">带类型转换</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81%E7%A4%BA%E4%BE%8B">输入/输出流示例</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#44-%E5%8F%AF%E9%87%8D%E7%94%A8%E6%80%A7%E6%A8%A1%E5%BC%8F">4.4 可重用性模式</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E6%A8%A1%E5%BC%8F-1-%E6%8C%89%E6%A8%A1%E5%9E%8B%E5%88%86%E7%A6%BB%E7%BB%84%E4%BB%B6">模式 1: 按模型分离组件</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E6%A8%A1%E5%BC%8F-2-%E5%A4%9A%E5%8A%A8%E4%BD%9C%E7%BB%84%E4%BB%B6">模式 2: 多动作组件</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E6%A8%A1%E5%BC%8F-3-%E7%BB%84%E4%BB%B6%E9%93%BE">模式 3: 组件链</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E6%A8%A1%E5%BC%8F-4-%E7%8E%AF%E5%A2%83%E7%89%B9%E5%AE%9A%E7%BB%84%E4%BB%B6">模式 4: 环境特定组件</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E6%A8%A1%E5%BC%8F-5-%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%A8%A1%E5%9D%97%E5%8C%96">模式 5: 工作流模块化</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#45-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%85%8D%E7%BD%AE">4.5 运行时配置</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E5%8F%AF%E7%94%A8%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6">可用的运行时</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#embedded-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%BB%98%E8%AE%A4">Embedded 运行时（默认）</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#process-%E8%BF%90%E8%A1%8C%E6%97%B6">Process 运行时</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#docker-%E8%BF%90%E8%A1%8C%E6%97%B6">Docker 运行时</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E9%80%89%E6%8B%A9%E6%8C%87%E5%8D%97">运行时选择指南</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#46-%E7%BB%84%E4%BB%B6%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">4.6 组件最佳实践</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1-%E6%B8%85%E6%99%B0%E7%9A%84%E5%91%BD%E5%90%8D">1. 清晰的命名</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#2-%E8%AE%B0%E5%BD%95%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA">2. 记录输入/输出</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#3-%E4%BD%BF%E7%94%A8%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F">3. 使用环境变量</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#%E4%B8%8B%E4%B8%80%E6%AD%A5">下一步</a></aside></div></div><footer class="border-t border-border mt-8"><div class="flex items-center justify-between flex-wrap gap-4 max-w-[1280px] mx-auto px-6 py-5 max-md:px-4"><nav class="flex items-center gap-[1.1rem] text-[.85rem]"><a class="text-muted hover:text-fg" href="/model-compose/llms.txt">llms.txt</a><button type="button" class="inline-flex items-center justify-center w-[30px] h-[30px] p-0 text-[.95rem] leading-none border border-border rounded-lg bg-surface text-fg cursor-pointer hover:bg-hover" data-theme-toggle="true" aria-label="Toggle theme"></button></nav><a class="text-muted text-[.85rem] hover:text-accent" href="https://kura.build/" target="_blank" rel="noreferrer">Powered by Kura</a></div></footer><script>document.addEventListener('keydown',function(e){if(e.key==='/' && !document.documentElement.dataset.ctrlk && !/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){e.preventDefault();var s=document.querySelector('.search-box');if(s)s.focus();}});(function(){var b=document.querySelector('[data-theme-toggle]');if(!b)return;var d=document.documentElement,order=['system','light','dark'],icon={system:'🖥',light:'☀',dark:'☾'};function pref(){return d.getAttribute('data-theme-pref')||'system';}function res(p){return p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';}function set(p){d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',res(p));try{localStorage.setItem('kura-theme',p);}catch(e){}b.textContent=icon[p];b.setAttribute('title','Theme: '+p);}set(pref());b.addEventListener('click',function(){set(order[(order.indexOf(pref())+1)%order.length]);});try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(pref()==='system')d.setAttribute('data-theme',res('system'));});}catch(e){}})();document.addEventListener('click',function(e){var t=e.target;document.querySelectorAll('details[data-menu][open]').forEach(function(d){if(!d.contains(t))d.removeAttribute('open');});var it=t.closest&&t.closest('details[data-menu] a, details[data-menu] [data-copy-md]');if(it){var dd=it.closest('details[data-menu]');if(dd)setTimeout(function(){dd.removeAttribute('open');},0);}});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details[data-menu][open]').forEach(function(d){d.removeAttribute('open');});});(function(){var root=document.documentElement;function opener(){return document.querySelector('[data-drawer-open]');}function items(){var d=document.getElementById('docs-nav');if(!d)return[];return[].filter.call(d.querySelectorAll('a[href],button:not([disabled]),summary,[tabindex]:not([tabindex="-1"])'),function(el){return el.offsetParent!==null;});}function set(o){var was=root.classList.contains('drawer-open');root.classList.toggle('drawer-open',o);var b=opener();if(b)b.setAttribute('aria-expanded',o?'true':'false');if(o){var f=items();if(f[0])f[0].focus();}else if(was&&b)b.focus();}document.addEventListener('click',function(e){if(e.target.closest('[data-drawer-open]')){e.preventDefault();set(!root.classList.contains('drawer-open'));return;}if(e.target.closest('[data-drawer-close]')){set(false);return;}if(e.target.closest('#docs-nav a'))set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);return;}if(e.key==='Tab'&&root.classList.contains('drawer-open')){var f=items();if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}else if(f.indexOf(document.activeElement)<0){e.preventDefault();first.focus();}}});})();(function(){
+  function trim(p){return p.length>1&&p.endsWith('/')?p.slice(0,-1):p;}
+  function sync(){
+    var path=trim(location.pathname), tab=null;
+    var links=document.querySelectorAll('.sidebar a[href],[data-tabbar] a[href]');
+    for(var i=0;i<links.length;i++){var a=links[i],on=trim(a.getAttribute('href'))===path;
+      if(on){a.setAttribute('aria-current','page');var g=a.closest('[data-tab]');if(g)tab=g.getAttribute('data-tab');}
+      else a.removeAttribute('aria-current');}
+    if(tab!=null){
+      document.querySelectorAll('[data-tab]').forEach(function(g){g.hidden=g.getAttribute('data-tab')!==tab;});
+      document.querySelectorAll('[data-tabbar] a').forEach(function(a){
+        if(a.getAttribute('data-tab-key')===tab)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    }
+    // expand the folder(s) holding the active page. Iterate EVERY aria-current sidebar link, not
+    // just the first: a folder-as-page link lives in a <details>, but the mobile tab-bar link (also
+    // in .sidebar, earlier in the DOM) has no folder ancestor — querySelector would pick that one
+    // and expand nothing. forEach opens each link's folder chain; tab links are harmless no-ops.
+    document.querySelectorAll('.sidebar a[aria-current="page"]').forEach(function(cur){
+      var d=cur.closest('details.folder');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details.folder');}});
+    // rewrite the locale-switch links to THIS page's equivalent path (swap the locale prefix)
+    var ll=document.querySelectorAll('[data-locale-home]');
+    if(ll.length){var lc=document.querySelector('[data-locale-home][data-locale-active]'),cp=lc?lc.getAttribute('data-locale-home'):'/';cp=cp==='/'?'':cp;
+      var rest=location.pathname;if(cp&&rest.indexOf(cp)===0)rest=rest.slice(cp.length)||'/';
+      ll.forEach(function(a){var h=a.getAttribute('data-locale-home'),p=h==='/'?'':h;a.setAttribute('href',rest==='/'?(p||'/'):(p+rest));});}
+    // mobile nav-context: "Active tab / Page title" (the shell can't know the page server-side)
+    var nc=document.querySelector('[data-nav-context]');
+    if(nc){var at=document.querySelector('[data-tabbar] a[aria-current="page"]'),h1=document.querySelector('main h1');
+      nc.textContent=[at&&at.textContent.trim(),h1&&h1.textContent.trim()].filter(Boolean).join(' / ');}
+  }
+  sync();
+  var outlet=document.querySelector('[data-june-outlet]');
+  if(outlet) new MutationObserver(sync).observe(outlet,{childList:true,subtree:true});
+})();</script><script type="module" src="/model-compose/_june/client.519429d3.js"></script><script type="application/json" id="june-webmcp">[{"name":"search_docs","description":"Hybrid keyword + semantic search over the docs. Returns the most relevant passages with their doc slug, title, and relevance score.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"A natural-language question or keywords."},"topK":{"type":"integer","description":"Number of results to return (default 5)."},"locale":{"type":"string","description":"Optional locale — scopes results to that locale's view (its translations plus untranslated defaults)."}},"required":["query"]}},{"name":"get_page","description":"Fetch one doc page as the authored Markdown source by its slug (e.g. introduction, search, agents).","inputSchema":{"type":"object","properties":{"slug":{"type":"string","description":"The page slug."},"locale":{"type":"string","description":"Optional locale — returns that variant when it exists."}},"required":["slug"]}},{"name":"list_docs","description":"List every doc page with its slug, title, section, and `sources` (the code paths it documents). The map for finding which pages a code change affects.","inputSchema":{"type":"object","properties":{}}}]</script><script>(function(){var mc=navigator.modelContext;if(!mc||!mc.registerTool)return;var el=document.getElementById('june-webmcp');if(!el)return;var tools;try{tools=JSON.parse(el.textContent)}catch(e){return}var ac=new AbortController();tools.forEach(function(t){mc.registerTool({name:t.name,description:t.description,inputSchema:t.inputSchema,execute:function(args){return fetch('/mcp',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:t.name,arguments:args}})}).then(function(r){return r.json()}).then(function(j){return j.result})}},{signal:ac.signal})})})();</script></body></html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html><html lang="ko"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="icon" href="/model-compose/favicon.svg" type="image/svg+xml"/><title>Component Configuration Reference - model-compose</title><meta name="description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><link rel="alternate" hrefLang="en" href="/reference/compose/component"/><link rel="alternate" hrefLang="zh-cn" href="/zh-cn/reference/compose/component"/><link rel="alternate" hrefLang="ko" href="/ko/reference/compose/component"/><link rel="alternate" hrefLang="x-default" href="/reference/compose/component"/><meta property="og:title" content="Component Configuration Reference"/><meta property="og:description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><meta property="og:type" content="article"/><script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}]}</script><script>(function(){if(HTMLScriptElement.supports&&HTMLScriptElement.supports('speculationrules'))return;var seen=new Set();document.addEventListener('pointerover',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||seen.has(u.pathname)||u.pathname===location.pathname)return;if(/.(md|json)$/.test(u.pathname)||u.pathname==='/mcp')return;seen.add(u.pathname);var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname+u.search;document.head.appendChild(l);},{passive:true});})();</script><style>
+          @view-transition { navigation: auto; }
+          ::view-transition-group(root),
+          ::view-transition-old(root),
+          ::view-transition-new(root) { animation-duration: 120ms; }
+          @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) { animation: none !important; }
+          }
+</style><link rel="stylesheet" href="/model-compose/_june/global.ab0a5eb2.css"/></head><body><script>(function(){try{var p=localStorage.getItem('kura-theme')||'system';var d=document.documentElement;d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',(p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches))?'dark':'light');}catch(e){}})();</script><header class="sticky top-0 z-20 flex items-center gap-4 h-14 px-5 bg-topbar-bg backdrop-blur-sm border-b border-border max-md:px-4 max-md:gap-2.5"><a class="flex items-center gap-1.5 font-bold text-[1.05rem]" href="/model-compose/ko">model-compose<!-- --> <span class="font-normal text-muted text-[.85rem]">Docs</span></a><form class="ml-auto max-md:ml-2 max-md:flex-1 max-md:min-w-0" action="/model-compose/ko/search" method="get"><input class="w-[280px] max-w-[40vw] px-3 py-2 text-[.9rem] border border-border rounded-lg bg-surface-2 text-fg max-md:w-full max-md:max-w-none search-box" placeholder="Search docs…  (press /)" aria-label="Search" data-search-endpoint="/model-compose/ko/search.json" data-doc-base="/model-compose/ko" data-search-static="1" data-locale="ko" name="q"/></form><nav class="flex items-center gap-4 text-muted text-[.9rem]"><details class="relative" data-menu="true"><summary class="chevron cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 border border-border rounded-lg text-fg-soft text-[.85rem] whitespace-nowrap hover:text-fg">한국어</summary><div class="absolute right-0 top-[calc(100%+.4rem)] min-w-36 flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl z-30"><a data-june-no-router="true" data-locale-home="/model-compose" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose" hrefLang="en">English</a><a data-june-no-router="true" data-locale-home="/model-compose/zh-cn" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/zh-cn" hrefLang="zh-cn">简体中文</a><a data-june-no-router="true" data-locale-home="/model-compose/ko" data-locale-active="" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-accent font-semibold" href="/model-compose/ko" hrefLang="ko">한국어</a></div></details></nav></header><button class="hidden max-md:flex items-center gap-2.5 w-full px-4 py-2.5 bg-bg border-0 border-b border-border text-fg-soft text-[.9rem] text-left cursor-pointer focus-visible:outline-none focus-visible:bg-hover" data-drawer-open="true" aria-controls="docs-nav" aria-expanded="false"><span class="text-[1.05rem] leading-none" aria-hidden="true">☰</span><span class="font-semibold text-fg flex-none">Navigation</span><span class="nav-bar-context text-muted flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" data-nav-context="true"></span></button><div class="drawer-backdrop" data-drawer-close="true" aria-hidden="true"></div><div class="grid grid-cols-[248px_minmax(0,1fr)_220px] max-lg:grid-cols-[248px_minmax(0,1fr)] max-md:grid-cols-1 items-start max-w-[1280px] mx-auto"><aside class="sidebar sticky top-14 h-[calc(100vh-56px)] overflow-y-auto px-4 py-6 border-r border-border" id="docs-nav"><div data-tab="_"><div class="mb-5"><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko">model-compose</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">Reference</p><ul class="flex flex-col gap-px"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><a class="flex-1 min-w-0 text-inherit" href="/model-compose/ko/reference/compose">Compose</a></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><span class="flex-1 min-w-0">Components</span></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/agent">Agent Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/datasets">Datasets Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/file-store">File Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/graph-store">Graph Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/http-client">HTTP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/http-server">HTTP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/image-processor">Image Processor Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/key-value-store">Key-Value Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/mcp-client">MCP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/mcp-server">MCP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model">Model Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model-memory">Model Memory Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model-tokenizer">Model Tokenizer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model-trainer">Model Trainer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/search-engine">Search Engine Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/shell">Shell Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/text-splitter">Text Splitter Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/vector-store">Vector Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/video-scene-detector">Video Scene Detector Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/web-browser">Web Browser Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/web-scraper">Web Scraper Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/workflow">Workflow Component</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/component">Component Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/controller">Controller Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/gateway">Gateway Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/language-codes">Language Codes</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/listener">Listener Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/logger">Logger Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/system">System Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/tracer">Tracer Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/workflow">Workflow Configuration Reference</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/cli">Model-Compose CLI Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/websocket">WebSocket Interface Reference</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">User guide</p><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide">Model-Compose 사용자 가이드</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/00-table-of-contents">목차</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/01-getting-started">1장: 시작하기</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/02-core-concepts">2장: 핵심 개념</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/03-cli-usage">3장: CLI 사용법</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/04-component-configuration">4장: 컴포넌트 구성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/05-writing-workflows">5장: 워크플로우 작성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/06-workflow-schema">6장: 워크플로우 스키마</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/07-controller-configuration">7장: 컨트롤러 구성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/08-websocket-interface">8장: WebSocket 인터페이스</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/09-webui-configuration">9장: Web UI 구성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/10-local-ai-models">10장: 로컬 AI 모델 사용</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/11-model-training">11. 모델 훈련</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/12-external-service-integration">12장: 외부 서비스 통합</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/13-streaming-mode">13. 스트리밍 모드</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/14-variable-binding">14. 변수 바인딩</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/15-system-integration">15. 시스템 통합</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/16-deployment">16. 배포</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/17-practical-examples">17. 실전 예제</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/18-troubleshooting">18. 문제 해결</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/19-appendix">19. 부록</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/image-handling">Image Handling Guide</a></li></ul></div></div></aside><div data-june-outlet=""><main class="w-auto max-w-none m-0 min-w-0 px-10 pt-8 pb-20 max-md:px-4 max-md:pt-5 max-md:pb-12"><details class="hidden max-lg:block mb-5 border border-border rounded-xl overflow-hidden"><summary class="chevron flex justify-between items-center cursor-pointer px-3.5 py-2.5 text-[.85rem] font-semibold text-fg-soft">On this page</summary><div class="flex flex-col px-3.5 pt-1 pb-2.5 border-t border-border"><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#basic-structure">Basic Structure</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#single-component">Single Component</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#multiple-components">Multiple Components</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#component-types">Component Types</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#common-configuration-properties">Common Configuration Properties</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#core-properties">Core Properties</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#actions">Actions</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#component-usage-patterns">Component Usage Patterns</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#single-action-component">Single Action Component</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#multi-action-component">Multi-Action Component</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#default-component">Default Component</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#runtime-configuration">Runtime Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#embedded-runtime-default">Embedded Runtime (Default)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#process-runtime">Process Runtime</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#docker-runtime">Docker Runtime</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#choosing-a-runtime">Choosing a Runtime</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#concurrency-control">Concurrency Control</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#component-lifecycle">Component Lifecycle</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#integration-with-workflows">Integration with Workflows</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#variable-interpolation">Variable Interpolation</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#error-handling">Error Handling</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#security-considerations">Security Considerations</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#best-practices">Best Practices</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#next-steps">Next Steps</a></div></details><div class="flex items-center justify-between gap-4 mb-6"><div class="prose"><h1 class="!m-0">Component Configuration Reference</h1></div><div class="relative inline-flex items-stretch flex-none"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[.85rem] border border-border border-r-0 rounded-l-lg bg-surface text-fg-soft cursor-pointer hover:bg-hover hover:text-fg" data-copy-md="/model-compose/ko/reference/compose/component.md"><svg class="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>Copy Markdown</button><details class="relative inline-flex items-stretch" data-menu="true"><summary class="chevron inline-flex items-center justify-center w-[30px] border border-border rounded-r-lg bg-surface text-muted cursor-pointer hover:bg-hover hover:text-fg" aria-label="More actions"></summary><div class="absolute right-0 top-[calc(100%+.4rem)] z-30 min-w-[17rem] flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl"><button class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" data-copy-md="/model-compose/ko/reference/compose/component.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg><span class="flex flex-col min-w-0"><span class="font-semibold text-[.9rem] text-fg">Copy Markdown</span><span class="text-[.8rem] text-muted">Copy this page as Markdown for LLMs</span></span></button><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="/model-compose/ko/reference/compose/component.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M16 21H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6l4 4v12a2 2 0 0 1-2 2z"></path><path d="M9 13h6M9 17h4"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">View as Markdown<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">View this page as plain text</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://chatgpt.com/?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20Component%20Configuration%20Reference" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in ChatGPT<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask ChatGPT about this page</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://claude.ai/new?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20Component%20Configuration%20Reference" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in Claude<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask Claude about this page</span></span></a></div></details></div></div><div class="mb-5 px-3.5 py-2.5 text-[.85rem] border border-warn-border border-l-[3px] border-l-amber-600 rounded-r-lg bg-warn-bg text-warn-fg">Not yet translated — showing the default language.</div><article class="prose"><p>Components are reusable service definitions that perform specific tasks within workflows. They encapsulate functionality such as HTTP requests, AI model inference, data processing, and external service integration.</p>
+<h2 id="basic-structure">Basic Structure</h2>
+<h3 id="single-component">Single Component</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">agent | http-client | http-server | mcp-server | mcp-client | model | model-memory | model-tokenizer | model-trainer | datasets | vector-store | graph-store | search-engine | key-value-store | file-store | workflow | shell | text-splitter | image-processor | video-scene-detector | video-frame-extractor | web-scraper | web-browser</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">component-id</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">embedded | docker</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # default: embedded</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">1</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  default</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">false</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # ... type-specific configuration</span></span></code></pre>
+<h3 id="multiple-components">Multiple Components</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">api-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    base_url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.example.com</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">local-model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">microsoft/DialoGPT-medium</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">data-processor</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">shell</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    command</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">python process.py</span></span></code></pre>
+<h2 id="component-types">Component Types</h2>
+<p>Model-compose supports the following component types:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agent</code></td>
+<td>Autonomous AI agent with tool use</td>
+<td><a href="/model-compose/ko/reference/compose/components/agent">agent.md</a></td>
+</tr>
+<tr>
+<td><code>http-client</code></td>
+<td>HTTP client for making API requests</td>
+<td><a href="/model-compose/ko/reference/compose/components/http-client">http-client.md</a></td>
+</tr>
+<tr>
+<td><code>http-server</code></td>
+<td>HTTP server for hosting services</td>
+<td><a href="/model-compose/ko/reference/compose/components/http-server">http-server.md</a></td>
+</tr>
+<tr>
+<td><code>mcp-server</code></td>
+<td>MCP server for protocol support</td>
+<td><a href="/model-compose/ko/reference/compose/components/mcp-server">mcp-server.md</a></td>
+</tr>
+<tr>
+<td><code>mcp-client</code></td>
+<td>MCP (Model Context Protocol) client</td>
+<td><a href="/model-compose/ko/reference/compose/components/mcp-client">mcp-client.md</a></td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>AI model inference (local/remote)</td>
+<td><a href="/model-compose/ko/reference/compose/components/model">model.md</a></td>
+</tr>
+<tr>
+<td><code>model-memory</code></td>
+<td>Session-based conversation memory</td>
+<td><a href="/model-compose/ko/reference/compose/components/model-memory">model-memory.md</a></td>
+</tr>
+<tr>
+<td><code>model-tokenizer</code></td>
+<td>Model tokenization (encode, decode, count)</td>
+<td><a href="/model-compose/ko/reference/compose/components/model-tokenizer">model-tokenizer.md</a></td>
+</tr>
+<tr>
+<td><code>model-trainer</code></td>
+<td>Model fine-tuning (SFT, classification, LoRA)</td>
+<td><a href="/model-compose/ko/reference/compose/components/model-trainer">model-trainer.md</a></td>
+</tr>
+<tr>
+<td><code>datasets</code></td>
+<td>Dataset loading and transformation</td>
+<td><a href="/model-compose/ko/reference/compose/components/datasets">datasets.md</a></td>
+</tr>
+<tr>
+<td><code>vector-store</code></td>
+<td>Vector database operations</td>
+<td><a href="/model-compose/ko/reference/compose/components/vector-store">vector-store.md</a></td>
+</tr>
+<tr>
+<td><code>graph-store</code></td>
+<td>Graph database operations</td>
+<td><a href="/model-compose/ko/reference/compose/components/graph-store">graph-store.md</a></td>
+</tr>
+<tr>
+<td><code>search-engine</code></td>
+<td>Full-text search engine (SQLite FTS5)</td>
+<td><a href="/model-compose/ko/reference/compose/components/search-engine">search-engine.md</a></td>
+</tr>
+<tr>
+<td><code>key-value-store</code></td>
+<td>Key-value data storage</td>
+<td><a href="/model-compose/ko/reference/compose/components/key-value-store">key-value-store.md</a></td>
+</tr>
+<tr>
+<td><code>file-store</code></td>
+<td>File/object storage (local, AWS S3, GCP Storage, Azure Blob)</td>
+<td><a href="/model-compose/ko/reference/compose/components/file-store">file-store.md</a></td>
+</tr>
+<tr>
+<td><code>workflow</code></td>
+<td>Sub-workflow execution</td>
+<td><a href="/model-compose/ko/reference/compose/components/workflow">workflow.md</a></td>
+</tr>
+<tr>
+<td><code>shell</code></td>
+<td>Shell command execution</td>
+<td><a href="/model-compose/ko/reference/compose/components/shell">shell.md</a></td>
+</tr>
+<tr>
+<td><code>text-splitter</code></td>
+<td>Text processing and splitting</td>
+<td><a href="/model-compose/ko/reference/compose/components/text-splitter">text-splitter.md</a></td>
+</tr>
+<tr>
+<td><code>image-processor</code></td>
+<td>Image transformation and processing</td>
+<td><a href="/model-compose/ko/reference/compose/components/image-processor">image-processor.md</a></td>
+</tr>
+<tr>
+<td><code>video-scene-detector</code></td>
+<td>Video scene change detection</td>
+<td><a href="/model-compose/ko/reference/compose/components/video-scene-detector">video-scene-detector.md</a></td>
+</tr>
+<tr>
+<td><code>video-frame-extractor</code></td>
+<td>Decode video and extract frames as images</td>
+<td><a href="components/video-frame-extractor.md">video-frame-extractor.md</a></td>
+</tr>
+<tr>
+<td><code>web-scraper</code></td>
+<td>Web page scraping with CSS/XPath</td>
+<td><a href="/model-compose/ko/reference/compose/components/web-scraper">web-scraper.md</a></td>
+</tr>
+<tr>
+<td><code>web-browser</code></td>
+<td>Browser automation via Chrome DevTools Protocol</td>
+<td><a href="/model-compose/ko/reference/compose/components/web-browser">web-browser.md</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-configuration-properties">Common Configuration Properties</h2>
+<p>All components inherit these common properties from <code>CommonComponentConfig</code>:</p>
+<h3 id="core-properties">Core Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><code>__default__</code></td>
+<td>Unique identifier for the component</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td><strong>required</strong></td>
+<td>Component type (see table above)</td>
+</tr>
+<tr>
+<td><code>runtime</code></td>
+<td>string</td>
+<td><code>embedded</code></td>
+<td>Runtime environment: <code>embedded</code>, <code>process</code>, or <code>docker</code></td>
+</tr>
+<tr>
+<td><code>max_concurrent_count</code></td>
+<td>integer</td>
+<td><code>1</code></td>
+<td>Maximum concurrent actions this component can handle</td>
+</tr>
+<tr>
+<td><code>default</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td>Whether to use this component when none is explicitly specified</td>
+</tr>
+</tbody>
+</table>
+<h3 id="actions">Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action</code></td>
+<td>object</td>
+<td>-</td>
+<td>Single action definition for the component (shorthand for single-action components)</td>
+</tr>
+<tr>
+<td><code>actions</code></td>
+<td>array</td>
+<td><code>[]</code></td>
+<td>List of actions available within this component (for multi-action components)</td>
+</tr>
+</tbody>
+</table>
+<p>Components can define a single action using <code>action:</code> (singular) or multiple actions using <code>actions:</code> (plural). This is consistent with the <code>component:</code> / <code>components:</code> pattern used elsewhere.</p>
+<h2 id="component-usage-patterns">Component Usage Patterns</h2>
+<h3 id="single-action-component">Single Action Component</h3>
+<p>For simple components with one primary action, wrap the action-specific fields under <code>action:</code>:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.openai.com/v1</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/chat/completions</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      Authorization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Bearer ${env.OPENAI_API_KEY}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt-4o</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      messages</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">        - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">role</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">user</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">          content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt}</span></span></code></pre>
+<h3 id="multi-action-component">Multi-Action Component</h3>
+<p>For components supporting multiple operations:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.slack.com</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  actions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">send-message</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/chat.postMessage</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        channel</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.channel}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text}</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">        </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">list-channels</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/conversations.list</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">GET</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      params</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        limit</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">200</span></span></code></pre>
+<h3 id="default-component">Default Component</h3>
+<p>Mark a component as default to use it when no specific component is referenced:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">components</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">primary-model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt-4o</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    default</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">backup-model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt-3.5-turbo</span></span></code></pre>
+<h2 id="runtime-configuration">Runtime Configuration</h2>
+<p>Components can run in different runtime environments. The runtime determines where and how the component executes.</p>
+<h3 id="embedded-runtime-default">Embedded Runtime (Default)</h3>
+<p>The default runtime that executes components in the current process.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">embedded</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # or omit this line (embedded is default)</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">microsoft/DialoGPT-medium</span></span></code></pre>
+<p><strong>Characteristics:</strong></p>
+<ul>
+<li>Runs in the same process as the controller</li>
+<li>Fastest startup time and lowest overhead</li>
+<li>Shares memory space with the main application</li>
+<li>Best for lightweight tasks and quick operations</li>
+</ul>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Simple API calls and HTTP requests</li>
+<li>Lightweight data transformations</li>
+<li>Quick model inference with small models</li>
+<li>Components that need fast response times</li>
+</ul>
+<h3 id="process-runtime">Process Runtime</h3>
+<p>Runs components in separate Python processes for process isolation while maintaining faster startup than Docker.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-3.1-70B</span></span></code></pre>
+<p><strong>Characteristics:</strong></p>
+<ul>
+<li>Runs in a separate Python process</li>
+<li>Process-level memory and resource isolation</li>
+<li>Faster startup than Docker, slower than embedded</li>
+<li>Independent crash handling (one component crash won't affect others)</li>
+</ul>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Heavy models that could consume significant memory</li>
+<li>Multiple GPU utilization (separate processes for each GPU)</li>
+<li>Blocking operations that shouldn't block the main event loop</li>
+<li>Components that need isolation but don't require containers</li>
+</ul>
+<p><strong>Advanced Configuration:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    env</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      CUDA_VISIBLE_DEVICES</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"0"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      PYTORCH_CUDA_ALLOC_CONF</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">"max_split_size_mb:512"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    start_timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">120</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    stop_timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">30</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">stabilityai/stable-diffusion-xl-base-1.0</span></span></code></pre>
+<h3 id="docker-runtime">Docker Runtime</h3>
+<p>Runs components in isolated Docker containers for enhanced security and reproducibility.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  runtime</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">docker</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-3.1-70B</span></span></code></pre>
+<p><strong>Characteristics:</strong></p>
+<ul>
+<li>Complete process and resource isolation</li>
+<li>Reproducible environment across deployments</li>
+<li>Better security through containerization</li>
+<li>Higher startup overhead</li>
+</ul>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Production deployments requiring isolation</li>
+<li>Large models that need resource limits</li>
+<li>Components with specific dependency requirements</li>
+<li>Multi-tenant scenarios requiring security</li>
+</ul>
+<h3 id="choosing-a-runtime">Choosing a Runtime</h3>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th>Startup Speed</th>
+<th>Isolation</th>
+<th>Overhead</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>embedded</strong></td>
+<td>Fast</td>
+<td>None</td>
+<td>Minimal</td>
+<td>Default choice, lightweight tasks</td>
+</tr>
+<tr>
+<td><strong>process</strong></td>
+<td>Medium</td>
+<td>Process</td>
+<td>Medium</td>
+<td>Heavy models, GPU isolation, crash isolation</td>
+</tr>
+<tr>
+<td><strong>docker</strong></td>
+<td>Slow</td>
+<td>High</td>
+<td>High</td>
+<td>Production, security-critical workloads</td>
+</tr>
+</tbody>
+</table>
+<h2 id="concurrency-control">Concurrency Control</h2>
+<p>Control how many actions can run simultaneously:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_concurrent_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">5</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.example.com</span></span></code></pre>
+<p>This allows up to 5 concurrent HTTP requests from this component.</p>
+<h2 id="component-lifecycle">Component Lifecycle</h2>
+<p>Components follow this lifecycle:</p>
+<ol>
+<li><strong>Initialization</strong>: Component is created and configured</li>
+<li><strong>Setup</strong>: Runtime environment is prepared (Docker images pulled, dependencies installed)</li>
+<li><strong>Ready</strong>: Component is available to handle actions</li>
+<li><strong>Execution</strong>: Actions are processed according to workflow requirements</li>
+<li><strong>Shutdown</strong>: Component resources are cleaned up</li>
+</ol>
+<h2 id="integration-with-workflows">Integration with Workflows</h2>
+<p>Components are referenced in workflows through jobs:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">api-call</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client-id</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">post-data</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        data</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.payload}</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">        </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">process-result</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">shell-processor</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        result</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${api-call.output}</span></span></code></pre>
+<h2 id="variable-interpolation">Variable Interpolation</h2>
+<p>Components support dynamic configuration through variable interpolation:</p>
+<ul>
+<li><strong>Environment Variables</strong>: <code>${env.API_KEY}</code></li>
+<li><strong>Input Data</strong>: <code>${input.field}</code></li>
+<li><strong>Previous Results</strong>: <code>${previous-job.output}</code></li>
+<li><strong>Type Conversion</strong>: <code>${input.count as number}</code></li>
+<li><strong>Default Values</strong>: <code>${input.optional | default-value}</code></li>
+</ul>
+<h2 id="error-handling">Error Handling</h2>
+<p>Components can be configured with error handling strategies:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  retry_count</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">3</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">30</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  base_url</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">https://api.example.com</span></span></code></pre>
+<h2 id="security-considerations">Security Considerations</h2>
+<ul>
+<li><strong>Credentials</strong>: Store sensitive data in environment variables</li>
+<li><strong>Network</strong>: Use HTTPS endpoints when possible</li>
+<li><strong>Isolation</strong>: Consider Docker runtime for untrusted code execution</li>
+<li><strong>Access Control</strong>: Limit file system access and network permissions</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Naming</strong>: Use descriptive component IDs that indicate their purpose</li>
+<li><strong>Modularity</strong>: Design components for specific, well-defined tasks</li>
+<li><strong>Reusability</strong>: Create generic components that can be used across workflows</li>
+<li><strong>Configuration</strong>: Use environment variables for deployment-specific settings</li>
+<li><strong>Documentation</strong>: Document custom actions and expected inputs/outputs</li>
+<li><strong>Error Handling</strong>: Implement appropriate retry and timeout strategies</li>
+<li><strong>Resource Management</strong>: Set appropriate concurrency limits for resource-intensive operations</li>
+</ol>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li>Browse individual component documentation in the <a href="components/">components/</a> directory</li>
+<li>See <a href="/model-compose/ko/reference/compose/workflow">workflow.md</a> for information on using components in workflows</li>
+<li>Check <a href="../../examples/">examples/</a> for real-world component configurations</li>
+</ul>
+</article><nav class="flex justify-between gap-4 mt-12 pt-6 border-t border-border"><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent" href="/model-compose/ko/reference/compose/components/workflow"><div class="text-muted text-[.78rem]">← <!-- -->Previous</div><div class="font-semibold text-accent">Workflow Component</div></a><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent text-right" href="/model-compose/ko/reference/compose/controller"><div class="text-muted text-[.78rem]">Next<!-- --> →</div><div class="font-semibold text-accent">Controller Configuration Reference</div></a></nav><script>document.querySelectorAll('[data-copy-md]').forEach(function(b){b.addEventListener('click',async function(){try{var r=await fetch(b.getAttribute('data-copy-md'));var t=await r.text();await navigator.clipboard.writeText(t);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1500);}catch(e){alert('Copy failed: '+e);}});});document.querySelectorAll('.prose pre').forEach(function(pre){if(pre.querySelector('.copy-code'))return;var b=document.createElement('button');b.className='copy-code';b.textContent='Copy';b.addEventListener('click',async function(){var c=pre.querySelector('code');try{await navigator.clipboard.writeText(c?c.innerText:pre.innerText);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1200);}catch(e){}});pre.appendChild(b);});document.querySelectorAll('.tabs').forEach(function(t){t.querySelectorAll('.tab-btn').forEach(function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-tab');t.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-tab')===i);});t.querySelectorAll('.tab-panel').forEach(function(p){p.hidden=p.getAttribute('data-tab')!==i;});});});});(function(){var blocks=document.querySelectorAll('code.language-mermaid');if(!blocks.length)return;var items=[];blocks.forEach(function(c){var pre=c.closest('pre')||c;var h=document.createElement('div');h.className='mermaid-diagram';pre.replaceWith(h);items.push({src:c.textContent,holder:h});});var lib,id=0;function load(){return lib||(lib=import("https://esm.sh/mermaid@11").then(function(m){return m.default;}));}function theme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'default';}function run(){load().then(function(mermaid){mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:theme()});items.forEach(function(it){mermaid.render('kura-mmd-'+(id++),it.src).then(function(r){it.holder.innerHTML=r.svg;}).catch(function(e){it.holder.innerHTML='<pre class="mermaid-error">'+String((e&&e.message)||e)+'</pre>';});});}).catch(function(){});}run();var cur=document.documentElement.getAttribute('data-theme');new MutationObserver(function(){var t=document.documentElement.getAttribute('data-theme');if(t!==cur){cur=t;run();}}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></main><aside class="sticky top-14 max-h-[calc(100vh-56px)] overflow-y-auto px-4 py-8 max-lg:hidden"><p class="text-[.72rem] font-bold tracking-wider uppercase text-muted mb-2.5">On this page</p><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#basic-structure">Basic Structure</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#single-component">Single Component</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#multiple-components">Multiple Components</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#component-types">Component Types</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#common-configuration-properties">Common Configuration Properties</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#core-properties">Core Properties</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#actions">Actions</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#component-usage-patterns">Component Usage Patterns</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#single-action-component">Single Action Component</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#multi-action-component">Multi-Action Component</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#default-component">Default Component</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#runtime-configuration">Runtime Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#embedded-runtime-default">Embedded Runtime (Default)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#process-runtime">Process Runtime</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#docker-runtime">Docker Runtime</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#choosing-a-runtime">Choosing a Runtime</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#concurrency-control">Concurrency Control</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#component-lifecycle">Component Lifecycle</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#integration-with-workflows">Integration with Workflows</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#variable-interpolation">Variable Interpolation</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#error-handling">Error Handling</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#security-considerations">Security Considerations</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#best-practices">Best Practices</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#next-steps">Next Steps</a></aside></div></div><footer class="border-t border-border mt-8"><div class="flex items-center justify-between flex-wrap gap-4 max-w-[1280px] mx-auto px-6 py-5 max-md:px-4"><nav class="flex items-center gap-[1.1rem] text-[.85rem]"><a class="text-muted hover:text-fg" href="/model-compose/llms.txt">llms.txt</a><button type="button" class="inline-flex items-center justify-center w-[30px] h-[30px] p-0 text-[.95rem] leading-none border border-border rounded-lg bg-surface text-fg cursor-pointer hover:bg-hover" data-theme-toggle="true" aria-label="Toggle theme"></button></nav><a class="text-muted text-[.85rem] hover:text-accent" href="https://kura.build/" target="_blank" rel="noreferrer">Powered by Kura</a></div></footer><script>document.addEventListener('keydown',function(e){if(e.key==='/' && !document.documentElement.dataset.ctrlk && !/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){e.preventDefault();var s=document.querySelector('.search-box');if(s)s.focus();}});(function(){var b=document.querySelector('[data-theme-toggle]');if(!b)return;var d=document.documentElement,order=['system','light','dark'],icon={system:'🖥',light:'☀',dark:'☾'};function pref(){return d.getAttribute('data-theme-pref')||'system';}function res(p){return p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';}function set(p){d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',res(p));try{localStorage.setItem('kura-theme',p);}catch(e){}b.textContent=icon[p];b.setAttribute('title','Theme: '+p);}set(pref());b.addEventListener('click',function(){set(order[(order.indexOf(pref())+1)%order.length]);});try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(pref()==='system')d.setAttribute('data-theme',res('system'));});}catch(e){}})();document.addEventListener('click',function(e){var t=e.target;document.querySelectorAll('details[data-menu][open]').forEach(function(d){if(!d.contains(t))d.removeAttribute('open');});var it=t.closest&&t.closest('details[data-menu] a, details[data-menu] [data-copy-md]');if(it){var dd=it.closest('details[data-menu]');if(dd)setTimeout(function(){dd.removeAttribute('open');},0);}});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details[data-menu][open]').forEach(function(d){d.removeAttribute('open');});});(function(){var root=document.documentElement;function opener(){return document.querySelector('[data-drawer-open]');}function items(){var d=document.getElementById('docs-nav');if(!d)return[];return[].filter.call(d.querySelectorAll('a[href],button:not([disabled]),summary,[tabindex]:not([tabindex="-1"])'),function(el){return el.offsetParent!==null;});}function set(o){var was=root.classList.contains('drawer-open');root.classList.toggle('drawer-open',o);var b=opener();if(b)b.setAttribute('aria-expanded',o?'true':'false');if(o){var f=items();if(f[0])f[0].focus();}else if(was&&b)b.focus();}document.addEventListener('click',function(e){if(e.target.closest('[data-drawer-open]')){e.preventDefault();set(!root.classList.contains('drawer-open'));return;}if(e.target.closest('[data-drawer-close]')){set(false);return;}if(e.target.closest('#docs-nav a'))set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);return;}if(e.key==='Tab'&&root.classList.contains('drawer-open')){var f=items();if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}else if(f.indexOf(document.activeElement)<0){e.preventDefault();first.focus();}}});})();(function(){
+  function trim(p){return p.length>1&&p.endsWith('/')?p.slice(0,-1):p;}
+  function sync(){
+    var path=trim(location.pathname), tab=null;
+    var links=document.querySelectorAll('.sidebar a[href],[data-tabbar] a[href]');
+    for(var i=0;i<links.length;i++){var a=links[i],on=trim(a.getAttribute('href'))===path;
+      if(on){a.setAttribute('aria-current','page');var g=a.closest('[data-tab]');if(g)tab=g.getAttribute('data-tab');}
+      else a.removeAttribute('aria-current');}
+    if(tab!=null){
+      document.querySelectorAll('[data-tab]').forEach(function(g){g.hidden=g.getAttribute('data-tab')!==tab;});
+      document.querySelectorAll('[data-tabbar] a').forEach(function(a){
+        if(a.getAttribute('data-tab-key')===tab)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    }
+    // expand the folder(s) holding the active page. Iterate EVERY aria-current sidebar link, not
+    // just the first: a folder-as-page link lives in a <details>, but the mobile tab-bar link (also
+    // in .sidebar, earlier in the DOM) has no folder ancestor — querySelector would pick that one
+    // and expand nothing. forEach opens each link's folder chain; tab links are harmless no-ops.
+    document.querySelectorAll('.sidebar a[aria-current="page"]').forEach(function(cur){
+      var d=cur.closest('details.folder');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details.folder');}});
+    // rewrite the locale-switch links to THIS page's equivalent path (swap the locale prefix)
+    var ll=document.querySelectorAll('[data-locale-home]');
+    if(ll.length){var lc=document.querySelector('[data-locale-home][data-locale-active]'),cp=lc?lc.getAttribute('data-locale-home'):'/';cp=cp==='/'?'':cp;
+      var rest=location.pathname;if(cp&&rest.indexOf(cp)===0)rest=rest.slice(cp.length)||'/';
+      ll.forEach(function(a){var h=a.getAttribute('data-locale-home'),p=h==='/'?'':h;a.setAttribute('href',rest==='/'?(p||'/'):(p+rest));});}
+    // mobile nav-context: "Active tab / Page title" (the shell can't know the page server-side)
+    var nc=document.querySelector('[data-nav-context]');
+    if(nc){var at=document.querySelector('[data-tabbar] a[aria-current="page"]'),h1=document.querySelector('main h1');
+      nc.textContent=[at&&at.textContent.trim(),h1&&h1.textContent.trim()].filter(Boolean).join(' / ');}
+  }
+  sync();
+  var outlet=document.querySelector('[data-june-outlet]');
+  if(outlet) new MutationObserver(sync).observe(outlet,{childList:true,subtree:true});
+})();</script><script type="module" src="/model-compose/_june/client.519429d3.js"></script><script type="application/json" id="june-webmcp">[{"name":"search_docs","description":"Hybrid keyword + semantic search over the docs. Returns the most relevant passages with their doc slug, title, and relevance score.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"A natural-language question or keywords."},"topK":{"type":"integer","description":"Number of results to return (default 5)."},"locale":{"type":"string","description":"Optional locale — scopes results to that locale's view (its translations plus untranslated defaults)."}},"required":["query"]}},{"name":"get_page","description":"Fetch one doc page as the authored Markdown source by its slug (e.g. introduction, search, agents).","inputSchema":{"type":"object","properties":{"slug":{"type":"string","description":"The page slug."},"locale":{"type":"string","description":"Optional locale — returns that variant when it exists."}},"required":["slug"]}},{"name":"list_docs","description":"List every doc page with its slug, title, section, and `sources` (the code paths it documents). The map for finding which pages a code change affects.","inputSchema":{"type":"object","properties":{}}}]</script><script>(function(){var mc=navigator.modelContext;if(!mc||!mc.registerTool)return;var el=document.getElementById('june-webmcp');if(!el)return;var tools;try{tools=JSON.parse(el.textContent)}catch(e){return}var ac=new AbortController();tools.forEach(function(t){mc.registerTool({name:t.name,description:t.description,inputSchema:t.inputSchema,execute:function(args){return fetch('/mcp',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:t.name,arguments:args}})}).then(function(r){return r.json()}).then(function(j){return j.result})}},{signal:ac.signal})})})();</script></body></html>

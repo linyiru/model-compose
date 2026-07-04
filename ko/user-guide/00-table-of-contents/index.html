@@ -1,0 +1,571 @@
+<!DOCTYPE html><html lang="ko"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="icon" href="/model-compose/favicon.svg" type="image/svg+xml"/><title>목차 - model-compose</title><meta name="description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><link rel="alternate" hrefLang="en" href="/user-guide/00-table-of-contents"/><link rel="alternate" hrefLang="zh-cn" href="/zh-cn/user-guide/00-table-of-contents"/><link rel="alternate" hrefLang="ko" href="/ko/user-guide/00-table-of-contents"/><link rel="alternate" hrefLang="x-default" href="/user-guide/00-table-of-contents"/><meta property="og:title" content="목차"/><meta property="og:description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><meta property="og:type" content="article"/><script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}]}</script><script>(function(){if(HTMLScriptElement.supports&&HTMLScriptElement.supports('speculationrules'))return;var seen=new Set();document.addEventListener('pointerover',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||seen.has(u.pathname)||u.pathname===location.pathname)return;if(/.(md|json)$/.test(u.pathname)||u.pathname==='/mcp')return;seen.add(u.pathname);var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname+u.search;document.head.appendChild(l);},{passive:true});})();</script><style>
+          @view-transition { navigation: auto; }
+          ::view-transition-group(root),
+          ::view-transition-old(root),
+          ::view-transition-new(root) { animation-duration: 120ms; }
+          @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) { animation: none !important; }
+          }
+</style><link rel="stylesheet" href="/model-compose/_june/global.ab0a5eb2.css"/></head><body><script>(function(){try{var p=localStorage.getItem('kura-theme')||'system';var d=document.documentElement;d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',(p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches))?'dark':'light');}catch(e){}})();</script><header class="sticky top-0 z-20 flex items-center gap-4 h-14 px-5 bg-topbar-bg backdrop-blur-sm border-b border-border max-md:px-4 max-md:gap-2.5"><a class="flex items-center gap-1.5 font-bold text-[1.05rem]" href="/model-compose/ko">model-compose<!-- --> <span class="font-normal text-muted text-[.85rem]">Docs</span></a><form class="ml-auto max-md:ml-2 max-md:flex-1 max-md:min-w-0" action="/model-compose/ko/search" method="get"><input class="w-[280px] max-w-[40vw] px-3 py-2 text-[.9rem] border border-border rounded-lg bg-surface-2 text-fg max-md:w-full max-md:max-w-none search-box" placeholder="Search docs…  (press /)" aria-label="Search" data-search-endpoint="/model-compose/ko/search.json" data-doc-base="/model-compose/ko" data-search-static="1" data-locale="ko" name="q"/></form><nav class="flex items-center gap-4 text-muted text-[.9rem]"><details class="relative" data-menu="true"><summary class="chevron cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 border border-border rounded-lg text-fg-soft text-[.85rem] whitespace-nowrap hover:text-fg">한국어</summary><div class="absolute right-0 top-[calc(100%+.4rem)] min-w-36 flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl z-30"><a data-june-no-router="true" data-locale-home="/model-compose" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose" hrefLang="en">English</a><a data-june-no-router="true" data-locale-home="/model-compose/zh-cn" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/zh-cn" hrefLang="zh-cn">简体中文</a><a data-june-no-router="true" data-locale-home="/model-compose/ko" data-locale-active="" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-accent font-semibold" href="/model-compose/ko" hrefLang="ko">한국어</a></div></details></nav></header><button class="hidden max-md:flex items-center gap-2.5 w-full px-4 py-2.5 bg-bg border-0 border-b border-border text-fg-soft text-[.9rem] text-left cursor-pointer focus-visible:outline-none focus-visible:bg-hover" data-drawer-open="true" aria-controls="docs-nav" aria-expanded="false"><span class="text-[1.05rem] leading-none" aria-hidden="true">☰</span><span class="font-semibold text-fg flex-none">Navigation</span><span class="nav-bar-context text-muted flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" data-nav-context="true"></span></button><div class="drawer-backdrop" data-drawer-close="true" aria-hidden="true"></div><div class="grid grid-cols-[248px_minmax(0,1fr)_220px] max-lg:grid-cols-[248px_minmax(0,1fr)] max-md:grid-cols-1 items-start max-w-[1280px] mx-auto"><aside class="sidebar sticky top-14 h-[calc(100vh-56px)] overflow-y-auto px-4 py-6 border-r border-border" id="docs-nav"><div data-tab="_"><div class="mb-5"><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko">model-compose</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">Reference</p><ul class="flex flex-col gap-px"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><a class="flex-1 min-w-0 text-inherit" href="/model-compose/ko/reference/compose">Compose</a></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><span class="flex-1 min-w-0">Components</span></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/agent">Agent Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/datasets">Datasets Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/file-store">File Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/graph-store">Graph Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/http-client">HTTP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/http-server">HTTP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/image-processor">Image Processor Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/key-value-store">Key-Value Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/mcp-client">MCP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/mcp-server">MCP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model">Model Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model-memory">Model Memory Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model-tokenizer">Model Tokenizer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model-trainer">Model Trainer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/search-engine">Search Engine Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/shell">Shell Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/text-splitter">Text Splitter Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/vector-store">Vector Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/video-scene-detector">Video Scene Detector Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/web-browser">Web Browser Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/web-scraper">Web Scraper Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/workflow">Workflow Component</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/component">Component Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/controller">Controller Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/gateway">Gateway Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/language-codes">Language Codes</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/listener">Listener Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/logger">Logger Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/system">System Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/tracer">Tracer Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/workflow">Workflow Configuration Reference</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/cli">Model-Compose CLI Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/websocket">WebSocket Interface Reference</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">User guide</p><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide">Model-Compose 사용자 가이드</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/00-table-of-contents">목차</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/01-getting-started">1장: 시작하기</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/02-core-concepts">2장: 핵심 개념</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/03-cli-usage">3장: CLI 사용법</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/04-component-configuration">4장: 컴포넌트 구성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/05-writing-workflows">5장: 워크플로우 작성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/06-workflow-schema">6장: 워크플로우 스키마</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/07-controller-configuration">7장: 컨트롤러 구성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/08-websocket-interface">8장: WebSocket 인터페이스</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/09-webui-configuration">9장: Web UI 구성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/10-local-ai-models">10장: 로컬 AI 모델 사용</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/11-model-training">11. 모델 훈련</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/12-external-service-integration">12장: 외부 서비스 통합</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/13-streaming-mode">13. 스트리밍 모드</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/14-variable-binding">14. 변수 바인딩</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/15-system-integration">15. 시스템 통합</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/16-deployment">16. 배포</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/17-practical-examples">17. 실전 예제</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/18-troubleshooting">18. 문제 해결</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/19-appendix">19. 부록</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/image-handling">Image Handling Guide</a></li></ul></div></div></aside><div data-june-outlet=""><main class="w-auto max-w-none m-0 min-w-0 px-10 pt-8 pb-20 max-md:px-4 max-md:pt-5 max-md:pb-12"><details class="hidden max-lg:block mb-5 border border-border rounded-xl overflow-hidden"><summary class="chevron flex justify-between items-center cursor-pointer px-3.5 py-2.5 text-[.85rem] font-semibold text-fg-soft">On this page</summary><div class="flex flex-col px-3.5 pt-1 pb-2.5 border-t border-border"><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#1-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0">1. 시작하기</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#2-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90">2. 핵심 개념</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#3-cli-%EC%82%AC%EC%9A%A9%EB%B2%95">3. CLI 사용법</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#4-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%84%B1">4. 컴포넌트 구성</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#5-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%9E%91%EC%84%B1">5. 워크플로우 작성</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#6-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%8A%A4%ED%82%A4%EB%A7%88">6. 워크플로우 스키마</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#7-%EC%BB%A8%ED%8A%B8%EB%A1%A4%EB%9F%AC-%EA%B5%AC%EC%84%B1">7. 컨트롤러 구성</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#8-websocket-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4">8. WebSocket 인터페이스</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#9-%EC%9B%B9-ui-%EA%B5%AC%EC%84%B1">9. 웹 UI 구성</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#10-%EB%A1%9C%EC%BB%AC-ai-%EB%AA%A8%EB%8D%B8-%EC%82%AC%EC%9A%A9">10. 로컬 AI 모델 사용</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#11-%EB%AA%A8%EB%8D%B8-%ED%9B%88%EB%A0%A8">11. 모델 훈련</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#12-%EC%99%B8%EB%B6%80-%EC%84%9C%EB%B9%84%EC%8A%A4-%ED%86%B5%ED%95%A9">12. 외부 서비스 통합</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#13-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EB%AA%A8%EB%93%9C">13. 스트리밍 모드</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#14-%EB%B3%80%EC%88%98-%EB%B0%94%EC%9D%B8%EB%94%A9">14. 변수 바인딩</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#15-%EC%8B%9C%EC%8A%A4%ED%85%9C-%ED%86%B5%ED%95%A9">15. 시스템 통합</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#16-%EB%B0%B0%ED%8F%AC">16. 배포</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#17-%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C">17. 실전 예제</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#18-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0">18. 문제 해결</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#19-%EB%B6%80%EB%A1%9D">19. 부록</a></div></details><div class="flex items-center justify-between gap-4 mb-6"><div class="prose"><h1 class="!m-0">목차</h1></div><div class="relative inline-flex items-stretch flex-none"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[.85rem] border border-border border-r-0 rounded-l-lg bg-surface text-fg-soft cursor-pointer hover:bg-hover hover:text-fg" data-copy-md="/model-compose/ko/user-guide/00-table-of-contents.md"><svg class="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>Copy Markdown</button><details class="relative inline-flex items-stretch" data-menu="true"><summary class="chevron inline-flex items-center justify-center w-[30px] border border-border rounded-r-lg bg-surface text-muted cursor-pointer hover:bg-hover hover:text-fg" aria-label="More actions"></summary><div class="absolute right-0 top-[calc(100%+.4rem)] z-30 min-w-[17rem] flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl"><button class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" data-copy-md="/model-compose/ko/user-guide/00-table-of-contents.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg><span class="flex flex-col min-w-0"><span class="font-semibold text-[.9rem] text-fg">Copy Markdown</span><span class="text-[.8rem] text-muted">Copy this page as Markdown for LLMs</span></span></button><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="/model-compose/ko/user-guide/00-table-of-contents.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M16 21H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6l4 4v12a2 2 0 0 1-2 2z"></path><path d="M9 13h6M9 17h4"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">View as Markdown<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">View this page as plain text</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://chatgpt.com/?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20%EB%AA%A9%EC%B0%A8" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in ChatGPT<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask ChatGPT about this page</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://claude.ai/new?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20%EB%AA%A9%EC%B0%A8" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in Claude<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask Claude about this page</span></span></a></div></details></div></div><article class="prose"><p>이 문서는 model-compose 사용자 가이드의 구조를 설명합니다.</p>
+<hr />
+<h2 id="1-시작하기">1. <a href="/model-compose/ko/user-guide/01-getting-started">시작하기</a></h2>
+<ul>
+<li>1.1 <a href="/model-compose/ko/user-guide/01-getting-started#11-%EC%86%8C%EA%B0%9C-%EB%B0%8F-%EA%B0%9C%EC%9A%94">소개 및 개요</a></li>
+<li>1.2 <a href="/model-compose/ko/user-guide/01-getting-started#12-%EC%84%A4%EC%B9%98">설치</a></li>
+<li>1.3 <a href="/model-compose/ko/user-guide/01-getting-started#12-%EC%B2%AB-%EB%B2%88%EC%A7%B8-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0">첫 번째 워크플로우 실행하기</a>
+<ul>
+<li>1.3.1 <a href="/model-compose/ko/user-guide/01-getting-started#131-%EA%B0%84%EB%8B%A8%ED%95%9C-%EC%98%88%EC%A0%9C-openai-api-%ED%98%B8%EC%B6%9C">간단한 예제 (OpenAI API 호출)</a></li>
+<li>1.3.2 <a href="/model-compose/ko/user-guide/01-getting-started#132-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%8B%A4%ED%96%89-run-%EB%AA%85%EB%A0%B9%EC%96%B4">워크플로우 실행 (run 명령어)</a></li>
+<li>1.3.3 <a href="/model-compose/ko/user-guide/01-getting-started#133-%EC%BB%A8%ED%8A%B8%EB%A1%A4%EB%9F%AC-%EC%8B%9C%EC%9E%91-%EB%B0%8F-web-ui-%EC%82%AC%EC%9A%A9">컨트롤러 시작 및 웹 UI 사용</a></li>
+</ul>
+</li>
+<li>1.4 <a href="/model-compose/ko/user-guide/01-getting-started#12-%EA%B8%B0%EB%B3%B8-%EA%B0%9C%EB%85%90">기본 개념</a></li>
+</ul>
+<h2 id="2-핵심-개념">2. <a href="/model-compose/ko/user-guide/02-core-concepts">핵심 개념</a></h2>
+<ul>
+<li>2.1 <a href="/model-compose/ko/user-guide/02-core-concepts#21-model-composeyml-%EA%B5%AC%EC%A1%B0">model-compose.yml 구조</a></li>
+<li>2.2 <a href="/model-compose/ko/user-guide/02-core-concepts#22-%EC%BB%A8%ED%8A%B8%EB%A1%A4%EB%9F%AC">컨트롤러</a></li>
+<li>2.3 <a href="/model-compose/ko/user-guide/02-core-concepts#23-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8">컴포넌트</a></li>
+<li>2.4 <a href="/model-compose/ko/user-guide/02-core-concepts#24-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0">워크플로우</a></li>
+<li>2.5 <a href="/model-compose/ko/user-guide/02-core-concepts#25-%EC%9E%91%EC%97%85">작업</a></li>
+<li>2.6 <a href="/model-compose/ko/user-guide/02-core-concepts#26-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%9D%90%EB%A6%84-%EB%B0%8F-%EB%B3%80%EC%88%98-%EB%B0%94%EC%9D%B8%EB%94%A9">데이터 흐름 및 변수 바인딩</a></li>
+</ul>
+<h2 id="3-cli-사용법">3. <a href="/model-compose/ko/user-guide/03-cli-usage">CLI 사용법</a></h2>
+<ul>
+<li>3.1 <a href="/model-compose/ko/user-guide/03-cli-usage#31-%EA%B8%B0%EB%B3%B8-%EB%AA%85%EB%A0%B9%EC%96%B4">기본 명령어</a></li>
+<li>3.2 <a href="/model-compose/ko/user-guide/03-cli-usage#32-up-%EB%AA%85%EB%A0%B9%EC%96%B4">up 명령어</a></li>
+<li>3.3 <a href="/model-compose/ko/user-guide/03-cli-usage#33-down-%EB%AA%85%EB%A0%B9%EC%96%B4">down 명령어</a></li>
+<li>3.4 <a href="/model-compose/ko/user-guide/03-cli-usage#34-start-%EB%AA%85%EB%A0%B9%EC%96%B4">start 명령어</a></li>
+<li>3.5 <a href="/model-compose/ko/user-guide/03-cli-usage#35-stop-%EB%AA%85%EB%A0%B9%EC%96%B4">stop 명령어</a></li>
+<li>3.6 <a href="/model-compose/ko/user-guide/03-cli-usage#36-run-%EB%AA%85%EB%A0%B9%EC%96%B4">run 명령어</a></li>
+<li>3.7 <a href="/model-compose/ko/user-guide/03-cli-usage#37-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EA%B4%80%EB%A6%AC">환경 변수 관리</a></li>
+<li>3.8 <a href="/model-compose/ko/user-guide/03-cli-usage#38-%EC%84%A4%EC%A0%95-%ED%8C%8C%EC%9D%BC-%EC%A7%80%EC%A0%95">설정 파일 지정</a></li>
+<li>3.9 <a href="/model-compose/ko/user-guide/03-cli-usage#39-%EB%94%94%EB%B2%84%EA%B9%85-%EC%98%B5%EC%85%98">디버깅 옵션</a></li>
+<li>3.10 <a href="/model-compose/ko/user-guide/03-cli-usage#310-%EC%8B%A4%EC%A0%84-%EC%82%AC%EC%9A%A9-%EC%98%88%EC%A0%9C">실전 사용 예제</a></li>
+<li>3.11 <a href="/model-compose/ko/user-guide/03-cli-usage#311-%EB%AA%85%EB%A0%B9%EC%96%B4-%EB%B9%A0%EB%A5%B8-%EC%B0%B8%EC%A1%B0">명령어 빠른 참조</a></li>
+</ul>
+<h2 id="4-컴포넌트-구성">4. <a href="/model-compose/ko/user-guide/04-component-configuration">컴포넌트 구성</a></h2>
+<ul>
+<li>4.1 <a href="/model-compose/ko/user-guide/04-component-configuration#41-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%ED%83%80%EC%9E%85">컴포넌트 타입</a></li>
+<li>4.2 <a href="/model-compose/ko/user-guide/04-component-configuration#42-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%A0%95%EC%9D%98-%EB%B0%A9%EB%B2%95">컴포넌트 정의 방법</a></li>
+<li>4.3 <a href="/model-compose/ko/user-guide/04-component-configuration#43-%EC%9E%85%EB%A0%A5%EC%B6%9C%EB%A0%A5-%EB%A7%A4%ED%95%91">입력/출력 매핑</a></li>
+<li>4.4 <a href="/model-compose/ko/user-guide/04-component-configuration#44-%EC%9E%AC%EC%82%AC%EC%9A%A9-%ED%8C%A8%ED%84%B4">재사용 패턴</a></li>
+<li>4.5 <a href="/model-compose/ko/user-guide/04-component-configuration#45-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%AA%A8%EB%B2%94-%EC%82%AC%EB%A1%80">컴포넌트 모범 사례</a></li>
+</ul>
+<h2 id="5-워크플로우-작성">5. <a href="/model-compose/ko/user-guide/05-writing-workflows">워크플로우 작성</a></h2>
+<ul>
+<li>5.1 <a href="/model-compose/ko/user-guide/05-writing-workflows#51-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0%EB%9E%80">워크플로우란?</a></li>
+<li>5.2 <a href="/model-compose/ko/user-guide/05-writing-workflows#52-%EB%8B%A8%EC%9D%BC-%EC%9E%91%EC%97%85-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0">단일 작업 워크플로우</a></li>
+<li>5.3 <a href="/model-compose/ko/user-guide/05-writing-workflows#53-%EC%97%AC%EB%9F%AC-%EB%8B%A8%EA%B3%84-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0">여러 단계 워크플로우</a></li>
+<li>5.4 <a href="/model-compose/ko/user-guide/05-writing-workflows#54-%EC%9E%91%EC%97%85-%EA%B0%84-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EB%8B%AC">작업 간 데이터 전달</a></li>
+<li>5.5 <a href="/model-compose/ko/user-guide/05-writing-workflows#55-job-%ED%83%80%EC%9E%85">Job 타입</a></li>
+<li>5.6 <a href="/model-compose/ko/user-guide/05-writing-workflows#56-%EC%A1%B0%EA%B1%B4%EB%B6%80-%EC%8B%A4%ED%96%89">조건부 실행</a></li>
+<li>5.7 <a href="/model-compose/ko/user-guide/05-writing-workflows#57-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EB%AA%A8%EB%93%9C">스트리밍 모드</a></li>
+<li>5.8 <a href="/model-compose/ko/user-guide/05-writing-workflows#58-%EC%97%90%EB%9F%AC-%ED%95%B8%EB%93%A4%EB%A7%81">에러 핸들링</a></li>
+<li>5.9 <a href="/model-compose/ko/user-guide/05-writing-workflows#59-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EB%AA%A8%EB%B2%94-%EC%82%AC%EB%A1%80">워크플로우 모범 사례</a></li>
+</ul>
+<h2 id="6-워크플로우-스키마">6. <a href="/model-compose/ko/user-guide/06-workflow-schema">워크플로우 스키마</a></h2>
+<ul>
+<li>6.1 <a href="/model-compose/ko/user-guide/06-workflow-schema#61-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%8A%A4%ED%82%A4%EB%A7%88%EB%9E%80">워크플로우 스키마란?</a></li>
+<li>6.2 <a href="/model-compose/ko/user-guide/06-workflow-schema#62-%EC%8A%A4%ED%82%A4%EB%A7%88-%EC%A1%B0%ED%9A%8C-%EB%B0%A9%EB%B2%95">스키마 조회 방법</a></li>
+<li>6.3 <a href="/model-compose/ko/user-guide/06-workflow-schema#63-%EC%9E%85%EB%A0%A5-%EC%8A%A4%ED%82%A4%EB%A7%88">입력 스키마</a></li>
+<li>6.4 <a href="/model-compose/ko/user-guide/06-workflow-schema#64-%EC%B6%9C%EB%A0%A5-%EC%8A%A4%ED%82%A4%EB%A7%88">출력 스키마</a></li>
+<li>6.5 <a href="/model-compose/ko/user-guide/06-workflow-schema#65-%EC%8A%A4%ED%82%A4%EB%A7%88-%ED%99%9C%EC%9A%A9">스키마 활용</a></li>
+<li>6.6 <a href="/model-compose/ko/user-guide/06-workflow-schema#66-%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C">실전 예제</a></li>
+<li>6.7 <a href="/model-compose/ko/user-guide/06-workflow-schema#67-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EB%A9%94%ED%83%80%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%95%84%EB%93%9C">워크플로우 메타데이터 필드</a></li>
+<li>6.8 <a href="/model-compose/ko/user-guide/06-workflow-schema#68-%EB%AA%A8%EB%B2%94-%EC%82%AC%EB%A1%80">모범 사례</a></li>
+</ul>
+<h2 id="7-컨트롤러-구성">7. <a href="/model-compose/ko/user-guide/07-controller-configuration">컨트롤러 구성</a></h2>
+<ul>
+<li>7.1 <a href="/model-compose/ko/user-guide/07-controller-configuration#71-http-%EC%84%9C%EB%B2%84">HTTP 서버</a></li>
+<li>7.2 <a href="/model-compose/ko/user-guide/07-controller-configuration#72-mcp-%EC%84%9C%EB%B2%84">MCP 서버</a></li>
+<li>7.3 <a href="/model-compose/ko/user-guide/07-controller-configuration#73-%ED%81%90-%EA%B5%AC%EB%8F%85%EC%9E%90-queue-subscriber">큐 구독자 (Queue Subscriber)</a></li>
+<li>7.4 <a href="/model-compose/ko/user-guide/07-controller-configuration#74-%ED%81%90-%EB%94%94%EC%8A%A4%ED%8C%A8%EC%B9%98-%EB%B6%84%EC%82%B0-%EB%B0%B0%ED%8F%AC">큐 디스패치 (분산 배포)</a></li>
+<li>7.5 <a href="/model-compose/ko/user-guide/07-controller-configuration#75-%ED%81%90-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-queue-streaming">큐 스트리밍 (Queue Streaming)</a></li>
+<li>7.6 <a href="/model-compose/ko/user-guide/07-controller-configuration#76-%EB%8F%99%EC%8B%9C-%EC%8B%A4%ED%96%89-%EC%A0%9C%EC%96%B4">동시 실행 제어</a></li>
+<li>7.7 <a href="/model-compose/ko/user-guide/07-controller-configuration#77-%ED%8F%AC%ED%8A%B8-%EB%B0%8F-%ED%98%B8%EC%8A%A4%ED%8A%B8-%EC%84%A4%EC%A0%95">포트 및 호스트 설정</a></li>
+<li>7.8 <a href="/model-compose/ko/user-guide/07-controller-configuration#78-%EC%BB%A8%ED%8A%B8%EB%A1%A4%EB%9F%AC-%EB%AA%A8%EB%B2%94-%EC%82%AC%EB%A1%80">컨트롤러 모범 사례</a></li>
+</ul>
+<h2 id="8-websocket-인터페이스">8. <a href="/model-compose/ko/user-guide/08-websocket-interface">WebSocket 인터페이스</a></h2>
+<ul>
+<li>7.1 <a href="/model-compose/ko/user-guide/08-websocket-interface#71-websocket-%EA%B0%9C%EC%9A%94">WebSocket 개요</a>
+<ul>
+<li>7.1.1 <a href="/model-compose/ko/user-guide/08-websocket-interface#711-websocket-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4%EB%9E%80">WebSocket 인터페이스란?</a></li>
+<li>7.1.2 <a href="/model-compose/ko/user-guide/08-websocket-interface#712-websocket-vs-rest-api">WebSocket vs REST API</a></li>
+<li>7.1.3 <a href="/model-compose/ko/user-guide/08-websocket-interface#713-%EB%8F%99%EC%9E%91-%EB%B0%A9%EC%8B%9D">동작 방식</a></li>
+</ul>
+</li>
+<li>7.2 <a href="/model-compose/ko/user-guide/08-websocket-interface#72-%EC%84%A4%EC%A0%95">설정</a>
+<ul>
+<li>7.2.1 <a href="/model-compose/ko/user-guide/08-websocket-interface#721-websocket-%ED%99%9C%EC%84%B1%ED%99%94">WebSocket 활성화</a></li>
+<li>7.2.2 <a href="/model-compose/ko/user-guide/08-websocket-interface#722-websocket-%EC%84%A4%EC%A0%95-%EC%98%B5%EC%85%98">WebSocket 설정 옵션</a></li>
+<li>7.2.3 <a href="/model-compose/ko/user-guide/08-websocket-interface#723-%EC%84%A4%EC%A0%95-%EC%98%88%EC%8B%9C">설정 예시</a></li>
+</ul>
+</li>
+<li>7.3 <a href="/model-compose/ko/user-guide/08-websocket-interface#73-websocket-%EC%97%B0%EA%B2%B0">WebSocket 연결</a>
+<ul>
+<li>7.3.1 <a href="/model-compose/ko/user-guide/08-websocket-interface#731-%EA%B8%B0%EB%B3%B8-%EC%97%B0%EA%B2%B0">기본 연결</a></li>
+<li>7.3.2 <a href="/model-compose/ko/user-guide/08-websocket-interface#732-%EC%84%B8%EC%85%98-id">세션 ID</a></li>
+<li>7.3.3 <a href="/model-compose/ko/user-guide/08-websocket-interface#733-%EC%97%B0%EA%B2%B0-%EC%8B%9C-%EC%9E%90%EB%8F%99-%EA%B5%AC%EB%8F%85">연결 시 자동 구독</a></li>
+</ul>
+</li>
+<li>7.4 <a href="/model-compose/ko/user-guide/08-websocket-interface#74-websocket-%EB%A9%94%EC%8B%9C%EC%A7%80">WebSocket 메시지</a>
+<ul>
+<li>7.4.1 <a href="/model-compose/ko/user-guide/08-websocket-interface#741-%EB%A9%94%EC%8B%9C%EC%A7%80-%ED%98%95%EC%8B%9D">메시지 형식</a></li>
+<li>7.4.2 <a href="/model-compose/ko/user-guide/08-websocket-interface#742-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8--%EC%84%9C%EB%B2%84-%EB%A9%94%EC%8B%9C%EC%A7%80">클라이언트 → 서버 메시지</a></li>
+<li>7.4.3 <a href="/model-compose/ko/user-guide/08-websocket-interface#743-%EC%84%9C%EB%B2%84--%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8-%EB%A9%94%EC%8B%9C%EC%A7%80">서버 → 클라이언트 메시지</a></li>
+</ul>
+</li>
+<li>7.5 <a href="/model-compose/ko/user-guide/08-websocket-interface#75-rest-api-%ED%86%B5%ED%95%A9">REST API 통합</a>
+<ul>
+<li>7.5.1 <a href="/model-compose/ko/user-guide/08-websocket-interface#751-subscribe_task-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0"><code>subscribe_task</code> 파라미터</a></li>
+<li>7.5.2 <a href="/model-compose/ko/user-guide/08-websocket-interface#752-wait_for_completion%EA%B3%BC-subscribe_task-%EC%A1%B0%ED%95%A9"><code>wait_for_completion</code>과 <code>subscribe_task</code> 조합</a></li>
+<li>7.5.3 <a href="/model-compose/ko/user-guide/08-websocket-interface#753-%ED%8C%A8%ED%84%B4-websocket-%EB%A8%BC%EC%A0%80-%EC%97%B0%EA%B2%B0--rest-%EC%8B%A4%ED%96%89">패턴: WebSocket 먼저 연결 + REST 실행</a></li>
+</ul>
+</li>
+<li>7.6 <a href="/model-compose/ko/user-guide/08-websocket-interface#76-%EC%82%AC%EC%9A%A9-%ED%8C%A8%ED%84%B4">사용 패턴</a>
+<ul>
+<li>7.6.1 <a href="/model-compose/ko/user-guide/08-websocket-interface#761-%ED%8C%A8%ED%84%B4-1-websocket%EC%9C%BC%EB%A1%9C-%EC%8B%A4%ED%96%89-%EB%B0%8F-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81">패턴 1: WebSocket으로 실행 및 모니터링</a></li>
+<li>7.6.2 <a href="/model-compose/ko/user-guide/08-websocket-interface#762-%ED%8C%A8%ED%84%B4-2-%EB%8C%80%ED%99%94%ED%98%95-%EC%9D%B8%ED%84%B0%EB%9F%BD%ED%8A%B8%EC%9E%AC%EA%B0%9C">패턴 2: 대화형 인터럽트/재개</a></li>
+<li>7.6.3 <a href="/model-compose/ko/user-guide/08-websocket-interface#763-%ED%8C%A8%ED%84%B4-3-%EA%B8%B0%EC%A1%B4-%ED%83%9C%EC%8A%A4%ED%81%AC-%EA%B5%AC%EB%8F%85">패턴 3: 기존 태스크 구독</a></li>
+<li>7.6.4 <a href="/model-compose/ko/user-guide/08-websocket-interface#764-%ED%8C%A8%ED%84%B4-4-%EB%8B%A4%EC%A4%91-%ED%83%9C%EC%8A%A4%ED%81%AC-%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C">패턴 4: 다중 태스크 대시보드</a></li>
+</ul>
+</li>
+<li>7.7 <a href="/model-compose/ko/user-guide/08-websocket-interface#77-%EC%97%B0%EA%B2%B0-%EA%B4%80%EB%A6%AC">연결 관리</a>
+<ul>
+<li>7.7.1 <a href="/model-compose/ko/user-guide/08-websocket-interface#771-%EC%84%B8%EC%85%98%EA%B3%BC-%EC%9E%AC%EC%97%B0%EA%B2%B0">세션과 재연결</a></li>
+<li>7.7.2 <a href="/model-compose/ko/user-guide/08-websocket-interface#772-%EC%97%B0%EA%B2%B0-%EB%9D%BC%EC%9D%B4%ED%94%84%EC%82%AC%EC%9D%B4%ED%81%B4">연결 라이프사이클</a></li>
+<li>7.7.3 <a href="/model-compose/ko/user-guide/08-websocket-interface#773-%EC%97%B0%EA%B2%B0-%EC%A0%9C%ED%95%9C">연결 제한</a></li>
+<li>7.7.4 <a href="/model-compose/ko/user-guide/08-websocket-interface#774-ping%EC%9D%84-%ED%86%B5%ED%95%9C-%EC%97%B0%EA%B2%B0-%EC%9C%A0%EC%A7%80">Ping을 통한 연결 유지</a></li>
+</ul>
+</li>
+<li>7.8 <a href="/model-compose/ko/user-guide/08-websocket-interface#78-%EB%B3%B4%EC%95%88-%EA%B3%A0%EB%A0%A4%EC%82%AC%ED%95%AD">보안 고려사항</a>
+<ul>
+<li>7.8.1 <a href="/model-compose/ko/user-guide/08-websocket-interface#781-%EC%84%B8%EC%85%98-id-%EB%B3%B4%EC%95%88">세션 ID 보안</a></li>
+<li>7.8.2 <a href="/model-compose/ko/user-guide/08-websocket-interface#782-cors%EC%99%80-origins">CORS와 Origins</a></li>
+<li>7.8.3 <a href="/model-compose/ko/user-guide/08-websocket-interface#783-%ED%94%84%EB%A1%9C%EB%8D%95%EC%85%98-%EA%B6%8C%EC%9E%A5%EC%82%AC%ED%95%AD">프로덕션 권장사항</a></li>
+</ul>
+</li>
+<li>7.9 <a href="/model-compose/ko/user-guide/08-websocket-interface#79-%EB%AA%A8%EB%B2%94-%EC%82%AC%EB%A1%80">모범 사례</a></li>
+</ul>
+<h2 id="9-웹-ui-구성">9. <a href="/model-compose/ko/user-guide/09-webui-configuration">웹 UI 구성</a></h2>
+<ul>
+<li>8.1 <a href="/model-compose/ko/user-guide/09-webui-configuration#81-web-ui-%EA%B0%9C%EC%9A%94">웹 UI 개요</a></li>
+<li>8.2 <a href="/model-compose/ko/user-guide/09-webui-configuration#82-gradio-%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B2%84">Gradio 드라이버</a>
+<ul>
+<li>8.2.1 <a href="/model-compose/ko/user-guide/09-webui-configuration#ui-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1">UI 자동 생성</a></li>
+<li>8.2.2 <a href="/model-compose/ko/user-guide/09-webui-configuration#%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%B6%9C%EB%A0%A5-%EC%A7%80%EC%9B%90">스트리밍 출력 지원</a></li>
+<li>8.2.3 <a href="/model-compose/ko/user-guide/09-webui-configuration#%EB%8B%A4%EC%A4%91-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0">다중 워크플로우</a></li>
+</ul>
+</li>
+<li>8.3 <a href="/model-compose/ko/user-guide/09-webui-configuration#83-%EC%A0%95%EC%A0%81-%ED%8C%8C%EC%9D%BC-%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B2%84">정적 파일 드라이버</a></li>
+<li>8.4 <a href="/model-compose/ko/user-guide/09-webui-configuration#84-%EB%A6%AC%EB%B2%84%EC%8A%A4-%ED%94%84%EB%A1%9D%EC%8B%9C%EB%A5%BC-%ED%86%B5%ED%95%9C-web-ui-%EB%B0%B0%ED%8F%AC">리버스 프록시를 통한 웹 UI 배포</a></li>
+</ul>
+<h2 id="10-로컬-ai-모델-사용">10. <a href="/model-compose/ko/user-guide/10-local-ai-models">로컬 AI 모델 사용</a></h2>
+<ul>
+<li>9.1 <a href="/model-compose/ko/user-guide/10-local-ai-models#91-%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8-%EA%B0%9C%EC%9A%94">로컬 모델 개요</a></li>
+<li>9.2 <a href="/model-compose/ko/user-guide/10-local-ai-models#92-%EB%AA%A8%EB%8D%B8-%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%A4%80%EB%B9%84">모델 설치 및 준비</a></li>
+<li>9.3 <a href="/model-compose/ko/user-guide/10-local-ai-models#93-%EC%A7%80%EC%9B%90-%ED%83%9C%EC%8A%A4%ED%81%AC-%EC%9C%A0%ED%98%95">지원 태스크 유형</a></li>
+<li>9.4 <a href="/model-compose/ko/user-guide/10-local-ai-models#94-%EB%AA%A8%EB%8D%B8-%EC%84%A4%EC%A0%95-%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4-%EC%A0%95%EB%B0%80%EB%8F%84-%EB%B0%B0%EC%B9%98-%ED%81%AC%EA%B8%B0">모델 설정 (디바이스, 정밀도, 배치 크기)</a></li>
+<li>9.5 <a href="/model-compose/ko/user-guide/10-local-ai-models#95-lorapeft-%EC%96%B4%EB%8C%91%ED%84%B0-%EC%82%AC%EC%9A%A9">LoRA/PEFT 어댑터 사용</a></li>
+<li>9.6 <a href="/model-compose/ko/user-guide/10-local-ai-models#96-%EB%AA%A8%EB%8D%B8-%EC%84%9C%EB%B9%99-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC">모델 서빙 프레임워크</a></li>
+<li>9.7 <a href="/model-compose/ko/user-guide/10-local-ai-models#97-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94-%ED%8C%81">성능 최적화 팁</a></li>
+</ul>
+<h2 id="11-모델-훈련">11. <a href="/model-compose/ko/user-guide/11-model-training">모델 훈련</a></h2>
+<ul>
+<li>10.1 <a href="/model-compose/ko/user-guide/11-model-training#101-%ED%9B%88%EB%A0%A8-%EA%B0%9C%EC%9A%94">훈련 개요</a></li>
+<li>10.2 <a href="/model-compose/ko/user-guide/11-model-training#102-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%EC%A4%80%EB%B9%84">데이터셋 준비</a>
+<ul>
+<li>10.2.1 <a href="/model-compose/ko/user-guide/11-model-training#1021-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B0%9C%EC%9A%94">데이터셋 컴포넌트 개요</a></li>
+<li>10.2.2 <a href="/model-compose/ko/user-guide/11-model-training#1022-%ED%97%88%EA%B9%85%ED%8E%98%EC%9D%B4%EC%8A%A4-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%EB%A1%9C%EB%93%9C">허깅페이스 데이터셋 로드</a></li>
+<li>10.2.3 <a href="/model-compose/ko/user-guide/11-model-training#1023-%EB%A1%9C%EC%BB%AC-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%EB%A1%9C%EB%93%9C">로컬 데이터셋 로드</a></li>
+<li>10.2.4 <a href="/model-compose/ko/user-guide/11-model-training#1024-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%EC%A1%B0%EC%9E%91">데이터셋 조작</a></li>
+<li>10.2.5 <a href="/model-compose/ko/user-guide/11-model-training#1025-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%ED%98%95%EC%8B%9D">데이터셋 형식</a></li>
+</ul>
+</li>
+<li>10.3 <a href="/model-compose/ko/user-guide/11-model-training#103-%ED%9B%88%EB%A0%A8-%EC%84%A4%EC%A0%95">훈련 설정</a>
+<ul>
+<li>10.3.1 <a href="/model-compose/ko/user-guide/11-model-training#1031-%EA%B8%B0%EB%B3%B8-%ED%9B%88%EB%A0%A8-%EC%84%A4%EC%A0%95">기본 훈련 설정</a></li>
+<li>10.3.2 <a href="/model-compose/ko/user-guide/11-model-training#1032-%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80-%EC%84%A4%EC%A0%95">옵티마이저 설정</a></li>
+<li>10.3.3 <a href="/model-compose/ko/user-guide/11-model-training#1033-%ED%95%99%EC%8A%B5%EB%A5%A0-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%9F%AC">학습률 스케줄러</a></li>
+<li>10.3.4 <a href="/model-compose/ko/user-guide/11-model-training#1034-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%84%A4%EC%A0%95">최적화 설정</a></li>
+<li>10.3.5 <a href="/model-compose/ko/user-guide/11-model-training#1035-%ED%8F%89%EA%B0%80-%EB%B0%8F-%EC%A0%80%EC%9E%A5">평가 및 저장</a></li>
+<li>10.3.6 <a href="/model-compose/ko/user-guide/11-model-training#1036-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94">메모리 최적화</a></li>
+<li>10.3.7 <a href="/model-compose/ko/user-guide/11-model-training#1037-%EC%9E%AC%ED%98%84%EC%84%B1-%EC%84%A4%EC%A0%95">재현성 설정</a></li>
+</ul>
+</li>
+<li>10.4 <a href="/model-compose/ko/user-guide/11-model-training#104-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D">파인튜닝</a>
+<ul>
+<li>10.4.1 <a href="/model-compose/ko/user-guide/11-model-training#1041-sft-supervised-fine-tuning">SFT (Supervised Fine-Tuning)</a></li>
+<li>10.4.2 <a href="/model-compose/ko/user-guide/11-model-training#1042-%EC%8B%9C%ED%80%80%EC%8A%A4-%ED%8C%A8%ED%82%B9">시퀀스 패킹</a></li>
+</ul>
+</li>
+<li>10.5 <a href="/model-compose/ko/user-guide/11-model-training#105-lora-%ED%9B%88%EB%A0%A8">LoRA 훈련</a>
+<ul>
+<li>10.5.1 <a href="/model-compose/ko/user-guide/11-model-training#1051-lora-%EA%B0%9C%EC%9A%94">LoRA 개요</a></li>
+<li>10.5.2 <a href="/model-compose/ko/user-guide/11-model-training#1052-%EA%B8%B0%EB%B3%B8-lora-%EC%84%A4%EC%A0%95">기본 LoRA 설정</a></li>
+<li>10.5.3 <a href="/model-compose/ko/user-guide/11-model-training#1053-%ED%83%80%EA%B2%9F-%EB%AA%A8%EB%93%88-%EC%84%A4%EC%A0%95">타겟 모듈 설정</a></li>
+<li>10.5.4 <a href="/model-compose/ko/user-guide/11-model-training#1054-lora-bias-%EC%84%A4%EC%A0%95">LoRA Bias 설정</a></li>
+<li>10.5.5 <a href="/model-compose/ko/user-guide/11-model-training#1055-qlora-quantized-lora">QLoRA (Quantized LoRA)</a></li>
+<li>10.5.6 <a href="/model-compose/ko/user-guide/11-model-training#1056-lora-%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%EA%B0%80%EC%9D%B4%EB%93%9C">LoRA 하이퍼파라미터 가이드</a></li>
+</ul>
+</li>
+<li>10.6 <a href="/model-compose/ko/user-guide/11-model-training#106-%ED%9B%88%EB%A0%A8-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81">훈련 모니터링</a></li>
+<li>10.7 <a href="/model-compose/ko/user-guide/11-model-training#107-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EA%B4%80%EB%A6%AC">체크포인트 관리</a></li>
+<li>10.8 <a href="/model-compose/ko/user-guide/11-model-training#108-%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C">실전 예제</a></li>
+</ul>
+<h2 id="12-외부-서비스-통합">12. <a href="/model-compose/ko/user-guide/12-external-service-integration">외부 서비스 통합</a></h2>
+<ul>
+<li>11.1 <a href="/model-compose/ko/user-guide/12-external-service-integration#111-openai-api">OpenAI API</a>
+<ul>
+<li>11.1.1 <a href="/model-compose/ko/user-guide/12-external-service-integration#1111-chat-completions">Chat Completions</a></li>
+<li>11.1.2 <a href="/model-compose/ko/user-guide/12-external-service-integration#1112-image-generation-dall-e">Image Generation (DALL-E)</a></li>
+<li>11.1.3 <a href="/model-compose/ko/user-guide/12-external-service-integration#1113-audio-tts-transcriptions">Audio (TTS, Transcriptions)</a></li>
+</ul>
+</li>
+<li>11.2 <a href="/model-compose/ko/user-guide/12-external-service-integration#112-anthropic-claude-api">Anthropic Claude API</a></li>
+<li>11.3 <a href="/model-compose/ko/user-guide/12-external-service-integration#113-google-gemini-api">Google Gemini API</a></li>
+<li>11.4 <a href="/model-compose/ko/user-guide/12-external-service-integration#114-elevenlabs-tts">ElevenLabs (TTS)</a></li>
+<li>11.5 <a href="/model-compose/ko/user-guide/12-external-service-integration#115-stability-ai-image-generation">Stability AI (Image Generation)</a></li>
+<li>11.6 <a href="/model-compose/ko/user-guide/12-external-service-integration#116-replicate">Replicate</a></li>
+<li>11.7 <a href="/model-compose/ko/user-guide/12-external-service-integration#117-%EC%BB%A4%EC%8A%A4%ED%85%80-http-api">커스텀 HTTP API</a></li>
+<li>11.8 <a href="/model-compose/ko/user-guide/12-external-service-integration#118-%EC%99%B8%EB%B6%80-%EC%84%9C%EB%B9%84%EC%8A%A4-%ED%86%B5%ED%95%A9-%EB%AA%A8%EB%B2%94-%EC%82%AC%EB%A1%80">외부 서비스 통합 모범 사례</a></li>
+</ul>
+<h2 id="13-스트리밍-모드">13. <a href="/model-compose/ko/user-guide/13-streaming-mode">스트리밍 모드</a></h2>
+<ul>
+<li>12.1 <a href="/model-compose/ko/user-guide/13-streaming-mode#121-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EA%B0%9C%EC%9A%94">스트리밍 개요</a>
+<ul>
+<li>12.1.1 <a href="/model-compose/ko/user-guide/13-streaming-mode#1211-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D%EC%9D%B4%EB%9E%80">스트리밍이란?</a></li>
+<li>12.1.2 <a href="/model-compose/ko/user-guide/13-streaming-mode#1212-%EC%A7%80%EC%9B%90-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8">지원 컴포넌트</a></li>
+<li>12.1.3 <a href="/model-compose/ko/user-guide/13-streaming-mode#1213-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C">스트리밍 프로토콜</a></li>
+</ul>
+</li>
+<li>12.2 <a href="/model-compose/ko/user-guide/13-streaming-mode#122-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%B3%84-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%84%A4%EC%A0%95">컴포넌트별 스트리밍 설정</a>
+<ul>
+<li>12.2.1 <a href="/model-compose/ko/user-guide/13-streaming-mode#1221-%EB%AA%A8%EB%8D%B8-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8">모델 컴포넌트</a></li>
+<li>12.2.2 <a href="/model-compose/ko/user-guide/13-streaming-mode#1222-http-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8">HTTP 컴포넌트</a></li>
+</ul>
+</li>
+<li>12.3 <a href="/model-compose/ko/user-guide/13-streaming-mode#123-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0%EC%97%90%EC%84%9C-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%82%AC%EC%9A%A9">워크플로우에서 스트리밍 사용</a>
+<ul>
+<li>12.3.1 <a href="/model-compose/ko/user-guide/13-streaming-mode#1231-%EA%B8%B0%EB%B3%B8-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0">기본 스트리밍 워크플로우</a></li>
+<li>12.3.2 [여러 단계 워크플로우 스트리밍](./13-streaming-mode.md#1232-여러 단계-워크플로우-스트리밍)</li>
+<li>12.3.3 <a href="/model-compose/ko/user-guide/13-streaming-mode#1233-%EC%A1%B0%EA%B1%B4%EB%B6%80-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D">조건부 스트리밍</a></li>
+</ul>
+</li>
+<li>12.4 <a href="/model-compose/ko/user-guide/13-streaming-mode#124-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%9D%91%EB%8B%B5-%EC%B2%98%EB%A6%AC">스트리밍 응답 처리</a>
+<ul>
+<li>12.4.1 <a href="/model-compose/ko/user-guide/13-streaming-mode#1241-api-%EC%97%94%EB%93%9C%ED%8F%AC%EC%9D%B8%ED%8A%B8">API 엔드포인트</a></li>
+<li>12.4.2 <a href="/model-compose/ko/user-guide/13-streaming-mode#1242-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8-%EA%B5%AC%ED%98%84-javascript">클라이언트 구현 (JavaScript)</a></li>
+<li>12.4.3 <a href="/model-compose/ko/user-guide/13-streaming-mode#1243-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8-%EA%B5%AC%ED%98%84-python">클라이언트 구현 (Python)</a></li>
+<li>12.4.4 <a href="/model-compose/ko/user-guide/13-streaming-mode#1244-web-ui-%ED%86%B5%ED%95%A9">Web UI 통합</a></li>
+</ul>
+</li>
+<li>12.5 <a href="/model-compose/ko/user-guide/13-streaming-mode#125-%EC%84%B1%EB%8A%A5-%EB%B0%8F-%EC%B5%9C%EC%A0%81%ED%99%94">성능 및 최적화</a>
+<ul>
+<li>12.5.1 <a href="/model-compose/ko/user-guide/13-streaming-mode#1251-%EB%AA%A8%EB%8D%B8-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%B5%9C%EC%A0%81%ED%99%94">모델 스트리밍 최적화</a></li>
+<li>12.5.2 <a href="/model-compose/ko/user-guide/13-streaming-mode#1252-http-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%B5%9C%EC%A0%81%ED%99%94">HTTP 스트리밍 최적화</a></li>
+<li>12.5.3 <a href="/model-compose/ko/user-guide/13-streaming-mode#1253-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC">메모리 관리</a></li>
+<li>12.5.4 <a href="/model-compose/ko/user-guide/13-streaming-mode#1254-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EC%B5%9C%EC%A0%81%ED%99%94">네트워크 최적화</a></li>
+<li>12.5.5 <a href="/model-compose/ko/user-guide/13-streaming-mode#1255-%EC%97%90%EB%9F%AC-%EC%B2%98%EB%A6%AC">에러 처리</a></li>
+</ul>
+</li>
+<li>12.6 <a href="/model-compose/ko/user-guide/13-streaming-mode#126-%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C">실전 예제</a>
+<ul>
+<li>12.6.1 <a href="/model-compose/ko/user-guide/13-streaming-mode#1261-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EB%B2%88%EC%97%AD-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D">실시간 번역 스트리밍</a></li>
+<li>12.6.2 <a href="/model-compose/ko/user-guide/13-streaming-mode#1262-openai--claude-%EC%A1%B0%ED%95%A9">OpenAI + Claude 조합</a></li>
+<li>12.6.3 <a href="/model-compose/ko/user-guide/13-streaming-mode#1263-%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%84%9C%EB%B2%84">로컬 모델 스트리밍 서버</a></li>
+</ul>
+</li>
+<li>12.7 <a href="/model-compose/ko/user-guide/13-streaming-mode#127-%EB%B6%84%EC%82%B0-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%ED%81%90-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D">분산 스트리밍 (큐 스트리밍)</a></li>
+<li>12.8 <a href="/model-compose/ko/user-guide/13-streaming-mode#128-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EB%AA%A8%EB%B2%94-%EC%82%AC%EB%A1%80">스트리밍 모범 사례</a></li>
+</ul>
+<h2 id="14-변수-바인딩">14. <a href="/model-compose/ko/user-guide/14-variable-binding">변수 바인딩</a></h2>
+<ul>
+<li>13.1 <a href="/model-compose/ko/user-guide/14-variable-binding#131-%EA%B5%AC%EB%AC%B8-%EA%B0%9C%EC%9A%94">구문 개요</a></li>
+<li>13.2 <a href="/model-compose/ko/user-guide/14-variable-binding#132-%EB%B3%80%EC%88%98-%EC%86%8C%EC%8A%A4">변수 소스</a>
+<ul>
+<li>13.2.1 <a href="/model-compose/ko/user-guide/14-variable-binding#1321-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%9E%85%EB%A0%A5">워크플로우 입력</a></li>
+<li>13.2.2 <a href="/model-compose/ko/user-guide/14-variable-binding#1322-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%9D%91%EB%8B%B5-%EB%B3%80%EC%88%98">컴포넌트 응답 변수</a></li>
+<li>13.2.3 <a href="/model-compose/ko/user-guide/14-variable-binding#1323-%EC%9D%B4%EC%A0%84-%EC%9E%91%EC%97%85-%EC%B6%9C%EB%A0%A5">이전 작업 출력</a></li>
+<li>13.2.4 <a href="/model-compose/ko/user-guide/14-variable-binding#1324-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98">환경 변수</a></li>
+<li>13.2.5 <a href="/model-compose/ko/user-guide/14-variable-binding#1325-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%B2%AD%ED%81%AC-%EC%B0%B8%EC%A1%B0">스트리밍 청크 참조</a></li>
+</ul>
+</li>
+<li>13.3 <a href="/model-compose/ko/user-guide/14-variable-binding#133-%EA%B2%BD%EB%A1%9C-%EC%A0%91%EA%B7%BC">경로 접근</a></li>
+<li>13.4 <a href="/model-compose/ko/user-guide/14-variable-binding#134-%ED%83%80%EC%9E%85-%EB%B3%80%ED%99%98">타입 변환</a>
+<ul>
+<li>13.4.1 <a href="/model-compose/ko/user-guide/14-variable-binding#1341-%EA%B8%B0%EB%B3%B8-%ED%83%80%EC%9E%85">기본 타입</a></li>
+<li>13.4.2 <a href="/model-compose/ko/user-guide/14-variable-binding#1342-%EA%B0%9D%EC%B2%B4-%EB%B0%B0%EC%97%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%EC%85%98">객체 배열 프로젝션</a></li>
+<li>13.4.3 <a href="/model-compose/ko/user-guide/14-variable-binding#1343-%EB%AF%B8%EB%94%94%EC%96%B4-%ED%83%80%EC%9E%85">미디어 타입</a></li>
+<li>13.4.4 <a href="/model-compose/ko/user-guide/14-variable-binding#1344-%EC%86%8D%EC%84%B1">속성</a></li>
+<li>13.4.5 <a href="/model-compose/ko/user-guide/14-variable-binding#1345-base64-%ED%83%80%EC%9E%85-vs-base64-%ED%8F%AC%EB%A7%B7">Base64 타입 vs Base64 포맷</a></li>
+</ul>
+</li>
+<li>13.5 <a href="/model-compose/ko/user-guide/14-variable-binding#135-%ED%8F%AC%EB%A7%B7%EA%B3%BC-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%9D%98%EB%AF%B8">포맷과 컨텍스트 의미</a>
+<ul>
+<li>13.5.1 <a href="/model-compose/ko/user-guide/14-variable-binding#1351-%ED%8F%AC%EB%A7%B7-%EA%B0%92">포맷 값</a></li>
+<li>13.5.2 <a href="/model-compose/ko/user-guide/14-variable-binding#1352-%EC%9E%85%EB%A0%A5-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8">입력 컨텍스트</a></li>
+<li>13.5.3 <a href="/model-compose/ko/user-guide/14-variable-binding#1353-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%9E%91%EC%97%85-%EC%B6%9C%EB%A0%A5-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8">컴포넌트/작업 출력 컨텍스트</a></li>
+<li>13.5.4 <a href="/model-compose/ko/user-guide/14-variable-binding#1354-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%B6%9C%EB%A0%A5-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8">워크플로우 출력 컨텍스트</a></li>
+</ul>
+</li>
+<li>13.6 <a href="/model-compose/ko/user-guide/14-variable-binding#136-%EA%B8%B0%EB%B3%B8%EA%B0%92">기본값</a>
+<ul>
+<li>13.6.1 <a href="/model-compose/ko/user-guide/14-variable-binding#1361-%EB%A6%AC%ED%84%B0%EB%9F%B4-%EA%B8%B0%EB%B3%B8%EA%B0%92">리터럴 기본값</a></li>
+<li>13.6.2 <a href="/model-compose/ko/user-guide/14-variable-binding#1362-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EA%B8%B0%EB%B3%B8%EA%B0%92">환경 변수 기본값</a></li>
+<li>13.6.3 <a href="/model-compose/ko/user-guide/14-variable-binding#1363-%EC%A4%91%EC%B2%A9-%EA%B8%B0%EB%B3%B8%EA%B0%92-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98--%EB%A6%AC%ED%84%B0%EB%9F%B4">중첩 기본값 (환경 변수 + 리터럴)</a></li>
+</ul>
+</li>
+<li>13.7 <a href="/model-compose/ko/user-guide/14-variable-binding#137-%EB%A9%94%ED%83%80%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%99%80-ui-%ED%9E%8C%ED%8A%B8">메타데이터와 UI 힌트</a>
+<ul>
+<li>13.7.1 <a href="/model-compose/ko/user-guide/14-variable-binding#1371-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98">어노테이션</a></li>
+<li>13.7.2 <a href="/model-compose/ko/user-guide/14-variable-binding#1372-select-%EB%93%9C%EB%A1%AD%EB%8B%A4%EC%9A%B4">Select (드롭다운)</a></li>
+<li>13.7.3 <a href="/model-compose/ko/user-guide/14-variable-binding#1373-slider">Slider</a></li>
+<li>13.7.4 <a href="/model-compose/ko/user-guide/14-variable-binding#1374-textarea">Textarea</a></li>
+</ul>
+</li>
+<li>13.8 <a href="/model-compose/ko/user-guide/14-variable-binding#138-%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C">실전 예제</a></li>
+</ul>
+<h2 id="15-시스템-통합">15. <a href="/model-compose/ko/user-guide/15-system-integration">시스템 통합</a></h2>
+<ul>
+<li>14.1 <a href="/model-compose/ko/user-guide/15-system-integration#141-%EB%A6%AC%EC%8A%A4%EB%84%88-%EA%B0%9C%EC%9A%94">리스너 개요</a></li>
+<li>14.2 <a href="/model-compose/ko/user-guide/15-system-integration#142-http-callback-%EB%A6%AC%EC%8A%A4%EB%84%88">HTTP Callback 리스너</a>
+<ul>
+<li>14.2.1 <a href="/model-compose/ko/user-guide/15-system-integration#1421-http-callback-%EA%B0%9C%EC%9A%94">HTTP Callback 개요</a></li>
+<li>14.2.2 <a href="/model-compose/ko/user-guide/15-system-integration#1422-http-callback-%EA%B8%B0%EB%B3%B8-%EC%84%A4%EC%A0%95">HTTP Callback 기본 설정</a></li>
+<li>14.2.3 <a href="/model-compose/ko/user-guide/15-system-integration#1423-%EC%BD%9C%EB%B0%B1-%EC%97%94%EB%93%9C%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%84%A4%EC%A0%95">콜백 엔드포인트 설정</a></li>
+<li>14.2.4 <a href="/model-compose/ko/user-guide/15-system-integration#1424-%EC%BD%9C%EB%B0%B1-%ED%95%84%EB%93%9C-%EC%84%A4%EB%AA%85">콜백 필드 설명</a></li>
+<li>14.2.5 <a href="/model-compose/ko/user-guide/15-system-integration#1425-%EB%B2%8C%ED%81%ACbulk-%EC%BD%9C%EB%B0%B1-%EC%B2%98%EB%A6%AC">벌크(Bulk) 콜백 처리</a></li>
+<li>14.2.6 <a href="/model-compose/ko/user-guide/15-system-integration#1426-http-callback-%EA%B3%A0%EA%B8%89-%EC%84%A4%EC%A0%95">HTTP Callback 고급 설정</a></li>
+<li>14.2.7 <a href="/model-compose/ko/user-guide/15-system-integration#1427-http-callback-%EC%9E%91%EB%8F%99-%EC%9B%90%EB%A6%AC">HTTP Callback 작동 원리</a></li>
+<li>14.2.8 <a href="/model-compose/ko/user-guide/15-system-integration#1428-%EC%BD%9C%EB%B0%B1-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A7%A4%ED%95%91">콜백 데이터 매핑</a></li>
+</ul>
+</li>
+<li>14.3 <a href="/model-compose/ko/user-guide/15-system-integration#143-http-trigger-%EB%A6%AC%EC%8A%A4%EB%84%88">HTTP Trigger 리스너</a>
+<ul>
+<li>14.3.1 <a href="/model-compose/ko/user-guide/15-system-integration#1431-http-trigger-%EA%B0%9C%EC%9A%94">HTTP Trigger 개요</a></li>
+<li>14.3.2 <a href="/model-compose/ko/user-guide/15-system-integration#1432-http-trigger-%EA%B8%B0%EB%B3%B8-%EC%84%A4%EC%A0%95">HTTP Trigger 기본 설정</a></li>
+<li>14.3.3 <a href="/model-compose/ko/user-guide/15-system-integration#1433-%ED%8A%B8%EB%A6%AC%EA%B1%B0-%EC%97%94%EB%93%9C%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%84%A4%EC%A0%95">트리거 엔드포인트 설정</a></li>
+<li>14.3.4 <a href="/model-compose/ko/user-guide/15-system-integration#1434-%ED%8A%B8%EB%A6%AC%EA%B1%B0-%ED%95%84%EB%93%9C-%EC%84%A4%EB%AA%85">트리거 필드 설명</a></li>
+<li>14.3.5 <a href="/model-compose/ko/user-guide/15-system-integration#1435-%EB%B2%8C%ED%81%ACbulk-%ED%8A%B8%EB%A6%AC%EA%B1%B0-%EC%B2%98%EB%A6%AC">벌크(Bulk) 트리거 처리</a></li>
+<li>14.3.6 <a href="/model-compose/ko/user-guide/15-system-integration#1436-http-trigger-%EC%9E%91%EB%8F%99-%EC%9B%90%EB%A6%AC">HTTP Trigger 작동 원리</a></li>
+<li>14.3.7 <a href="/model-compose/ko/user-guide/15-system-integration#1437-%EC%9E%85%EB%A0%A5-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A7%A4%ED%95%91">입력 데이터 매핑</a></li>
+<li>14.3.8 <a href="/model-compose/ko/user-guide/15-system-integration#1438-%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C">실전 예제</a></li>
+</ul>
+</li>
+<li>14.4 <a href="/model-compose/ko/user-guide/15-system-integration#144-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4---http-%ED%84%B0%EB%84%90%EB%A7%81">게이트웨이 - HTTP 터널링</a>
+<ul>
+<li>14.4.1 <a href="/model-compose/ko/user-guide/15-system-integration#1441-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-%EA%B0%9C%EC%9A%94">게이트웨이 개요</a></li>
+<li>14.4.2 <a href="/model-compose/ko/user-guide/15-system-integration#1442-http-%ED%84%B0%EB%84%90---ngrok">HTTP 터널 - ngrok</a></li>
+<li>14.4.3 <a href="/model-compose/ko/user-guide/15-system-integration#1443-http-%ED%84%B0%EB%84%90---cloudflare">HTTP 터널 - Cloudflare</a></li>
+<li>14.4.4 <a href="/model-compose/ko/user-guide/15-system-integration#1444-ssh-%ED%84%B0%EB%84%90">SSH 터널</a></li>
+<li>14.4.5 <a href="/model-compose/ko/user-guide/15-system-integration#1445-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-%EA%B3%A0%EA%B8%89-%EC%84%A4%EC%A0%95">게이트웨이 고급 설정</a></li>
+<li>14.4.6 <a href="/model-compose/ko/user-guide/15-system-integration#1446-%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C-slack-%EB%B4%87-%EC%9B%B9%ED%9B%85">실전 예제: Slack 봇 웹훅</a></li>
+</ul>
+</li>
+<li>14.5 <a href="/model-compose/ko/user-guide/15-system-integration#145-%EB%A6%AC%EC%8A%A4%EB%84%88%EC%99%80-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-%ED%95%A8%EA%BB%98-%EC%82%AC%EC%9A%A9">리스너와 게이트웨이 함께 사용</a>
+<ul>
+<li>14.5.1 <a href="/model-compose/ko/user-guide/15-system-integration#1451-%ED%86%B5%ED%95%A9-%EC%98%88%EC%A0%9C-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%B2%98%EB%A6%AC">통합 예제: 비동기 이미지 처리</a></li>
+<li>14.5.2 <a href="/model-compose/ko/user-guide/15-system-integration#1452-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8">아키텍처 다이어그램</a></li>
+<li>14.5.3 <a href="/model-compose/ko/user-guide/15-system-integration#1453-%ED%94%84%EB%A1%9C%EB%8D%95%EC%85%98-%ED%99%98%EA%B2%BD-%EA%B3%A0%EB%A0%A4%EC%82%AC%ED%95%AD">프로덕션 환경 고려사항</a></li>
+</ul>
+</li>
+<li>14.6 <a href="/model-compose/ko/user-guide/15-system-integration#146-%EC%8B%9C%EC%8A%A4%ED%85%9C-%ED%86%B5%ED%95%A9-%EB%AA%A8%EB%B2%94-%EC%82%AC%EB%A1%80">시스템 통합 모범 사례</a></li>
+<li>14.7 <a href="/model-compose/ko/user-guide/15-system-integration#147-%EC%8B%9C%EC%8A%A4%ED%85%9C---%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B4%80%EB%A6%AC">시스템 - 인프라 관리</a>
+<ul>
+<li>14.7.1 <a href="/model-compose/ko/user-guide/15-system-integration#1471-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B0%9C%EC%9A%94">시스템 개요</a></li>
+<li>14.7.2 <a href="/model-compose/ko/user-guide/15-system-integration#1472-docker-compose-%EC%8B%9C%EC%8A%A4%ED%85%9C">Docker Compose 시스템</a></li>
+<li>14.7.3 <a href="/model-compose/ko/user-guide/15-system-integration#1473-%EB%B3%B5%EC%88%98-%EC%8B%9C%EC%8A%A4%ED%85%9C">복수 시스템</a></li>
+<li>14.7.4 <a href="/model-compose/ko/user-guide/15-system-integration#1474-%EC%A0%84%EC%B2%B4-%EC%98%88%EC%A0%9C-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80-%EC%9E%90%EB%8F%99%ED%99%94">전체 예제: 브라우저 자동화</a></li>
+<li>14.7.5 <a href="/model-compose/ko/user-guide/15-system-integration#1475-%EB%9D%BC%EC%9D%B4%ED%94%84%EC%82%AC%EC%9D%B4%ED%81%B4-%EC%88%9C%EC%84%9C">라이프사이클 순서</a></li>
+<li>14.7.6 <a href="/model-compose/ko/user-guide/15-system-integration#1476-%EC%A0%84%EC%A0%9C-%EC%A1%B0%EA%B1%B4">전제 조건</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="16-배포">16. <a href="/model-compose/ko/user-guide/16-deployment">배포</a></h2>
+<ul>
+<li>15.1 <a href="/model-compose/ko/user-guide/16-deployment#151-%EB%A1%9C%EC%BB%AC-%EC%8B%A4%ED%96%89">로컬 실행</a>
+<ul>
+<li>15.1.1 <a href="/model-compose/ko/user-guide/16-deployment#1511-%EA%B8%B0%EB%B3%B8-%EC%8B%A4%ED%96%89">기본 실행</a></li>
+<li>15.1.2 <a href="/model-compose/ko/user-guide/16-deployment#1512-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EA%B4%80%EB%A6%AC">환경 변수 관리</a></li>
+<li>15.1.3 <a href="/model-compose/ko/user-guide/16-deployment#1513-%EC%84%A4%EC%A0%95-%ED%8C%8C%EC%9D%BC-%EC%A7%80%EC%A0%95">설정 파일 지정</a></li>
+<li>15.1.4 <a href="/model-compose/ko/user-guide/16-deployment#1514-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EB%8B%A8%EB%8F%85-%EC%8B%A4%ED%96%89">워크플로우 단독 실행</a></li>
+<li>15.1.5 <a href="/model-compose/ko/user-guide/16-deployment#1515-%EB%94%94%EB%B2%84%EA%B9%85-%EC%98%B5%EC%85%98">디버깅 옵션</a></li>
+</ul>
+</li>
+<li>15.2 <a href="/model-compose/ko/user-guide/16-deployment#152-docker-%EB%9F%B0%ED%83%80%EC%9E%84">Docker 런타임</a>
+<ul>
+<li>15.2.1 <a href="/model-compose/ko/user-guide/16-deployment#1521-%EA%B8%B0%EB%B3%B8-docker-%EC%84%A4%EC%A0%95">기본 Docker 설정</a></li>
+<li>15.2.2 <a href="/model-compose/ko/user-guide/16-deployment#1522-%EA%B3%A0%EA%B8%89-docker-%EC%98%B5%EC%85%98">고급 Docker 옵션</a></li>
+<li>15.2.3 <a href="/model-compose/ko/user-guide/16-deployment#1523-%EB%B3%BC%EB%A5%A8-%EB%B0%8F-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98">볼륨 및 환경 변수</a></li>
+</ul>
+</li>
+<li>15.3 <a href="/model-compose/ko/user-guide/16-deployment#153-docker-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%B9%8C%EB%93%9C-%EB%B0%8F-%EB%B0%B0%ED%8F%AC">Docker 컨테이너 빌드 및 배포</a>
+<ul>
+<li>15.3.1 <a href="/model-compose/ko/user-guide/16-deployment#1531-%EC%9E%90%EB%8F%99-%EB%B9%8C%EB%93%9C-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4">자동 빌드 프로세스</a></li>
+<li>15.3.2 <a href="/model-compose/ko/user-guide/16-deployment#1532-%EC%BB%A4%EC%8A%A4%ED%85%80-dockerfile-%EC%82%AC%EC%9A%A9">커스텀 Dockerfile 사용</a></li>
+<li>15.3.3 <a href="/model-compose/ko/user-guide/16-deployment#1533-%EB%A9%80%ED%8B%B0-%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80-%EB%B9%8C%EB%93%9C">멀티 스테이지 빌드</a></li>
+<li>15.3.4 <a href="/model-compose/ko/user-guide/16-deployment#1534-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%A0%88%EC%A7%80%EC%8A%A4%ED%8A%B8%EB%A6%AC-%EC%82%AC%EC%9A%A9">이미지 레지스트리 사용</a></li>
+<li>15.3.5 <a href="/model-compose/ko/user-guide/16-deployment#1535-%ED%94%84%EB%9D%BC%EC%9D%B4%EB%B9%97-%EB%A0%88%EC%A7%80%EC%8A%A4%ED%8A%B8%EB%A6%AC-%EC%9D%B8%EC%A6%9D">프라이빗 레지스트리 인증</a></li>
+</ul>
+</li>
+<li>15.4 <a href="/model-compose/ko/user-guide/16-deployment#154-%ED%94%84%EB%A1%9C%EB%8D%95%EC%85%98-%ED%99%98%EA%B2%BD-%EA%B3%A0%EB%A0%A4%EC%82%AC%ED%95%AD">프로덕션 환경 고려사항</a>
+<ul>
+<li>15.4.1 <a href="/model-compose/ko/user-guide/16-deployment#1541-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%A0%9C%EC%96%B4">동시성 제어</a></li>
+<li>15.4.2 <a href="/model-compose/ko/user-guide/16-deployment#1542-%EB%A6%AC%EC%86%8C%EC%8A%A4-%EC%A0%9C%ED%95%9C">리소스 제한</a></li>
+<li>15.4.3 <a href="/model-compose/ko/user-guide/16-deployment#1543-%EC%9E%AC%EC%8B%9C%EC%9E%91-%EC%A0%95%EC%B1%85">재시작 정책</a></li>
+<li>15.4.4 <a href="/model-compose/ko/user-guide/16-deployment#1544-%ED%97%AC%EC%8A%A4-%EC%B2%B4%ED%81%AC">헬스 체크</a></li>
+<li>15.4.5 <a href="/model-compose/ko/user-guide/16-deployment#1545-%EB%B3%B4%EC%95%88-%EA%B3%A0%EB%A0%A4%EC%82%AC%ED%95%AD">보안 고려사항</a></li>
+<li>15.4.6 <a href="/model-compose/ko/user-guide/16-deployment#1546-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%98%81%EC%86%8D%EC%84%B1">데이터 영속성</a></li>
+</ul>
+</li>
+<li>15.5 <a href="/model-compose/ko/user-guide/16-deployment#155-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%B0%8F-%EB%A1%9C%EA%B9%85">모니터링 및 로깅</a>
+<ul>
+<li>15.5.1 <a href="/model-compose/ko/user-guide/16-deployment#1551-%EB%A1%9C%EA%B1%B0-%EC%84%A4%EC%A0%95">로거 설정</a></li>
+<li>15.5.2 <a href="/model-compose/ko/user-guide/16-deployment#1552-docker-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%A1%9C%EA%B7%B8">Docker 컨테이너 로그</a></li>
+<li>15.5.3 <a href="/model-compose/ko/user-guide/16-deployment#1553-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%8B%A4%ED%96%89-%EB%A1%9C%EA%B9%85">워크플로우 실행 로깅</a></li>
+<li>15.5.4 <a href="/model-compose/ko/user-guide/16-deployment#1554-%EB%A9%94%ED%8A%B8%EB%A6%AD-%EC%88%98%EC%A7%91">메트릭 수집</a></li>
+<li>15.5.5 <a href="/model-compose/ko/user-guide/16-deployment#1555-%EC%99%B8%EB%B6%80-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EC%8B%9C%EC%8A%A4%ED%85%9C">외부 모니터링 시스템</a></li>
+<li>15.5.6 <a href="/model-compose/ko/user-guide/16-deployment#1556-%ED%8A%B8%EB%A0%88%EC%9D%B4%EC%84%9C-%EC%84%A4%EC%A0%95">트레이서 설정</a></li>
+</ul>
+</li>
+<li>15.6 <a href="/model-compose/ko/user-guide/16-deployment#156-%EB%B0%B0%ED%8F%AC-%EB%AA%A8%EB%B2%94-%EC%82%AC%EB%A1%80">배포 모범 사례</a></li>
+</ul>
+<h2 id="17-실전-예제">17. <a href="/model-compose/ko/user-guide/17-practical-examples">실전 예제</a></h2>
+<ul>
+<li>16.1 <a href="/model-compose/ko/user-guide/17-practical-examples#161-%EC%B1%97%EB%B4%87-%EA%B5%AC%EC%B6%95">챗봇 구축</a>
+<ul>
+<li>16.1.1 <a href="/model-compose/ko/user-guide/17-practical-examples#1611-openai-gpt-4o-%EC%B1%97%EB%B4%87">OpenAI GPT-4o 챗봇</a></li>
+<li>16.1.2 <a href="/model-compose/ko/user-guide/17-practical-examples#1612-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%B1%97%EB%B4%87">스트리밍 챗봇</a></li>
+</ul>
+</li>
+<li>16.2 <a href="/model-compose/ko/user-guide/17-practical-examples#162-%EC%9D%8C%EC%84%B1-%EC%83%9D%EC%84%B1-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8">음성 생성 파이프라인</a>
+<ul>
+<li>16.2.1 <a href="/model-compose/ko/user-guide/17-practical-examples#1621-%ED%85%8D%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%9D%8C%EC%84%B1%EC%9C%BC%EB%A1%9C-%EB%B3%80%ED%99%98-openai-tts">텍스트를 음성으로 변환 (OpenAI TTS)</a></li>
+<li>16.2.2 <a href="/model-compose/ko/user-guide/17-practical-examples#1622-%EC%98%81%EA%B0%90%EC%9D%84-%EC%A3%BC%EB%8A%94-%EB%AA%85%EC%96%B8-%EC%9D%8C%EC%84%B1-%EC%83%9D%EC%84%B1">영감을 주는 명언 음성 생성</a></li>
+</ul>
+</li>
+<li>16.3 <a href="/model-compose/ko/user-guide/17-practical-examples#163-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%B6%84%EC%84%9D-%EB%B0%8F-%ED%8E%B8%EC%A7%91">이미지 분석 및 편집</a>
+<ul>
+<li>16.3.1 <a href="/model-compose/ko/user-guide/17-practical-examples#1631-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%BA%A1%EC%85%94%EB%8B%9D-image-to-text">이미지 캡셔닝 (Image-to-Text)</a></li>
+<li>16.3.2 <a href="/model-compose/ko/user-guide/17-practical-examples#1632-%EC%9D%B4%EB%AF%B8%EC%A7%80-%ED%8E%B8%EC%A7%91-openai-dall-e">이미지 편집 (OpenAI DALL-E)</a></li>
+</ul>
+</li>
+<li>16.4 <a href="/model-compose/ko/user-guide/17-practical-examples#164-rag-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%B2%A1%ED%84%B0-db-%ED%99%9C%EC%9A%A9">RAG 시스템 (벡터 DB 활용)</a>
+<ul>
+<li>16.4.1 <a href="/model-compose/ko/user-guide/17-practical-examples#1641-chromadb%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%9C-%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%9E%84%EB%B2%A0%EB%94%A9-%EA%B2%80%EC%83%89">ChromaDB를 사용한 텍스트 임베딩 검색</a></li>
+<li>16.4.2 <a href="/model-compose/ko/user-guide/17-practical-examples#1642-milvus%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%9C-rag-%EC%8B%9C%EC%8A%A4%ED%85%9C">Milvus를 사용한 RAG 시스템</a></li>
+</ul>
+</li>
+<li>16.5 <a href="/model-compose/ko/user-guide/17-practical-examples#165-slack-%EB%B4%87-mcp">Slack 봇 (MCP)</a>
+<ul>
+<li>16.5.1 <a href="/model-compose/ko/user-guide/17-practical-examples#1651-mcp-%EC%84%9C%EB%B2%84%EB%A1%9C-slack-%EB%B4%87-%EA%B5%AC%EC%B6%95">MCP 서버로 Slack 봇 구축</a></li>
+<li>16.5.2 <a href="/model-compose/ko/user-guide/17-practical-examples#1652-ai-%EA%B8%B0%EB%B0%98-slack-%EC%9E%90%EB%8F%99-%EC%9D%91%EB%8B%B5-%EB%B4%87">AI 기반 Slack 자동 응답 봇</a></li>
+</ul>
+</li>
+<li>16.6 <a href="/model-compose/ko/user-guide/17-practical-examples#166-%EB%A9%80%ED%8B%B0%EB%AA%A8%EB%8B%AC-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0">멀티모달 워크플로우</a>
+<ul>
+<li>16.6.1 <a href="/model-compose/ko/user-guide/17-practical-examples#1661-%EC%9D%B4%EB%AF%B8%EC%A7%80--%ED%85%8D%EC%8A%A4%ED%8A%B8--%EC%9D%8C%EC%84%B1-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8">이미지 → 텍스트 → 음성 파이프라인</a></li>
+<li>16.6.2 <a href="/model-compose/ko/user-guide/17-practical-examples#1662-%EC%9D%8C%EC%84%B1--%ED%85%8D%EC%8A%A4%ED%8A%B8--%EB%B2%88%EC%97%AD--%EC%9D%8C%EC%84%B1-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8">음성 → 텍스트 → 번역 → 음성 파이프라인</a></li>
+</ul>
+</li>
+<li>16.8 <a href="/model-compose/ko/user-guide/17-practical-examples#168-%ED%82%A4-%EA%B0%92-%EC%8A%A4%ED%86%A0%EC%96%B4-%EC%BA%90%EC%8B%B1--%EC%84%B8%EC%85%98">키-값 스토어 (캐싱 &amp; 세션)</a>
+<ul>
+<li>16.8.1 <a href="/model-compose/ko/user-guide/17-practical-examples#1681-api-%EC%9D%91%EB%8B%B5-%EC%BA%90%EC%8B%B1">API 응답 캐싱</a></li>
+<li>16.8.2 <a href="/model-compose/ko/user-guide/17-practical-examples#1682-%EC%84%B8%EC%85%98-%EA%B4%80%EB%A6%AC">세션 관리</a></li>
+</ul>
+</li>
+<li>17.10 <a href="/model-compose/ko/user-guide/17-practical-examples#1710-%EB%8C%80%ED%99%94-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EC%B1%97%EB%B4%87">대화 메모리를 활용한 챗봇</a>
+<ul>
+<li>17.10.1 <a href="/model-compose/ko/user-guide/17-practical-examples#17101-%EC%83%81%ED%83%9C-%EC%9C%A0%EC%A7%80-%EC%B1%97%EB%B4%87-model-memory">상태 유지 챗봇 (model-memory)</a></li>
+<li>17.10.2 <a href="/model-compose/ko/user-guide/17-practical-examples#17102-redis-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%8B%A4%EC%A4%91-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%B1%97%EB%B4%87">Redis 메모리를 사용한 다중 사용자 챗봇</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="18-문제-해결">18. <a href="/model-compose/ko/user-guide/18-troubleshooting">문제 해결</a></h2>
+<ul>
+<li>17.1 <a href="/model-compose/ko/user-guide/18-troubleshooting#171-%EC%9E%90%EC%A3%BC-%EB%AC%BB%EB%8A%94-%EC%A7%88%EB%AC%B8-faq">자주 묻는 질문 (FAQ)</a>
+<ul>
+<li>17.1.1 <a href="/model-compose/ko/user-guide/18-troubleshooting#1711-%EC%84%A4%EC%B9%98-%EB%B0%8F-%ED%99%98%EA%B2%BD-%EC%84%A4%EC%A0%95">설치 및 환경 설정</a></li>
+<li>17.1.2 <a href="/model-compose/ko/user-guide/18-troubleshooting#1712-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%84%A4%EC%A0%95">컴포넌트 설정</a></li>
+<li>17.1.3 <a href="/model-compose/ko/user-guide/18-troubleshooting#1713-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%8B%A4%ED%96%89">워크플로우 실행</a></li>
+<li>17.1.4 <a href="/model-compose/ko/user-guide/18-troubleshooting#1714-web-ui">Web UI</a></li>
+<li>17.1.5 <a href="/model-compose/ko/user-guide/18-troubleshooting#1715-%EB%A6%AC%EC%8A%A4%EB%84%88%EC%99%80-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4">리스너와 게이트웨이</a></li>
+</ul>
+</li>
+<li>17.2 <a href="/model-compose/ko/user-guide/18-troubleshooting#172-%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-%EC%98%A4%EB%A5%98-%EB%B0%8F-%ED%95%B4%EA%B2%B0%EC%B1%85">일반적인 오류 및 해결책</a>
+<ul>
+<li>17.2.1 <a href="/model-compose/ko/user-guide/18-troubleshooting#1721-%EB%AA%A8%EB%8D%B8-%EB%A1%9C%EB%94%A9-%EC%98%A4%EB%A5%98">모델 로딩 오류</a></li>
+<li>17.2.2 <a href="/model-compose/ko/user-guide/18-troubleshooting#1722-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EC%98%A4%EB%A5%98">네트워크 오류</a></li>
+<li>17.2.3 <a href="/model-compose/ko/user-guide/18-troubleshooting#1723-%EC%84%A4%EC%A0%95-%ED%8C%8C%EC%9D%BC-%EC%98%A4%EB%A5%98">설정 파일 오류</a></li>
+<li>17.2.4 <a href="/model-compose/ko/user-guide/18-troubleshooting#1724-%EB%B3%80%EC%88%98-%EB%B0%94%EC%9D%B8%EB%94%A9-%EC%98%A4%EB%A5%98">변수 바인딩 오류</a></li>
+<li>17.2.5 <a href="/model-compose/ko/user-guide/18-troubleshooting#1725-docker-%EB%9F%B0%ED%83%80%EC%9E%84-%EC%98%A4%EB%A5%98">Docker 런타임 오류</a></li>
+</ul>
+</li>
+<li>17.3 <a href="/model-compose/ko/user-guide/18-troubleshooting#173-%EB%94%94%EB%B2%84%EA%B9%85-%ED%8C%81">디버깅 팁</a>
+<ul>
+<li>17.3.1 <a href="/model-compose/ko/user-guide/18-troubleshooting#1731-%EB%A1%9C%EA%B9%85-%ED%99%9C%EC%84%B1%ED%99%94">로깅 활성화</a></li>
+<li>17.3.2 <a href="/model-compose/ko/user-guide/18-troubleshooting#1732-%EB%B3%80%EC%88%98-%EA%B0%92-%ED%99%95%EC%9D%B8">변수 값 확인</a></li>
+<li>17.3.3 <a href="/model-compose/ko/user-guide/18-troubleshooting#1733-%EB%8B%A8%EA%B3%84%EB%B3%84-%EC%8B%A4%ED%96%89">단계별 실행</a></li>
+<li>17.3.4 <a href="/model-compose/ko/user-guide/18-troubleshooting#1734-api-%EC%9D%91%EB%8B%B5-%ED%99%95%EC%9D%B8">API 응답 확인</a></li>
+<li>17.3.5 <a href="/model-compose/ko/user-guide/18-troubleshooting#1735-docker-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%A1%9C%EA%B7%B8">Docker 컨테이너 로그</a></li>
+<li>17.3.6 <a href="/model-compose/ko/user-guide/18-troubleshooting#1736-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%ED%99%95%EC%9D%B8">환경 변수 확인</a></li>
+<li>17.3.7 <a href="/model-compose/ko/user-guide/18-troubleshooting#1737-%ED%8F%AC%ED%8A%B8-%EC%B6%A9%EB%8F%8C-%ED%99%95%EC%9D%B8">포트 충돌 확인</a></li>
+<li>17.3.8 <a href="/model-compose/ko/user-guide/18-troubleshooting#1738-%EC%9D%98%EC%A1%B4%EC%84%B1-%ED%99%95%EC%9D%B8">의존성 확인</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="19-부록">19. <a href="/model-compose/ko/user-guide/19-appendix">부록</a></h2>
+<ul>
+<li>18.1 <a href="/model-compose/ko/user-guide/19-appendix#181-%EC%84%A4%EC%A0%95-%ED%8C%8C%EC%9D%BC-%EC%A0%84%EC%B2%B4-%EC%8A%A4%ED%82%A4%EB%A7%88">설정 파일 전체 스키마</a>
+<ul>
+<li>18.1.1 <a href="/model-compose/ko/user-guide/19-appendix#1811-%EC%B5%9C%EC%83%81%EC%9C%84-%EA%B5%AC%EC%A1%B0">최상위 구조</a></li>
+<li>18.1.2 <a href="/model-compose/ko/user-guide/19-appendix#1812-%EC%BB%A8%ED%8A%B8%EB%A1%A4%EB%9F%AC-%EC%8A%A4%ED%82%A4%EB%A7%88">컨트롤러 스키마</a></li>
+<li>18.1.3 <a href="/model-compose/ko/user-guide/19-appendix#1813-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%8A%A4%ED%82%A4%EB%A7%88">컴포넌트 스키마</a></li>
+<li>18.1.4 <a href="/model-compose/ko/user-guide/19-appendix#1814-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%8A%A4%ED%82%A4%EB%A7%88">워크플로우 스키마</a></li>
+<li>18.1.5 <a href="/model-compose/ko/user-guide/19-appendix#1815-%EB%A6%AC%EC%8A%A4%EB%84%88-%EC%8A%A4%ED%82%A4%EB%A7%88">리스너 스키마</a></li>
+<li>18.1.6 <a href="/model-compose/ko/user-guide/19-appendix#1816-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-%EC%8A%A4%ED%82%A4%EB%A7%88">게이트웨이 스키마</a></li>
+<li>18.1.7 <a href="/model-compose/ko/user-guide/19-appendix#1817-%EB%A1%9C%EA%B1%B0-%EC%8A%A4%ED%82%A4%EB%A7%88">로거 스키마</a></li>
+<li>18.1.8 <a href="/model-compose/ko/user-guide/19-appendix#1818-%ED%8A%B8%EB%A0%88%EC%9D%B4%EC%84%9C-%EC%8A%A4%ED%82%A4%EB%A7%88">트레이서 스키마</a></li>
+<li>18.1.9 <a href="/model-compose/ko/user-guide/19-appendix#1819-%EB%9F%B0%ED%83%80%EC%9E%84-%EC%8A%A4%ED%82%A4%EB%A7%88">런타임 스키마</a></li>
+</ul>
+</li>
+</ul>
+<hr />
+<p><strong>참고</strong>: &quot;TBD&quot;로 표시된 섹션은 현재 개발 중인 기능을 위한 플레이스홀더입니다.</p>
+</article><nav class="flex justify-between gap-4 mt-12 pt-6 border-t border-border"><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent" href="/model-compose/ko/user-guide"><div class="text-muted text-[.78rem]">← <!-- -->Previous</div><div class="font-semibold text-accent">Model-Compose 사용자 가이드</div></a><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent text-right" href="/model-compose/ko/user-guide/01-getting-started"><div class="text-muted text-[.78rem]">Next<!-- --> →</div><div class="font-semibold text-accent">1장: 시작하기</div></a></nav><script>document.querySelectorAll('[data-copy-md]').forEach(function(b){b.addEventListener('click',async function(){try{var r=await fetch(b.getAttribute('data-copy-md'));var t=await r.text();await navigator.clipboard.writeText(t);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1500);}catch(e){alert('Copy failed: '+e);}});});document.querySelectorAll('.prose pre').forEach(function(pre){if(pre.querySelector('.copy-code'))return;var b=document.createElement('button');b.className='copy-code';b.textContent='Copy';b.addEventListener('click',async function(){var c=pre.querySelector('code');try{await navigator.clipboard.writeText(c?c.innerText:pre.innerText);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1200);}catch(e){}});pre.appendChild(b);});document.querySelectorAll('.tabs').forEach(function(t){t.querySelectorAll('.tab-btn').forEach(function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-tab');t.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-tab')===i);});t.querySelectorAll('.tab-panel').forEach(function(p){p.hidden=p.getAttribute('data-tab')!==i;});});});});(function(){var blocks=document.querySelectorAll('code.language-mermaid');if(!blocks.length)return;var items=[];blocks.forEach(function(c){var pre=c.closest('pre')||c;var h=document.createElement('div');h.className='mermaid-diagram';pre.replaceWith(h);items.push({src:c.textContent,holder:h});});var lib,id=0;function load(){return lib||(lib=import("https://esm.sh/mermaid@11").then(function(m){return m.default;}));}function theme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'default';}function run(){load().then(function(mermaid){mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:theme()});items.forEach(function(it){mermaid.render('kura-mmd-'+(id++),it.src).then(function(r){it.holder.innerHTML=r.svg;}).catch(function(e){it.holder.innerHTML='<pre class="mermaid-error">'+String((e&&e.message)||e)+'</pre>';});});}).catch(function(){});}run();var cur=document.documentElement.getAttribute('data-theme');new MutationObserver(function(){var t=document.documentElement.getAttribute('data-theme');if(t!==cur){cur=t;run();}}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></main><aside class="sticky top-14 max-h-[calc(100vh-56px)] overflow-y-auto px-4 py-8 max-lg:hidden"><p class="text-[.72rem] font-bold tracking-wider uppercase text-muted mb-2.5">On this page</p><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#1-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0">1. 시작하기</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#2-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90">2. 핵심 개념</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#3-cli-%EC%82%AC%EC%9A%A9%EB%B2%95">3. CLI 사용법</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#4-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%84%B1">4. 컴포넌트 구성</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#5-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%9E%91%EC%84%B1">5. 워크플로우 작성</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#6-%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%8A%A4%ED%82%A4%EB%A7%88">6. 워크플로우 스키마</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#7-%EC%BB%A8%ED%8A%B8%EB%A1%A4%EB%9F%AC-%EA%B5%AC%EC%84%B1">7. 컨트롤러 구성</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#8-websocket-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4">8. WebSocket 인터페이스</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#9-%EC%9B%B9-ui-%EA%B5%AC%EC%84%B1">9. 웹 UI 구성</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#10-%EB%A1%9C%EC%BB%AC-ai-%EB%AA%A8%EB%8D%B8-%EC%82%AC%EC%9A%A9">10. 로컬 AI 모델 사용</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#11-%EB%AA%A8%EB%8D%B8-%ED%9B%88%EB%A0%A8">11. 모델 훈련</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#12-%EC%99%B8%EB%B6%80-%EC%84%9C%EB%B9%84%EC%8A%A4-%ED%86%B5%ED%95%A9">12. 외부 서비스 통합</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#13-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EB%AA%A8%EB%93%9C">13. 스트리밍 모드</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#14-%EB%B3%80%EC%88%98-%EB%B0%94%EC%9D%B8%EB%94%A9">14. 변수 바인딩</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#15-%EC%8B%9C%EC%8A%A4%ED%85%9C-%ED%86%B5%ED%95%A9">15. 시스템 통합</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#16-%EB%B0%B0%ED%8F%AC">16. 배포</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#17-%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C">17. 실전 예제</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#18-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0">18. 문제 해결</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#19-%EB%B6%80%EB%A1%9D">19. 부록</a></aside></div></div><footer class="border-t border-border mt-8"><div class="flex items-center justify-between flex-wrap gap-4 max-w-[1280px] mx-auto px-6 py-5 max-md:px-4"><nav class="flex items-center gap-[1.1rem] text-[.85rem]"><a class="text-muted hover:text-fg" href="/model-compose/llms.txt">llms.txt</a><button type="button" class="inline-flex items-center justify-center w-[30px] h-[30px] p-0 text-[.95rem] leading-none border border-border rounded-lg bg-surface text-fg cursor-pointer hover:bg-hover" data-theme-toggle="true" aria-label="Toggle theme"></button></nav><a class="text-muted text-[.85rem] hover:text-accent" href="https://kura.build/" target="_blank" rel="noreferrer">Powered by Kura</a></div></footer><script>document.addEventListener('keydown',function(e){if(e.key==='/' && !document.documentElement.dataset.ctrlk && !/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){e.preventDefault();var s=document.querySelector('.search-box');if(s)s.focus();}});(function(){var b=document.querySelector('[data-theme-toggle]');if(!b)return;var d=document.documentElement,order=['system','light','dark'],icon={system:'🖥',light:'☀',dark:'☾'};function pref(){return d.getAttribute('data-theme-pref')||'system';}function res(p){return p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';}function set(p){d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',res(p));try{localStorage.setItem('kura-theme',p);}catch(e){}b.textContent=icon[p];b.setAttribute('title','Theme: '+p);}set(pref());b.addEventListener('click',function(){set(order[(order.indexOf(pref())+1)%order.length]);});try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(pref()==='system')d.setAttribute('data-theme',res('system'));});}catch(e){}})();document.addEventListener('click',function(e){var t=e.target;document.querySelectorAll('details[data-menu][open]').forEach(function(d){if(!d.contains(t))d.removeAttribute('open');});var it=t.closest&&t.closest('details[data-menu] a, details[data-menu] [data-copy-md]');if(it){var dd=it.closest('details[data-menu]');if(dd)setTimeout(function(){dd.removeAttribute('open');},0);}});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details[data-menu][open]').forEach(function(d){d.removeAttribute('open');});});(function(){var root=document.documentElement;function opener(){return document.querySelector('[data-drawer-open]');}function items(){var d=document.getElementById('docs-nav');if(!d)return[];return[].filter.call(d.querySelectorAll('a[href],button:not([disabled]),summary,[tabindex]:not([tabindex="-1"])'),function(el){return el.offsetParent!==null;});}function set(o){var was=root.classList.contains('drawer-open');root.classList.toggle('drawer-open',o);var b=opener();if(b)b.setAttribute('aria-expanded',o?'true':'false');if(o){var f=items();if(f[0])f[0].focus();}else if(was&&b)b.focus();}document.addEventListener('click',function(e){if(e.target.closest('[data-drawer-open]')){e.preventDefault();set(!root.classList.contains('drawer-open'));return;}if(e.target.closest('[data-drawer-close]')){set(false);return;}if(e.target.closest('#docs-nav a'))set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);return;}if(e.key==='Tab'&&root.classList.contains('drawer-open')){var f=items();if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}else if(f.indexOf(document.activeElement)<0){e.preventDefault();first.focus();}}});})();(function(){
+  function trim(p){return p.length>1&&p.endsWith('/')?p.slice(0,-1):p;}
+  function sync(){
+    var path=trim(location.pathname), tab=null;
+    var links=document.querySelectorAll('.sidebar a[href],[data-tabbar] a[href]');
+    for(var i=0;i<links.length;i++){var a=links[i],on=trim(a.getAttribute('href'))===path;
+      if(on){a.setAttribute('aria-current','page');var g=a.closest('[data-tab]');if(g)tab=g.getAttribute('data-tab');}
+      else a.removeAttribute('aria-current');}
+    if(tab!=null){
+      document.querySelectorAll('[data-tab]').forEach(function(g){g.hidden=g.getAttribute('data-tab')!==tab;});
+      document.querySelectorAll('[data-tabbar] a').forEach(function(a){
+        if(a.getAttribute('data-tab-key')===tab)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    }
+    // expand the folder(s) holding the active page. Iterate EVERY aria-current sidebar link, not
+    // just the first: a folder-as-page link lives in a <details>, but the mobile tab-bar link (also
+    // in .sidebar, earlier in the DOM) has no folder ancestor — querySelector would pick that one
+    // and expand nothing. forEach opens each link's folder chain; tab links are harmless no-ops.
+    document.querySelectorAll('.sidebar a[aria-current="page"]').forEach(function(cur){
+      var d=cur.closest('details.folder');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details.folder');}});
+    // rewrite the locale-switch links to THIS page's equivalent path (swap the locale prefix)
+    var ll=document.querySelectorAll('[data-locale-home]');
+    if(ll.length){var lc=document.querySelector('[data-locale-home][data-locale-active]'),cp=lc?lc.getAttribute('data-locale-home'):'/';cp=cp==='/'?'':cp;
+      var rest=location.pathname;if(cp&&rest.indexOf(cp)===0)rest=rest.slice(cp.length)||'/';
+      ll.forEach(function(a){var h=a.getAttribute('data-locale-home'),p=h==='/'?'':h;a.setAttribute('href',rest==='/'?(p||'/'):(p+rest));});}
+    // mobile nav-context: "Active tab / Page title" (the shell can't know the page server-side)
+    var nc=document.querySelector('[data-nav-context]');
+    if(nc){var at=document.querySelector('[data-tabbar] a[aria-current="page"]'),h1=document.querySelector('main h1');
+      nc.textContent=[at&&at.textContent.trim(),h1&&h1.textContent.trim()].filter(Boolean).join(' / ');}
+  }
+  sync();
+  var outlet=document.querySelector('[data-june-outlet]');
+  if(outlet) new MutationObserver(sync).observe(outlet,{childList:true,subtree:true});
+})();</script><script type="module" src="/model-compose/_june/client.519429d3.js"></script><script type="application/json" id="june-webmcp">[{"name":"search_docs","description":"Hybrid keyword + semantic search over the docs. Returns the most relevant passages with their doc slug, title, and relevance score.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"A natural-language question or keywords."},"topK":{"type":"integer","description":"Number of results to return (default 5)."},"locale":{"type":"string","description":"Optional locale — scopes results to that locale's view (its translations plus untranslated defaults)."}},"required":["query"]}},{"name":"get_page","description":"Fetch one doc page as the authored Markdown source by its slug (e.g. introduction, search, agents).","inputSchema":{"type":"object","properties":{"slug":{"type":"string","description":"The page slug."},"locale":{"type":"string","description":"Optional locale — returns that variant when it exists."}},"required":["slug"]}},{"name":"list_docs","description":"List every doc page with its slug, title, section, and `sources` (the code paths it documents). The map for finding which pages a code change affects.","inputSchema":{"type":"object","properties":{}}}]</script><script>(function(){var mc=navigator.modelContext;if(!mc||!mc.registerTool)return;var el=document.getElementById('june-webmcp');if(!el)return;var tools;try{tools=JSON.parse(el.textContent)}catch(e){return}var ac=new AbortController();tools.forEach(function(t){mc.registerTool({name:t.name,description:t.description,inputSchema:t.inputSchema,execute:function(args){return fetch('/mcp',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:t.name,arguments:args}})}).then(function(r){return r.json()}).then(function(j){return j.result})}},{signal:ac.signal})})})();</script></body></html>

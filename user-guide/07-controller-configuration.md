@@ -1,0 +1,1348 @@
+# Chapter 7: Controller Configuration
+
+This chapter covers how to configure model-compose controllers, including HTTP server and MCP server settings, concurrency control, and port management.
+
+---
+
+## 7.1 HTTP Server
+
+The HTTP server controller exposes workflows as REST APIs.
+
+### Basic Structure
+
+```yaml
+controller:
+  type: http-server
+  port: 8080
+  base_path: /api
+```
+
+### Example: Simple Chatbot API
+
+```yaml
+controller:
+  type: http-server
+  port: 8080
+  base_path: /api
+
+workflow:
+  title: Chat with AI
+  description: Generate text responses using AI
+  input: ${input}
+  output: ${output}
+
+component:
+  type: http-client
+  base_url: https://api.openai.com/v1
+  path: /chat/completions
+  method: POST
+  headers:
+    Authorization: Bearer ${env.OPENAI_API_KEY}
+    Content-Type: application/json
+  body:
+    model: gpt-4o
+    messages:
+      - role: user
+        content: ${input.prompt}
+  output:
+    message: ${response.choices[0].message.content}
+```
+
+### API Endpoints
+
+The HTTP server controller automatically generates the following endpoints:
+
+#### List Workflows
+```
+GET /api/workflows
+GET /api/workflows?include_schema=true
+```
+
+Retrieves the list of workflows. Adding the `include_schema=true` parameter also returns input/output schemas for each workflow.
+
+Request example:
+```bash
+curl http://localhost:8080/api/workflows
+```
+
+Response example:
+```json
+[
+  {
+    "workflow_id": "chat",
+    "title": "Chat with AI",
+    "default": true
+  }
+]
+```
+
+With schema request:
+```bash
+curl http://localhost:8080/api/workflows?include_schema=true
+```
+
+Response example:
+```json
+[
+  {
+    "workflow_id": "chat",
+    "title": "Chat with AI",
+    "description": "Generate text responses using AI",
+    "input": [
+      {
+        "name": "prompt",
+        "type": "string"
+      }
+    ],
+    "output": [
+      {
+        "name": "message",
+        "type": "string"
+      }
+    ],
+    "default": true
+  }
+]
+```
+
+#### Get Workflow Schema
+```
+GET /api/workflows/{workflow_id}/schema
+```
+
+Retrieves the input/output schema for a specific workflow.
+
+Request example:
+```bash
+curl http://localhost:8080/api/workflows/chat/schema
+```
+
+Response example:
+```json
+{
+  "workflow_id": "chat",
+  "title": "Chat with AI",
+  "description": "Generate text responses using AI",
+  "input": [
+    {
+      "name": "prompt",
+      "type": "string"
+    }
+  ],
+  "output": [
+    {
+      "name": "message",
+      "type": "string"
+    }
+  ],
+  "default": true
+}
+```
+
+#### Execute Workflow
+```
+POST /api/workflows/runs
+```
+
+Executes a workflow. You can control sync/async execution with the `wait_for_completion` parameter.
+
+Request body parameters:
+- `workflow_id` (string, optional): Workflow ID to execute. If omitted, executes the default workflow
+- `input` (object, optional): Workflow input data
+- `wait_for_completion` (boolean, default: true): If true, waits until completion; if false, returns task_id immediately
+- `output_only` (boolean, default: false): If true, returns only output data (requires wait_for_completion=true)
+
+##### Synchronous Execution (Default)
+
+Waits until completion and returns the result.
+
+Request example:
+```bash
+curl -X POST http://localhost:8080/api/workflows/runs \
+  -H "Content-Type: application/json" \
+  -d '{
+    "workflow_id": "chat",
+    "input": {
+      "prompt": "Hello, AI!"
+    },
+    "wait_for_completion": true
+  }'
+```
+
+Response example:
+```json
+{
+  "task_id": "01JBQR5KSXM8HNXF7N9VYW3K2T",
+  "status": "completed",
+  "output": {
+    "message": "Hello! How can I help you today?"
+  }
+}
+```
+
+##### output_only Mode
+
+Setting `output_only: true` returns only the output data without task metadata.
+
+Request example:
+```bash
+curl -X POST http://localhost:8080/api/workflows/runs \
+  -H "Content-Type: application/json" \
+  -d '{
+    "workflow_id": "chat",
+    "input": {
+      "prompt": "Hello, AI!"
+    },
+    "wait_for_completion": true,
+    "output_only": true
+  }'
+```
+
+Response example:
+```json
+{
+  "message": "Hello! How can I help you today?"
+}
+```
+
+##### Asynchronous Execution
+
+Setting `wait_for_completion: false` immediately returns task_id and executes in the background.
+
+Request example:
+```bash
+curl -X POST http://localhost:8080/api/workflows/runs \
+  -H "Content-Type: application/json" \
+  -d '{
+    "workflow_id": "chat",
+    "input": {
+      "prompt": "Hello, AI!"
+    },
+    "wait_for_completion": false
+  }'
+```
+
+Response example:
+```json
+{
+  "task_id": "01JBQR5KSXM8HNXF7N9VYW3K2T",
+  "status": "pending"
+}
+```
+
+#### Get Task Status
+```
+GET /api/tasks/{task_id}
+GET /api/tasks/{task_id}?output_only=true
+```
+
+Retrieves the status and result of an asynchronously executed workflow.
+
+Task states:
+- `pending`: Waiting (not yet started)
+- `processing`: Currently executing
+- `interrupted`: Waiting for user input (see [Resume Task](#resume-task))
+- `completed`: Successfully completed
+- `failed`: Failed during execution
+
+Request example:
+```bash
+curl http://localhost:8080/api/tasks/01JBQR5KSXM8HNXF7N9VYW3K2T
+```
+
+Response when processing:
+```json
+{
+  "task_id": "01JBQR5KSXM8HNXF7N9VYW3K2T",
+  "status": "processing"
+}
+```
+
+Response when completed:
+```json
+{
+  "task_id": "01JBQR5KSXM8HNXF7N9VYW3K2T",
+  "status": "completed",
+  "output": {
+    "message": "Hello! How can I help you today?"
+  }
+}
+```
+
+Response when interrupted:
+```json
+{
+  "task_id": "01JBQR5KSXM8HNXF7N9VYW3K2T",
+  "status": "interrupted",
+  "interrupt": {
+    "job_id": "review-step",
+    "phase": "before",
+    "message": "Please review the generated content before proceeding.",
+    "metadata": { "draft": "..." }
+  }
+}
+```
+
+Response when failed:
+```json
+{
+  "task_id": "01JBQR5KSXM8HNXF7N9VYW3K2T",
+  "status": "failed",
+  "error": "Connection timeout"
+}
+```
+
+output_only mode:
+```bash
+curl http://localhost:8080/api/tasks/01JBQR5KSXM8HNXF7N9VYW3K2T?output_only=true
+```
+
+Returns HTTP 202 if not completed:
+```
+HTTP/1.1 202 Accepted
+{"detail": "Task is still in progress."}
+```
+
+Returns output only when completed:
+```json
+{
+  "message": "Hello! How can I help you today?"
+}
+```
+
+Returns HTTP 500 if failed:
+```
+HTTP/1.1 500 Internal Server Error
+{"detail": "Connection timeout"}
+```
+
+#### Resume Task
+```
+POST /api/tasks/{task_id}/resume
+```
+
+Resumes an interrupted workflow. When a task is in `interrupted` status, send this request to provide an answer and continue execution.
+
+Request body parameters:
+- `job_id` (string, required): The job ID from the interrupt response
+- `answer` (any, optional): Answer data to pass to the workflow (JSON or string)
+
+Request example:
+```bash
+curl -X POST http://localhost:8080/api/tasks/01JBQR5KSXM8HNXF7N9VYW3K2T/resume \
+  -H "Content-Type: application/json" \
+  -d '{
+    "job_id": "review-step",
+    "answer": "approved"
+  }'
+```
+
+Response example (completed):
+```json
+{
+  "task_id": "01JBQR5KSXM8HNXF7N9VYW3K2T",
+  "status": "processing"
+}
+```
+
+After resuming, poll `GET /api/tasks/{task_id}` to check for completion, another interrupt, or failure.
+
+#### Health Check
+```
+GET /api/health
+```
+
+Checks server status.
+
+Response example:
+```json
+{
+  "status": "ok"
+}
+```
+
+### Asynchronous Execution and Task Queue
+
+#### Task Creation and Tracking
+
+When a workflow is executed, a Task is created internally:
+
+1. **Task Creation**: A unique `task_id` based on ULID is generated when executing a workflow
+2. **Task State Tracking**: Tasks have 5 states (`pending`, `processing`, `interrupted`, `completed`, `failed`)
+3. **Task Caching**: Completed tasks are cached in memory for 1 hour and can be queried via the `/api/tasks/{task_id}` endpoint
+
+#### Synchronous vs Asynchronous Execution
+
+**Synchronous Execution** (`wait_for_completion: true`, default):
+- The HTTP request waits until the workflow completes
+- Returns the result immediately upon completion
+- Use for simple workflows or when immediate results are needed
+
+**Asynchronous Execution** (`wait_for_completion: false`):
+- Immediately returns `task_id` and closes the connection
+- The workflow executes in the background
+- Query status and results via the `/api/tasks/{task_id}` endpoint
+- Suitable for workflows with long execution times
+
+### CORS Configuration
+
+Control HTTP server CORS with the `origins` field.
+
+```yaml
+controller:
+  type: http-server
+  origins: "https://example.com,https://app.example.com"  # Allow specific domains only
+  # origins: "*"  # Allow all domains (default, for development)
+```
+
+---
+
+## 7.2 MCP Server
+
+The MCP (Model Context Protocol) server controller integrates with Claude Desktop and other MCP clients using the Streamable HTTP protocol.
+
+### Basic Structure
+
+```yaml
+controller:
+  type: mcp-server
+  port: 8080
+  base_path: /mcp  # Streamable HTTP endpoint path
+```
+
+### Example: Content Moderation Tool
+
+```yaml
+controller:
+  type: mcp-server
+  base_path: /mcp
+  port: 8080
+
+workflows:
+  - id: moderate-text
+    title: Moderate Text Content
+    description: Check if text content violates content policies
+    action: text-moderation
+    input:
+      text: ${input.text}
+    output: ${output}
+
+  - id: moderate-image
+    title: Moderate Image Content
+    description: Check if image content is safe and appropriate
+    action: image-moderation
+    input:
+      image_url: ${input.image_url}
+    output: ${output}
+
+components:
+  - id: openai-moderation
+    type: http-client
+    base_url: https://api.openai.com/v1
+    headers:
+      Authorization: Bearer ${env.OPENAI_API_KEY}
+      Content-Type: application/json
+    actions:
+      - id: text-moderation
+        path: /moderations
+        method: POST
+        body:
+          input: ${input.text}
+        output:
+          flagged: ${response.results[0].flagged}
+          categories: ${response.results[0].categories}
+          scores: ${response.results[0].category_scores}
+
+      - id: image-moderation
+        path: /moderations
+        method: POST
+        body:
+          input: ${input.image_url}
+          model: omni-moderation-latest
+        output:
+          flagged: ${response.results[0].flagged}
+          categories: ${response.results[0].categories}
+```
+
+### MCP Workflow Features
+
+MCP server workflows have the following characteristics:
+
+- **title**: Tool name displayed in MCP client
+- **description**: Tool description (shown in MCP client)
+- **action**: Component action ID to connect to
+- **input**: Tool input parameter definition
+
+### MCP Client Integration
+
+model-compose's MCP server uses the **Streamable HTTP** protocol (MCP spec 2025-03-26).
+
+**Streamable HTTP Features**:
+- **Single Endpoint**: Handles all MCP communication through one HTTP endpoint
+- **Bidirectional Communication**: Server can send notifications and requests to client
+- **SSE Support**: Optionally uses Server-Sent Events for streaming responses
+- **Session Management**: Session tracking via `Mcp-Session-Id` header
+
+> **Note**: Streamable HTTP replaces the previous HTTP+SSE approach (2024-11-05 spec). It provides a single endpoint and enhanced bidirectional communication.
+
+#### Starting the Server
+
+```bash
+model-compose up -f model-compose.yml
+```
+
+Once the server starts, you can access the MCP server at:
+```
+http://localhost:8080/mcp
+```
+
+#### Client Connection
+
+MCP clients supporting Streamable HTTP can connect to the above URL.
+
+**Connection Information**:
+- URL: `http://localhost:8080/mcp` (or your configured host:port and base_path)
+- Transport: Streamable HTTP
+- Protocol Version: 2025-03-26
+
+**Production Environment**:
+
+For production, it's recommended to use HTTPS when exposing the MCP server externally. You can apply SSL/TLS through a reverse proxy like Nginx or Caddy.
+
+```yaml
+# model-compose runs locally with HTTP
+controller:
+  type: mcp-server
+  host: 127.0.0.1
+  port: 8080
+  base_path: /mcp
+```
+
+Nginx reverse proxy configuration example:
+```nginx
+server {
+    listen 443 ssl;
+    server_name mcp.example.com;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    location /mcp {
+        proxy_pass http://127.0.0.1:8080/mcp;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # SSE streaming support
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_set_header Connection '';
+        proxy_http_version 1.1;
+        chunked_transfer_encoding off;
+    }
+}
+```
+
+MCP clients connect to:
+```
+https://mcp.example.com/mcp
+```
+
+---
+
+## 7.3 Queue Subscriber
+
+The queue subscriber controller consumes tasks from a message queue (e.g., Redis) and executes workflows. This enables distributed worker patterns where multiple model-compose instances process tasks from a shared queue.
+
+### Basic Structure
+
+```yaml
+controller:
+  type: queue-subscriber
+  driver: redis
+  url: redis://localhost:6379
+```
+
+### Example: Distributed Image Processing Worker
+
+```yaml
+controller:
+  type: queue-subscriber
+  driver: redis
+  url: redis://localhost:6379
+  workflow: image-processing
+  max_concurrent_count: 2
+
+workflow:
+  title: Image Processing
+  input: ${input}
+  output: ${output}
+
+component:
+  type: http-client
+  base_url: https://api.openai.com/v1
+  path: /images/generations
+  method: POST
+  headers:
+    Authorization: Bearer ${env.OPENAI_API_KEY}
+    Content-Type: application/json
+  body:
+    model: dall-e-3
+    prompt: ${input.prompt}
+  output:
+    image_url: ${response.data[0].url}
+```
+
+### How It Works
+
+1. **Producer** pushes a task message to a Redis list using `LPUSH`
+2. **Worker** (queue-subscriber) pops the task using `BRPOP`
+3. **Worker** executes the corresponding workflow
+4. **Worker** stores the result in Redis (`SET`) and broadcasts via pub/sub (`PUBLISH`)
+5. **Producer** retrieves the result using `GET` or `SUBSCRIBE`
+
+### Task Message Format
+
+Producers push JSON messages to the queue:
+
+```json
+{
+  "task_id": "user-task-123",
+  "run_id": "01JXYZ...",
+  "input": { "prompt": "A sunset over mountains" }
+}
+```
+
+- `task_id`: Logical task identifier (remains the same across retries)
+- `run_id`: Unique execution instance identifier
+- `input`: Workflow input data
+
+### Result Format
+
+After workflow execution, the worker stores and publishes the result:
+
+```json
+{
+  "task_id": "user-task-123",
+  "run_id": "01JXYZ...",
+  "status": "completed",
+  "output": { "image_url": "https://..." },
+  "worker_id": "01JXY..."
+}
+```
+
+Result status values: `completed`, `failed`, `interrupted`
+
+### Queue and Key Naming
+
+Each workflow gets its own queue using the pattern `{name}:{workflow_id}`:
+
+```
+model-compose:tasks:image-processing              ← task queue (Redis List)
+model-compose:tasks:image-processing:01JXYZ...    ← result storage (Redis String, with TTL)
+model-compose:tasks:image-processing:01JXYZ...    ← result notification (Redis Pub/Sub channel)
+```
+
+### Configuration Options
+
+#### Common Settings
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `driver` | string | **required** | Queue backend driver (`redis`) |
+| `name` | string | `model-compose:tasks` | Base name for task queues. Queue key: `{name}:{workflow_id}`. Result key: `{name}:{workflow_id}:{run_id}` |
+| `result_ttl` | integer | `3600` | TTL in seconds for result entries. `0` = no expiry |
+| `max_concurrent` | integer | `1` | Maximum concurrent task processing |
+| `worker_id` | string | auto | Unique worker identifier (auto-generated ULID) |
+| `workflows` | list | `["__default__"]` | Workflow IDs to handle |
+
+#### Redis Driver Settings
+
+Connection can be configured using either `url` or `host`/`port`/`secure`. Both cannot be used together.
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `url` | string | `null` | Redis connection URL (e.g., `redis://localhost:6379`, `rediss://...` for TLS) |
+| `host` | string | `localhost` | Redis server hostname or IP address |
+| `port` | integer | `6379` | Redis server port number |
+| `secure` | boolean | `false` | Use TLS/SSL for connections |
+| `database` | integer | `0` | Redis database number (0-15) |
+| `password` | string | `null` | Redis password |
+| `pop_timeout` | integer | `1` | BRPOP timeout in seconds |
+
+### Distributed Worker Scenarios
+
+#### Scenario 1: Single Workflow Worker
+
+The simplest setup — one worker type processes one workflow:
+
+```yaml
+controller:
+  type: queue-subscriber
+  driver: redis
+  url: redis://localhost:6379
+  workflow: text-summary
+  max_concurrent_count: 3
+```
+
+Push tasks:
+```bash
+redis-cli LPUSH model-compose:tasks:text-summary \
+  '{"task_id":"t1","run_id":"r1","input":{"text":"..."}}'
+```
+
+#### Scenario 2: Multi-Workflow Worker
+
+A single worker handles multiple workflows:
+
+```yaml
+controller:
+  type: queue-subscriber
+  driver: redis
+  url: redis://localhost:6379
+  workflows:
+    - text-summary
+    - translation
+  max_concurrent_count: 5
+```
+
+#### Scenario 3: Specialized Workers
+
+Deploy different workers for different workloads:
+
+```yaml
+# GPU server — image generation only
+controller:
+  type: queue-subscriber
+  driver: redis
+  url: redis://shared-redis:6379
+  workflow: image-generation
+  max_concurrent_count: 2
+
+# CPU server — text processing
+controller:
+  type: queue-subscriber
+  driver: redis
+  url: redis://shared-redis:6379
+  workflows:
+    - text-summary
+    - translation
+  max_concurrent_count: 10
+```
+
+### Consuming Results
+
+#### Using Pub/Sub (Real-time)
+
+Subscribe to the result channel before pushing the task:
+
+```bash
+# Terminal 1: Subscribe
+redis-cli SUBSCRIBE model-compose:tasks:my-workflow:run-001
+
+# Terminal 2: Push task
+redis-cli LPUSH model-compose:tasks:my-workflow \
+  '{"task_id":"t1","run_id":"run-001","input":{}}'
+```
+
+#### Using GET (Polling)
+
+Poll the result key after pushing:
+
+```bash
+redis-cli GET model-compose:tasks:my-workflow:run-001
+```
+
+### Production Configuration
+
+Using host/port:
+```yaml
+controller:
+  type: queue-subscriber
+  driver: redis
+  host: redis.internal
+  port: 6379
+  password: ${env.REDIS_PASSWORD}
+  database: 2
+  name: myapp:tasks
+  result_ttl: 7200
+  worker_id: gpu-worker-01
+  workflows:
+    - image-generation
+  max_concurrent_count: 2
+```
+
+Using URL (with TLS):
+```yaml
+controller:
+  type: queue-subscriber
+  driver: redis
+  url: rediss://:${env.REDIS_PASSWORD}@redis.internal:6380/2
+  workflows:
+    - image-generation
+  max_concurrent_count: 2
+```
+
+> **Note**: The `redis` Python package (`redis>=5.0.0`) must be installed. It is included as a dependency of model-compose.
+
+---
+
+## 7.4 Queue Dispatch (Distributed Deployment)
+
+Queue dispatch enables a distributed deployment pattern where an HTTP/MCP entry point server delegates workflow execution to remote workers via a message queue, instead of running workflows locally.
+
+### Architecture
+
+```
+Client → [HTTP Server] → Redis LPUSH → [Worker A or B] → Redis PUBLISH → [HTTP Server] → Client
+         (entry point)                   (queue-subscriber)                 (result)
+```
+
+### Basic Configuration
+
+**Entry point server** (receives requests, dispatches to queue):
+```yaml
+controller:
+  adapter:
+    type: http-server
+    port: 8080
+  queue:
+    driver: redis
+    url: redis://localhost:6379
+```
+
+**Worker server** (consumes from queue, executes workflows):
+```yaml
+controller:
+  adapter:
+    type: queue-subscriber
+    driver: redis
+    url: redis://localhost:6379
+```
+
+### How It Works
+
+1. Client sends an HTTP request to the entry point server
+2. `ControllerService.run_workflow()` pushes a task to Redis queue via `LPUSH`
+3. Entry point subscribes to the result channel via `SUBSCRIBE`
+4. A queue-subscriber worker pops the task via `BRPOP` and executes the workflow
+5. Worker stores the result (`SET`) and publishes it (`PUBLISH`)
+6. Entry point receives the result and returns it to the client
+
+The queue dispatch is **transparent** to adapters — HTTP and MCP server adapters require no changes.
+
+### Configuration Options
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `driver` | string | **required** | Queue backend driver (`redis`) |
+| `name` | string | `model-compose:tasks` | Base name for task queues. Queue key: `{name}:{workflow_id}`. Result key: `{name}:{workflow_id}:{run_id}` |
+| `timeout` | integer | `0` | Maximum time in seconds to wait for a result. `0` = no limit |
+
+Redis driver settings (`url` or `host`/`port`/`secure`) are the same as [Queue Subscriber](#73-queue-subscriber).
+
+### Example: Distributed Deployment
+
+Three servers: 1 entry point + 2 workers sharing a Redis instance.
+
+**Entry point** (`server-a/model-compose.yml`):
+```yaml
+controller:
+  adapter:
+    type: http-server
+    port: 8080
+  queue:
+    driver: redis
+    url: redis://redis.internal:6379
+```
+
+**Worker 1** (`server-b/model-compose.yml`):
+```yaml
+controller:
+  adapter:
+    type: queue-subscriber
+    driver: redis
+    url: redis://redis.internal:6379
+    workflow: image-generation
+    max_concurrent_count: 2
+
+workflow:
+  id: image-generation
+  # ... workflow definition
+```
+
+**Worker 2** (`server-c/model-compose.yml`):
+```yaml
+controller:
+  adapter:
+    type: queue-subscriber
+    driver: redis
+    url: redis://redis.internal:6379
+    workflow: image-generation
+    max_concurrent_count: 2
+
+workflow:
+  id: image-generation
+  # ... workflow definition
+```
+
+Workers compete for tasks from the same queue — whichever pops first processes it.
+
+---
+
+## 7.5 Queue Streaming
+
+When a workflow produces streaming output (e.g., LLM token-by-token generation), the queue dispatch system automatically delivers chunks in real time from the worker to the dispatcher using Redis Streams. The client receives SSE events as if the workflow were running locally.
+
+### How It Works
+
+```
+Client ← SSE ← [Dispatcher] ← XREAD ← Redis Stream ← XADD ← [Worker] ← LLM streaming
+```
+
+1. Worker executes a workflow that returns streaming output (AsyncIterator)
+2. Worker publishes a `status: "streaming"` message via Pub/Sub with a `stream_key`
+3. Worker writes each chunk to a Redis Stream using `XADD`
+4. Dispatcher receives the metadata, creates a `RedisStreamIterator`, and returns it as the workflow output
+5. HTTP server adapter detects the AsyncIterator and renders it as an SSE response
+6. Worker writes a `done` (or `error`) sentinel event to signal completion
+
+### No Configuration Required
+
+Queue streaming works automatically — no additional configuration is needed. If the worker's workflow produces streaming output, chunks are delivered via Redis Streams. If the output is not streaming, the existing JSON result path is used.
+
+The same `name` field generates the stream key by appending `:stream`:
+
+| Key | Pattern | Redis Type |
+|-----|---------|------------|
+| Queue | `{name}:{workflow_id}` | LIST |
+| Result | `{name}:{workflow_id}:{run_id}` | STRING |
+| Result channel | `{name}:{workflow_id}:{run_id}` | Pub/Sub |
+| **Stream** | `{name}:{workflow_id}:{run_id}:stream` | **STREAM** |
+
+### Example: Streaming Chat via Queue
+
+**Dispatcher** (`dispatcher/model-compose.yml`):
+```yaml
+controller:
+  adapter:
+    type: http-server
+    port: 8080
+    base_path: /api
+  queue:
+    driver: redis
+    host: localhost
+    port: 6379
+    name: my-queue
+  webui:
+    driver: gradio
+    port: 8081
+
+workflow:
+  title: Chat with OpenAI GPT-4o (Streaming via Queue)
+  job:
+    type: component
+
+component:
+  type: workflow
+  action:
+    workflow: chat
+    input:
+      prompt: ${input.prompt as text}
+    output: ${output as sse-text}
+```
+
+**Worker** (`subscriber/model-compose.yml`):
+```yaml
+controller:
+  adapter:
+    type: queue-subscriber
+    driver: redis
+    host: localhost
+    port: 6379
+    name: my-queue
+    workflows:
+      - chat
+
+workflow:
+  id: chat
+  title: Chat with OpenAI GPT-4o (Streaming)
+  job:
+    component: openai
+    input:
+      prompt: ${input.prompt}
+    output: ${output as sse-text}
+
+component:
+  id: openai
+  type: http-client
+  base_url: https://api.openai.com/v1
+  action:
+    path: /chat/completions
+    method: POST
+    headers:
+      Authorization: Bearer ${env.OPENAI_API_KEY}
+      Content-Type: application/json
+    body:
+      model: gpt-4o
+      messages:
+        - role: user
+          content: ${input.prompt as text}
+      stream: true
+    stream_format: json
+    output: ${response[].choices[0].delta.content}
+```
+
+**Client request:**
+```bash
+curl -N -X POST http://localhost:8080/api/workflows/runs \
+  -H "Content-Type: application/json" \
+  -d '{
+    "input": { "prompt": "Write a short poem about the sea." },
+    "output_only": true,
+    "wait_for_completion": true
+  }'
+```
+
+The response streams as SSE:
+```
+data: The
+data:  waves
+data:  crash
+data:  upon
+data:  the
+data:  shore
+...
+```
+
+### Stream Message Format
+
+Each entry in the Redis Stream has an `event` field:
+
+| Event | Fields | Description |
+|-------|--------|-------------|
+| `chunk` | `event`, `data` | A streaming chunk (JSON or text) |
+| `done` | `event` | Stream completed successfully |
+| `error` | `event`, `data` | Error occurred, `data` contains the error message |
+
+### Edge Cases
+
+**Worker crash**: If the worker terminates mid-stream without writing a sentinel event, the dispatcher's `RedisStreamIterator` times out based on the queue `timeout` setting. The stream key is cleaned up by Redis TTL (`result_ttl`).
+
+**Client disconnect**: When the client closes the SSE connection, the HTTP server stops iterating the `RedisStreamIterator`. The worker continues writing to the Redis Stream (fire-and-forget) and the stream expires via TTL.
+
+**Non-streaming output**: If the workflow returns a plain result (not an AsyncIterator), the existing JSON result path (`SETEX` + `PUBLISH`) is used. No streaming keys are created.
+
+---
+
+## 7.6 Concurrency Control
+
+The `max_concurrent_count` setting is available for both HTTP and MCP servers, limiting the number of workflows that can execute concurrently at the controller level.
+
+### Basic Configuration
+
+```yaml
+controller:
+  type: http-server  # or mcp-server
+  max_concurrent_count: 5  # Limit to maximum 5 concurrent executions
+```
+
+### How It Works
+
+- `max_concurrent_count: 0` (default): Unlimited concurrent execution, task queue disabled
+- `max_concurrent_count: 1`: Execute one workflow at a time (sequential execution)
+- `max_concurrent_count: N` (N > 1): Execute up to N workflows concurrently, queue when exceeded
+
+When task queue is activated (`max_concurrent_count > 0`):
+1. New workflow execution requests are added to the queue
+2. Up to `max_concurrent_count` workers fetch tasks from the queue and execute them
+3. Even with `wait_for_completion: true`, tasks wait in the queue before execution
+
+### Use Cases
+
+```yaml
+# Default: Unlimited
+controller:
+  type: http-server
+  max_concurrent_count: 0
+
+# When GPU resources need to be limited
+controller:
+  type: http-server
+  max_concurrent_count: 3  # Limit total workflow execution to 3
+```
+
+### Controller vs Component Level Control
+
+Concurrency control is possible at two levels:
+
+**Controller Level** (`controller.max_concurrent_count`):
+- Limits total workflow execution count
+- Applied commonly to all workflows
+- Use when protecting overall system resources (CPU, memory)
+
+**Component Level** (`component.max_concurrent_count`):
+- Limits concurrent calls to a specific component
+- Can be set independently for each component
+- Use when protecting specific resources like GPU, external API rate limits
+
+Example:
+```yaml
+controller:
+  type: http-server
+  max_concurrent_count: 0  # Unlimited workflow execution
+
+components:
+  - id: image-model
+    type: model
+    max_concurrent_count: 2  # Limit to 2 concurrent executions due to GPU memory
+    model: stabilityai/stable-diffusion-2-1
+    task: text-to-image
+
+  - id: openai-api
+    type: http-client
+    max_concurrent_count: 10  # Limit to 10 considering API rate limit
+    base_url: https://api.openai.com/v1
+```
+
+**Recommendations**:
+- Generally, component-level control provides finer resource management
+- Use controller-level control only when preventing overall system overload
+- If both levels are set, both limits apply
+
+---
+
+## 7.7 Port and Host Configuration
+
+### Host
+
+Specifies the network interface the controller binds to.
+
+#### Allow Access from Localhost Only (Default)
+
+```yaml
+controller:
+  type: http-server
+  host: 127.0.0.1  # Default
+  port: 8080       # Default
+```
+
+- Accessible only from the same machine
+- Use when running behind a reverse proxy or when security is critical
+
+#### Allow Access from All Interfaces
+
+```yaml
+controller:
+  type: http-server
+  host: 0.0.0.0
+  port: 8080
+```
+
+- Accessible from external sources
+- Use for development environment or when exposing to network
+
+### Port
+
+Specifies the port the controller API server uses.
+
+```yaml
+controller:
+  type: http-server
+  port: 8080  # Default
+```
+
+### Base Path
+
+Sets a prefix for all API endpoints.
+
+#### No Base Path (Default)
+
+```yaml
+controller:
+  type: http-server
+  port: 8080
+  # No base_path
+```
+
+Endpoints:
+- `POST /workflows/runs`
+- `GET /workflows`
+- `GET /tasks/{task_id}`
+
+#### With Base Path
+
+```yaml
+controller:
+  type: http-server
+  port: 8080
+  base_path: /api
+```
+
+Endpoints:
+- `POST /api/workflows/runs`
+- `GET /api/workflows`
+- `GET /api/tasks/{task_id}`
+
+### Reverse Proxy Configuration
+
+When running behind a reverse proxy like Nginx or Caddy.
+
+#### model-compose Configuration
+
+```yaml
+controller:
+  type: http-server
+  host: 127.0.0.1  # Accessible from proxy only
+  port: 8080
+  base_path: /ai   # Match proxy path
+```
+
+#### Nginx Configuration Example
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+
+    location /ai/ {
+        proxy_pass http://127.0.0.1:8080/ai/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+Now external access to `http://example.com/ai/workflows/runs` is forwarded by Nginx to internal `http://127.0.0.1:8080/ai/workflows/runs`.
+
+---
+
+## 7.8 Controller Best Practices
+
+### 1. Port Configuration by Environment
+
+Use different ports for development, staging, and production:
+
+```yaml
+controller:
+  type: http-server
+  port: ${env.PORT | 8080}  # Environment variable or default 8080
+  base_path: /api
+```
+
+### 2. Proper CORS Configuration
+
+In production, allow only specific domains:
+
+```yaml
+# Development environment
+controller:
+  type: http-server
+  origins: "*"
+
+# Production environment
+controller:
+  type: http-server
+  origins: "https://app.example.com,https://admin.example.com"
+```
+
+### 3. Concurrency Limit Configuration
+
+Set appropriate `max_concurrent_count` based on resource usage:
+
+```yaml
+# GPU-using workflows - Limited concurrency
+controller:
+  type: http-server
+  port: 8080
+  max_concurrent_count: 2  # Consider GPU memory limits
+
+# Lightweight API call workflows - High concurrency
+controller:
+  type: http-server
+  port: 8080
+  max_concurrent_count: 20
+```
+
+### 4. Utilize Asynchronous Execution
+
+Execute workflows with long execution times asynchronously:
+
+```javascript
+// Client code example
+async function runLongWorkflow(input) {
+  // 1. Start workflow asynchronously
+  const response = await fetch('/api/workflows/runs', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      workflow_id: 'long-task',
+      input: input,
+      wait_for_completion: false
+    })
+  });
+
+  const { task_id } = await response.json();
+
+  // 2. Poll for status
+  while (true) {
+    const taskResponse = await fetch(`/api/tasks/${task_id}`);
+    const task = await taskResponse.json();
+
+    if (task.status === 'completed') {
+      return task.output;
+    } else if (task.status === 'failed') {
+      throw new Error(task.error);
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
+  }
+}
+```
+
+### 5. Proper base_path Usage
+
+Set base_path consistently when running behind a reverse proxy:
+
+```yaml
+controller:
+  type: http-server
+  host: 127.0.0.1
+  port: 8080
+  base_path: /ai-service  # Exactly match proxy path
+```
+
+### 6. Utilize output_only
+
+Use `output_only` when you want to reduce API response size:
+
+```yaml
+# When task_id is not needed on the client
+POST /api/workflows/runs
+{
+  "workflow_id": "simple-chat",
+  "input": { "prompt": "Hello" },
+  "wait_for_completion": true,
+  "output_only": true
+}
+
+# Response: Returns only output without task_id and status
+{ "message": "Hello! How can I help?" }
+```
+
+---
+
+## Next Steps
+
+Try these:
+- Build REST APIs with HTTP server
+- Build Streamable HTTP server with MCP server
+- Utilize asynchronous execution and task status querying
+- Run behind a reverse proxy
+
+---
+
+**Next Chapter**: [8. WebSocket Interface](/model-compose/user-guide/08-websocket-interface.md)

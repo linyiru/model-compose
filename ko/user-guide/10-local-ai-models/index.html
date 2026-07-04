@@ -1,0 +1,1147 @@
+<!DOCTYPE html><html lang="ko"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="icon" href="/model-compose/favicon.svg" type="image/svg+xml"/><title>10장: 로컬 AI 모델 사용 - model-compose</title><meta name="description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><link rel="alternate" hrefLang="en" href="/user-guide/10-local-ai-models"/><link rel="alternate" hrefLang="zh-cn" href="/zh-cn/user-guide/10-local-ai-models"/><link rel="alternate" hrefLang="ko" href="/ko/user-guide/10-local-ai-models"/><link rel="alternate" hrefLang="x-default" href="/user-guide/10-local-ai-models"/><meta property="og:title" content="10장: 로컬 AI 모델 사용"/><meta property="og:description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><meta property="og:type" content="article"/><script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}]}</script><script>(function(){if(HTMLScriptElement.supports&&HTMLScriptElement.supports('speculationrules'))return;var seen=new Set();document.addEventListener('pointerover',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||seen.has(u.pathname)||u.pathname===location.pathname)return;if(/.(md|json)$/.test(u.pathname)||u.pathname==='/mcp')return;seen.add(u.pathname);var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname+u.search;document.head.appendChild(l);},{passive:true});})();</script><style>
+          @view-transition { navigation: auto; }
+          ::view-transition-group(root),
+          ::view-transition-old(root),
+          ::view-transition-new(root) { animation-duration: 120ms; }
+          @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) { animation: none !important; }
+          }
+</style><link rel="stylesheet" href="/model-compose/_june/global.ab0a5eb2.css"/></head><body><script>(function(){try{var p=localStorage.getItem('kura-theme')||'system';var d=document.documentElement;d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',(p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches))?'dark':'light');}catch(e){}})();</script><header class="sticky top-0 z-20 flex items-center gap-4 h-14 px-5 bg-topbar-bg backdrop-blur-sm border-b border-border max-md:px-4 max-md:gap-2.5"><a class="flex items-center gap-1.5 font-bold text-[1.05rem]" href="/model-compose/ko">model-compose<!-- --> <span class="font-normal text-muted text-[.85rem]">Docs</span></a><form class="ml-auto max-md:ml-2 max-md:flex-1 max-md:min-w-0" action="/model-compose/ko/search" method="get"><input class="w-[280px] max-w-[40vw] px-3 py-2 text-[.9rem] border border-border rounded-lg bg-surface-2 text-fg max-md:w-full max-md:max-w-none search-box" placeholder="Search docs…  (press /)" aria-label="Search" data-search-endpoint="/model-compose/ko/search.json" data-doc-base="/model-compose/ko" data-search-static="1" data-locale="ko" name="q"/></form><nav class="flex items-center gap-4 text-muted text-[.9rem]"><details class="relative" data-menu="true"><summary class="chevron cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 border border-border rounded-lg text-fg-soft text-[.85rem] whitespace-nowrap hover:text-fg">한국어</summary><div class="absolute right-0 top-[calc(100%+.4rem)] min-w-36 flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl z-30"><a data-june-no-router="true" data-locale-home="/model-compose" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose" hrefLang="en">English</a><a data-june-no-router="true" data-locale-home="/model-compose/zh-cn" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/zh-cn" hrefLang="zh-cn">简体中文</a><a data-june-no-router="true" data-locale-home="/model-compose/ko" data-locale-active="" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-accent font-semibold" href="/model-compose/ko" hrefLang="ko">한국어</a></div></details></nav></header><button class="hidden max-md:flex items-center gap-2.5 w-full px-4 py-2.5 bg-bg border-0 border-b border-border text-fg-soft text-[.9rem] text-left cursor-pointer focus-visible:outline-none focus-visible:bg-hover" data-drawer-open="true" aria-controls="docs-nav" aria-expanded="false"><span class="text-[1.05rem] leading-none" aria-hidden="true">☰</span><span class="font-semibold text-fg flex-none">Navigation</span><span class="nav-bar-context text-muted flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" data-nav-context="true"></span></button><div class="drawer-backdrop" data-drawer-close="true" aria-hidden="true"></div><div class="grid grid-cols-[248px_minmax(0,1fr)_220px] max-lg:grid-cols-[248px_minmax(0,1fr)] max-md:grid-cols-1 items-start max-w-[1280px] mx-auto"><aside class="sidebar sticky top-14 h-[calc(100vh-56px)] overflow-y-auto px-4 py-6 border-r border-border" id="docs-nav"><div data-tab="_"><div class="mb-5"><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko">model-compose</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">Reference</p><ul class="flex flex-col gap-px"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><a class="flex-1 min-w-0 text-inherit" href="/model-compose/ko/reference/compose">Compose</a></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><span class="flex-1 min-w-0">Components</span></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/agent">Agent Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/datasets">Datasets Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/file-store">File Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/graph-store">Graph Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/http-client">HTTP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/http-server">HTTP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/image-processor">Image Processor Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/key-value-store">Key-Value Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/mcp-client">MCP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/mcp-server">MCP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model">Model Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model-memory">Model Memory Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model-tokenizer">Model Tokenizer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/model-trainer">Model Trainer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/search-engine">Search Engine Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/shell">Shell Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/text-splitter">Text Splitter Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/vector-store">Vector Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/video-scene-detector">Video Scene Detector Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/web-browser">Web Browser Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/web-scraper">Web Scraper Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/components/workflow">Workflow Component</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/component">Component Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/controller">Controller Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/gateway">Gateway Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/language-codes">Language Codes</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/listener">Listener Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/logger">Logger Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/system">System Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/tracer">Tracer Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/compose/workflow">Workflow Configuration Reference</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/cli">Model-Compose CLI Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/reference/websocket">WebSocket Interface Reference</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">User guide</p><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide">Model-Compose 사용자 가이드</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/00-table-of-contents">목차</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/01-getting-started">1장: 시작하기</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/02-core-concepts">2장: 핵심 개념</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/03-cli-usage">3장: CLI 사용법</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/04-component-configuration">4장: 컴포넌트 구성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/05-writing-workflows">5장: 워크플로우 작성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/06-workflow-schema">6장: 워크플로우 스키마</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/07-controller-configuration">7장: 컨트롤러 구성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/08-websocket-interface">8장: WebSocket 인터페이스</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/09-webui-configuration">9장: Web UI 구성</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/10-local-ai-models">10장: 로컬 AI 모델 사용</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/11-model-training">11. 모델 훈련</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/12-external-service-integration">12장: 외부 서비스 통합</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/13-streaming-mode">13. 스트리밍 모드</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/14-variable-binding">14. 변수 바인딩</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/15-system-integration">15. 시스템 통합</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/16-deployment">16. 배포</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/17-practical-examples">17. 실전 예제</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/18-troubleshooting">18. 문제 해결</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/19-appendix">19. 부록</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/ko/user-guide/image-handling">Image Handling Guide</a></li></ul></div></div></aside><div data-june-outlet=""><main class="w-auto max-w-none m-0 min-w-0 px-10 pt-8 pb-20 max-md:px-4 max-md:pt-5 max-md:pb-12"><details class="hidden max-lg:block mb-5 border border-border rounded-xl overflow-hidden"><summary class="chevron flex justify-between items-center cursor-pointer px-3.5 py-2.5 text-[.85rem] font-semibold text-fg-soft">On this page</summary><div class="flex flex-col px-3.5 pt-1 pb-2.5 border-t border-border"><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#101-%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8-%EA%B0%9C%EC%9A%94">10.1 로컬 모델 개요</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EC%9D%B4%EB%9E%80">로컬 모델이란?</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EC%A7%80%EC%9B%90-%EB%AA%A8%EB%8D%B8-%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B2%84">지원 모델 드라이버</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EC%A7%80%EC%9B%90-%EB%AA%A8%EB%8D%B8-%ED%8F%AC%EB%A7%B7">지원 모델 포맷</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EC%9D%98-%EC%9E%A5%EB%8B%A8%EC%A0%90">로컬 모델의 장단점</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EA%B8%B0%EB%B3%B8-%EC%82%AC%EC%9A%A9%EB%B2%95">기본 사용법</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#102-%EB%AA%A8%EB%8D%B8-%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%A4%80%EB%B9%84">10.2 모델 설치 및 준비</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EB%AA%A8%EB%8D%B8-%EC%86%8C%EC%8A%A4-%EC%A7%80%EC%A0%95-%EB%B0%A9%EB%B2%95">모델 소스 지정 방법</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#1-huggingface-hub-provider-huggingface">1. HuggingFace Hub (provider: huggingface)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#2-%EB%A1%9C%EC%BB%AC-%ED%8C%8C%EC%9D%BC-provider-local">2. 로컬 파일 (provider: local)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#huggingface-%EB%AA%A8%EB%8D%B8-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C">HuggingFace 모델 다운로드</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%ED%94%84%EB%9D%BC%EC%9D%B4%EB%B9%97-%EB%AA%A8%EB%8D%B8-%EC%A0%91%EA%B7%BC">프라이빗 모델 접근</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%ED%8A%B9%EC%A0%95-%EB%AA%A8%EB%8D%B8-%EB%B2%84%EC%A0%84-%EC%82%AC%EC%9A%A9">특정 모델 버전 사용</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EC%98%A4%ED%94%84%EB%9D%BC%EC%9D%B8-%EB%AA%A8%EB%93%9C">오프라인 모드</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#103-%EC%A7%80%EC%9B%90-%ED%83%9C%EC%8A%A4%ED%81%AC-%EC%9C%A0%ED%98%95">10.3 지원 태스크 유형</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1031-text-generation">10.3.1 text-generation</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1032-chat-completion">10.3.2 chat-completion</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1033-text-classification">10.3.3 text-classification</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1034-text-embedding">10.3.4 text-embedding</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1035-image-to-text">10.3.5 image-to-text</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1036-text-to-image">10.3.6 text-to-image</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1037-image-upscale">10.3.7 image-upscale</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1038-text-to-speech">10.3.8 text-to-speech</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#generate-%EB%A9%94%EC%84%9C%EB%93%9C">Generate 메서드</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#clone-%EB%A9%94%EC%84%9C%EB%93%9C">Clone 메서드</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#design-%EB%A9%94%EC%84%9C%EB%93%9C">Design 메서드</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%EC%A7%80%EC%9B%90-%EB%AA%A8%EB%8D%B8-qwen-%ED%8C%A8%EB%B0%80%EB%A6%AC">지원 모델 (Qwen 패밀리)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1039-face-embedding">10.3.9 face-embedding</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#104-%EB%AA%A8%EB%8D%B8-%EC%84%A4%EC%A0%95-%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4-%EC%A0%95%EB%B0%80%EB%8F%84-%EB%B0%B0%EC%B9%98-%ED%81%AC%EA%B8%B0">10.4 모델 설정 (디바이스, 정밀도, 배치 크기)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4-%EC%84%A4%EC%A0%95">디바이스 설정</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EC%A0%95%EB%B0%80%EB%8F%84-%EC%84%A4%EC%A0%95">정밀도 설정</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EC%96%91%EC%9E%90%ED%99%94">양자화</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EB%B0%B0%EC%B9%98-%ED%81%AC%EA%B8%B0">배치 크기</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EC%A0%80%EB%A9%94%EB%AA%A8%EB%A6%AC-%EB%A1%9C%EB%94%A9">저메모리 로딩</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#105-lorapeft-%EC%96%B4%EB%8C%91%ED%84%B0-%EC%82%AC%EC%9A%A9">10.5 LoRA/PEFT 어댑터 사용</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#lora-%EC%96%B4%EB%8C%91%ED%84%B0-%EC%A0%81%EC%9A%A9">LoRA 어댑터 적용</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EB%8B%A4%EC%A4%91-lora-%EC%96%B4%EB%8C%91%ED%84%B0">다중 LoRA 어댑터</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EC%96%B4%EB%8C%91%ED%84%B0-%EA%B0%80%EC%A4%91%EC%B9%98">어댑터 가중치</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EB%A1%9C%EC%BB%AC-lora-%EC%96%B4%EB%8C%91%ED%84%B0">로컬 LoRA 어댑터</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#lora-%EC%82%AC%EC%9A%A9-%EC%82%AC%EB%A1%80">LoRA 사용 사례</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#106-%EB%AA%A8%EB%8D%B8-%EC%84%9C%EB%B9%99-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC">10.6 모델 서빙 프레임워크</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#vllm">vLLM</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#vllm-%ED%8A%B9%EC%A7%95">vLLM 특징</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#vllm-%EC%84%A4%EC%A0%95-%EC%98%88%EC%A0%9C">vLLM 설정 예제</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#vllm-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0">vLLM 파라미터</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#ollama">Ollama</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#ollama-%ED%8A%B9%EC%A7%95">Ollama 특징</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#ollama-%EC%9E%90%EB%8F%99-%EA%B4%80%EB%A6%AC-http-server-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8">Ollama 자동 관리 (http-server 컴포넌트)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-7" href="#%EA%B8%B0%EC%A1%B4-ollama-%EC%84%9C%EB%B2%84-%EC%82%AC%EC%9A%A9-http-client">기존 Ollama 서버 사용 (http-client)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#tgi-text-generation-inference">TGI (Text Generation Inference)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC-%EB%B9%84%EA%B5%90">프레임워크 비교</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#107-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94-%ED%8C%81">10.7 성능 최적화 팁</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1-%EC%A0%81%EC%A0%88%ED%95%9C-%EC%A0%95%EB%B0%80%EB%8F%84-%EC%84%A0%ED%83%9D">1. 적절한 정밀도 선택</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#2-%EC%96%91%EC%9E%90%ED%99%94-%ED%99%9C%EC%9A%A9">2. 양자화 활용</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#3-%EC%A0%81%EC%A0%88%ED%95%9C-%EB%B0%B0%EC%B9%98-%ED%81%AC%EA%B8%B0">3. 적절한 배치 크기</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#4-%EB%AA%A8%EB%8D%B8-%EC%BA%90%EC%8B%B1">4. 모델 캐싱</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#5-%EB%8B%A4%EC%A4%91-gpu-%ED%99%9C%EC%9A%A9">5. 다중 GPU 활용</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-%EC%84%B1%EB%8A%A5-%EB%AC%B8%EC%A0%9C%EC%99%80-%ED%95%B4%EA%B2%B0%EC%B1%85">일반적인 성능 문제와 해결책</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#%EB%8B%A4%EC%9D%8C-%EB%8B%A8%EA%B3%84">다음 단계</a></div></details><div class="flex items-center justify-between gap-4 mb-6"><div class="prose"><h1 class="!m-0">10장: 로컬 AI 모델 사용</h1></div><div class="relative inline-flex items-stretch flex-none"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[.85rem] border border-border border-r-0 rounded-l-lg bg-surface text-fg-soft cursor-pointer hover:bg-hover hover:text-fg" data-copy-md="/model-compose/ko/user-guide/10-local-ai-models.md"><svg class="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>Copy Markdown</button><details class="relative inline-flex items-stretch" data-menu="true"><summary class="chevron inline-flex items-center justify-center w-[30px] border border-border rounded-r-lg bg-surface text-muted cursor-pointer hover:bg-hover hover:text-fg" aria-label="More actions"></summary><div class="absolute right-0 top-[calc(100%+.4rem)] z-30 min-w-[17rem] flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl"><button class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" data-copy-md="/model-compose/ko/user-guide/10-local-ai-models.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg><span class="flex flex-col min-w-0"><span class="font-semibold text-[.9rem] text-fg">Copy Markdown</span><span class="text-[.8rem] text-muted">Copy this page as Markdown for LLMs</span></span></button><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="/model-compose/ko/user-guide/10-local-ai-models.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M16 21H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6l4 4v12a2 2 0 0 1-2 2z"></path><path d="M9 13h6M9 17h4"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">View as Markdown<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">View this page as plain text</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://chatgpt.com/?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%2010%EC%9E%A5%3A%20%EB%A1%9C%EC%BB%AC%20AI%20%EB%AA%A8%EB%8D%B8%20%EC%82%AC%EC%9A%A9" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in ChatGPT<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask ChatGPT about this page</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://claude.ai/new?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%2010%EC%9E%A5%3A%20%EB%A1%9C%EC%BB%AC%20AI%20%EB%AA%A8%EB%8D%B8%20%EC%82%AC%EC%9A%A9" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in Claude<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask Claude about this page</span></span></a></div></details></div></div><article class="prose"><p>이 장에서는 로컬 AI 모델 사용 방법을 다룹니다.</p>
+<hr />
+<h2 id="101-로컬-모델-개요">10.1 로컬 모델 개요</h2>
+<h3 id="로컬-모델이란">로컬 모델이란?</h3>
+<p>로컬 모델은 외부 API 없이 시스템에서 직접 실행되는 AI 모델입니다. model-compose는 다양한 드라이버와 모델 포맷을 지원하여 유연한 모델 실행 환경을 제공합니다.</p>
+<h3 id="지원-모델-드라이버">지원 모델 드라이버</h3>
+<p>model-compose는 다음 모델 드라이버를 지원합니다:</p>
+<table>
+<thead>
+<tr>
+<th>드라이버</th>
+<th>설명</th>
+<th>주요 사용 사례</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>huggingface</code></td>
+<td>HuggingFace transformers</td>
+<td>범용 모델 추론, 가장 광범위한 모델 지원</td>
+</tr>
+<tr>
+<td><code>unsloth</code></td>
+<td>Unsloth 최적화 모델</td>
+<td>빠른 파인튜닝, 메모리 효율적 학습</td>
+</tr>
+<tr>
+<td><code>vllm</code></td>
+<td>vLLM 추론 엔진</td>
+<td>고성능 LLM 서빙, 프로덕션 배포</td>
+</tr>
+<tr>
+<td><code>llamacpp</code></td>
+<td>llama.cpp 엔진</td>
+<td>CPU 추론, GGUF 포맷, 저사양 환경</td>
+</tr>
+<tr>
+<td><code>custom</code></td>
+<td>커스텀 구현</td>
+<td>특수 모델, 사용자 정의 로직</td>
+</tr>
+</tbody>
+</table>
+<h3 id="지원-모델-포맷">지원 모델 포맷</h3>
+<p>다양한 모델 포맷을 지원합니다:</p>
+<table>
+<thead>
+<tr>
+<th>포맷</th>
+<th>설명</th>
+<th>호환 드라이버</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pytorch</code></td>
+<td>PyTorch 기본 포맷 (.bin, .pt)</td>
+<td>huggingface, unsloth</td>
+</tr>
+<tr>
+<td><code>safetensors</code></td>
+<td>안전한 텐서 저장 포맷</td>
+<td>huggingface, unsloth</td>
+</tr>
+<tr>
+<td><code>onnx</code></td>
+<td>최적화된 크로스 플랫폼 포맷</td>
+<td>custom</td>
+</tr>
+<tr>
+<td><code>gguf</code></td>
+<td>llama.cpp 양자화 포맷</td>
+<td>llamacpp</td>
+</tr>
+<tr>
+<td><code>tensorrt</code></td>
+<td>NVIDIA TensorRT 최적화</td>
+<td>custom</td>
+</tr>
+</tbody>
+</table>
+<h3 id="로컬-모델의-장단점">로컬 모델의 장단점</h3>
+<p><strong>장점:</strong></p>
+<ul>
+<li><strong>비용 절감</strong>: API 호출 비용 없음</li>
+<li><strong>프라이버시</strong>: 데이터가 외부로 전송되지 않음</li>
+<li><strong>오프라인 실행</strong>: 인터넷 연결 불필요</li>
+<li><strong>커스터마이징</strong>: 파인튜닝, LoRA 어댑터 적용 가능</li>
+<li><strong>낮은 레이턴시</strong>: 네트워크 지연 없음 (로컬 하드웨어 성능에 따라)</li>
+</ul>
+<p><strong>단점:</strong></p>
+<ul>
+<li><strong>하드웨어 요구사항</strong>: GPU 메모리, 연산 성능 필요</li>
+<li><strong>모델 크기</strong>: 대용량 모델 파일 다운로드 및 저장 필요</li>
+<li><strong>설정 복잡도</strong>: 환경 설정, 의존성 관리 필요</li>
+<li><strong>성능 제약</strong>: 대형 모델은 고사양 GPU 필요</li>
+</ul>
+<h3 id="기본-사용법">기본 사용법</h3>
+<p><strong>간단한 모델 로드 (HuggingFace)</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-hf</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 기본 드라이버는 huggingface</span></span></code></pre>
+<p><strong>드라이버 명시</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">unsloth</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # Unsloth 드라이버 사용</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">unsloth/llama-2-7b-bnb-4bit</span></span></code></pre>
+<p><strong>로컬 파일 로드</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">local</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/path/to/model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    format</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">pytorch</span></span></code></pre>
+<p><strong>GGUF 포맷</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">llamacpp</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">local</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/models/llama-2-7b-chat.Q4_K_M.gguf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    format</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gguf</span></span></code></pre>
+<hr />
+<h2 id="102-모델-설치-및-준비">10.2 모델 설치 및 준비</h2>
+<h3 id="모델-소스-지정-방법">모델 소스 지정 방법</h3>
+<p>model-compose는 두 가지 provider를 통해 모델을 로드할 수 있습니다:</p>
+<h4 id="1-huggingface-hub-provider-huggingface">1. HuggingFace Hub (provider: huggingface)</h4>
+<p><strong>간단한 방법 (문자열)</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-hf</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 자동으로 HuggingFace Hub에서 로드</span></span></code></pre>
+<p><strong>상세 설정</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">huggingface</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    repository</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    revision</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">main</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">                  # 브랜치 또는 커밋 해시</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    filename</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">pytorch_model.bin</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">     # 특정 파일 지정</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    cache_dir</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/custom/cache</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">        # 캐시 디렉토리</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    local_files_only</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">false</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">         # 로컬 캐시만 사용 여부</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    token</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.HUGGINGFACE_TOKEN}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"> # 프라이빗 모델 토큰</span></span></code></pre>
+<p><strong>HuggingFace 설정 필드:</strong></p>
+<ul>
+<li><code>repository</code>: HuggingFace 모델 리포지토리 (필수)</li>
+<li><code>revision</code>: 모델 버전 또는 브랜치 (기본값: <code>main</code>)</li>
+<li><code>filename</code>: 리포지토리 내 특정 파일 지정 (선택)</li>
+<li><code>cache_dir</code>: 모델 파일 캐시 디렉토리 (기본값: <code>~/.cache/huggingface/</code>)</li>
+<li><code>local_files_only</code>: 로컬 캐시만 사용 (기본값: <code>false</code>)</li>
+<li><code>token</code>: 프라이빗 모델 접근 토큰 (선택)</li>
+</ul>
+<h4 id="2-로컬-파일-provider-local">2. 로컬 파일 (provider: local)</h4>
+<p><strong>간단한 방법 (경로 문자열)</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/path/to/model</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 로컬 경로로 자동 인식</span></span></code></pre>
+<p><strong>상세 설정</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">local</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/path/to/model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    format</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">pytorch</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # pytorch, safetensors, onnx, gguf, tensorrt</span></span></code></pre>
+<p><strong>Local 설정 필드:</strong></p>
+<ul>
+<li><code>path</code>: 모델 파일 또는 디렉토리 경로 (필수)</li>
+<li><code>format</code>: 모델 파일 포맷 (기본값: <code>pytorch</code>)</li>
+</ul>
+<p><strong>로컬 경로 인식 규칙:</strong></p>
+<p>다음 패턴으로 시작하는 문자열은 자동으로 로컬 경로로 인식됩니다:</p>
+<ul>
+<li>절대 경로: <code>/path/to/model</code></li>
+<li>상대 경로: <code>./model</code>, <code>../model</code></li>
+<li>홈 디렉토리: <code>~/models/model</code></li>
+<li>Windows 드라이브: <code>C:\models\model</code></li>
+</ul>
+<p>그 외는 HuggingFace Hub 리포지토리로 인식됩니다:</p>
+<ul>
+<li><code>meta-llama/Llama-2-7b-hf</code></li>
+<li><code>gpt2</code></li>
+<li><code>username/custom-model</code></li>
+</ul>
+<h3 id="huggingface-모델-다운로드">HuggingFace 모델 다운로드</h3>
+<p>모델은 처음 실행 시 자동으로 다운로드됩니다:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chat-completion</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-chat-hf</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 첫 실행 시 자동으로 ~/.cache/huggingface/ 에 다운로드됨</span></span></code></pre>
+<p>수동 다운로드:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-bash"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># HuggingFace CLI로 사전 다운로드</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#FFA657">pip</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> install</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> huggingface-hub</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#FFA657">huggingface-cli</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> download</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> meta-llama/Llama-2-7b-chat-hf</span></span></code></pre>
+<h3 id="프라이빗-모델-접근">프라이빗 모델 접근</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">huggingface</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    repository</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    token</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.HUGGINGFACE_TOKEN}</span></span></code></pre>
+<p>환경 변수 설정:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-bash"><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">export</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> HUGGINGFACE_TOKEN</span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">hf_your_token_here</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#FFA657">model-compose</span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF"> up</span></span></code></pre>
+<h3 id="특정-모델-버전-사용">특정 모델 버전 사용</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">huggingface</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    repository</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    revision</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">v1.0</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 특정 태그</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">    # 또는 커밋 해시: revision: a1b2c3d4</span></span></code></pre>
+<h3 id="오프라인-모드">오프라인 모드</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">huggingface</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    repository</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    local_files_only</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 로컬 캐시에서만 로드</span></span></code></pre>
+<hr />
+<h2 id="103-지원-태스크-유형">10.3 지원 태스크 유형</h2>
+<p>model-compose는 다음 태스크 타입을 지원합니다:</p>
+<table>
+<thead>
+<tr>
+<th>태스크</th>
+<th>설명</th>
+<th>주요 사용 사례</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text-generation</code></td>
+<td>텍스트 생성</td>
+<td>스토리 작성, 코드 생성</td>
+</tr>
+<tr>
+<td><code>chat-completion</code></td>
+<td>대화형 완성</td>
+<td>챗봇, 어시스턴트</td>
+</tr>
+<tr>
+<td><code>text-classification</code></td>
+<td>텍스트 분류</td>
+<td>감정 분석, 주제 분류</td>
+</tr>
+<tr>
+<td><code>text-embedding</code></td>
+<td>텍스트 임베딩</td>
+<td>시맨틱 검색, RAG</td>
+</tr>
+<tr>
+<td><code>image-to-text</code></td>
+<td>이미지 캡셔닝</td>
+<td>이미지 설명 생성, VQA</td>
+</tr>
+<tr>
+<td><code>text-to-image</code></td>
+<td>이미지 생성</td>
+<td>텍스트→이미지 변환</td>
+</tr>
+<tr>
+<td><code>image-upscale</code></td>
+<td>이미지 업스케일</td>
+<td>해상도 향상</td>
+</tr>
+<tr>
+<td><code>text-to-speech</code></td>
+<td>텍스트 음성 합성</td>
+<td>음성 생성, 복제, 디자인</td>
+</tr>
+<tr>
+<td><code>face-embedding</code></td>
+<td>얼굴 임베딩</td>
+<td>얼굴 인식, 비교</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1031-text-generation">10.3.1 text-generation</h3>
+<p>프롬프트를 기반으로 텍스트를 생성합니다.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">HuggingFaceTB/SmolLM3-3B</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    params</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      max_output_length</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">32768</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      temperature</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.7</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      top_p</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.9</span></span></code></pre>
+<p><strong>주요 파라미터:</strong></p>
+<ul>
+<li><code>max_output_length</code>: 최대 생성 토큰 수</li>
+<li><code>temperature</code>: 생성 랜덤성 (0.0~2.0, 낮을수록 결정적)</li>
+<li><code>top_p</code>: Nucleus sampling threshold</li>
+<li><code>top_k</code>: Top-K sampling</li>
+<li><code>repetition_penalty</code>: 반복 방지 (1.0~2.0)</li>
+</ul>
+<h3 id="1032-chat-completion">10.3.2 chat-completion</h3>
+<p>대화 형식의 메시지를 처리합니다.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">chat-completion</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">HuggingFaceTB/SmolLM3-3B</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    messages</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">role</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">system</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.system_prompt}</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">role</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">user</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.user_prompt}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    params</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      max_output_length</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">2048</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      temperature</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.7</span></span></code></pre>
+<p><strong>메시지 형식:</strong></p>
+<ul>
+<li><code>role</code>: <code>system</code>, <code>user</code>, <code>assistant</code></li>
+<li><code>content</code>: 메시지 내용</li>
+</ul>
+<h3 id="1033-text-classification">10.3.3 text-classification</h3>
+<p>텍스트를 카테고리로 분류합니다.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-classification</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">distilbert-base-uncased-finetuned-sst-2-english</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      label</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result.label}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      score</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result.score}</span></span></code></pre>
+<h3 id="1034-text-embedding">10.3.4 text-embedding</h3>
+<p>텍스트를 고차원 벡터로 변환합니다.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-embedding</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">sentence-transformers/all-MiniLM-L6-v2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      embedding</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result.embedding}</span></span></code></pre>
+<p>사용 예제 (RAG 시스템):</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  title</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Document Search</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">embed-query</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">embedder</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.query}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        query_vector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result.embedding}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">search</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">vector-store</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">search</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        vector</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${jobs.embed-query.output.query_vector}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        top_k</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">5</span></span></code></pre>
+<h3 id="1035-image-to-text">10.3.5 image-to-text</h3>
+<p>이미지를 분석하여 텍스트를 생성합니다.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image-to-text</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Salesforce/blip-image-captioning-large</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  architecture</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">blip</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    image</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.image as image}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    prompt</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span></code></pre>
+<p><strong>지원 아키텍처:</strong></p>
+<ul>
+<li><code>blip</code>: 이미지 캡셔닝</li>
+<li><code>git</code>: Generative Image-to-Text</li>
+<li><code>vit-gpt2</code>: Vision Transformer + GPT-2</li>
+</ul>
+<h3 id="1036-text-to-image">10.3.6 text-to-image</h3>
+<p>텍스트 프롬프트에서 이미지를 생성합니다.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-to-image</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  architecture</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">flux</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">black-forest-labs/FLUX.1-dev</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    prompt</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    params</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      width</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">1024</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      height</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">1024</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      num_inference_steps</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">50</span></span></code></pre>
+<p><strong>지원 아키텍처:</strong></p>
+<ul>
+<li><code>flux</code>: FLUX 모델</li>
+<li><code>sdxl</code>: Stable Diffusion XL</li>
+<li><code>hunyuan</code>: HunyuanDiT</li>
+</ul>
+<h3 id="1037-image-upscale">10.3.7 image-upscale</h3>
+<p>이미지 해상도를 향상시킵니다.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image-upscale</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  architecture</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">real-esrgan</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">RealESRGAN_x4plus</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    image</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.image as image}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    params</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      scale</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">4</span></span></code></pre>
+<p><strong>지원 아키텍처:</strong></p>
+<ul>
+<li><code>real-esrgan</code>: Real-ESRGAN</li>
+<li><code>esrgan</code>: ESRGAN</li>
+<li><code>swinir</code>: SwinIR</li>
+<li><code>ldsr</code>: Latent Diffusion Super Resolution</li>
+</ul>
+<h3 id="1038-text-to-speech">10.3.8 text-to-speech</h3>
+<p>텍스트에서 음성 오디오를 합성합니다. 이 태스크는 <code>driver: custom</code>과 <code>family</code> 필드로 모델 패밀리를 선택하고, <code>method</code> 필드로 생성 방식을 선택합니다.</p>
+<p><strong>지원 메서드:</strong></p>
+<table>
+<thead>
+<tr>
+<th>메서드</th>
+<th>설명</th>
+<th>필수 필드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>generate</code></td>
+<td>내장 음성으로 음성 생성</td>
+<td><code>voice</code>, <code>instructions</code> (선택)</td>
+</tr>
+<tr>
+<td><code>clone</code></td>
+<td>참조 오디오에서 음성 복제</td>
+<td><code>ref_audio</code>, <code>ref_text</code></td>
+</tr>
+<tr>
+<td><code>design</code></td>
+<td>자연어 설명으로 새로운 음성 디자인</td>
+<td><code>instructions</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>공통 필드:</strong></p>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>타입</th>
+<th>기본값</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>method</code></td>
+<td>string</td>
+<td><strong>필수</strong></td>
+<td>생성 방식: <code>generate</code>, <code>clone</code>, <code>design</code></td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>string/array</td>
+<td><strong>필수</strong></td>
+<td>음성으로 합성할 텍스트</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>string</td>
+<td><code>null</code></td>
+<td>텍스트 언어 (미지정 시 자동 감지)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="generate-메서드">Generate 메서드</h4>
+<p>내장 음성을 사용하여 스타일 지시와 함께 음성을 생성합니다:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-to-speech</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">custom</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  family</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">qwen</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cuda:0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">generate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    voice</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.voice | vivian}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    instructions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.instructions | ""}</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>타입</th>
+<th>기본값</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>voice</code></td>
+<td>string</td>
+<td><code>vivian</code></td>
+<td>내장 음성 이름</td>
+</tr>
+<tr>
+<td><code>instructions</code></td>
+<td>string</td>
+<td><code>&quot;&quot;</code></td>
+<td>감정/스타일 지시</td>
+</tr>
+</tbody>
+</table>
+<h4 id="clone-메서드">Clone 메서드</h4>
+<p>참조 오디오에서 음성을 복제합니다:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-to-speech</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">custom</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  family</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">qwen</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Qwen/Qwen3-TTS-12Hz-1.7B-Base</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cuda:0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">clone</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    ref_audio</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.ref_audio as audio}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    ref_text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.ref_text as text}</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>타입</th>
+<th>기본값</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ref_audio</code></td>
+<td>string</td>
+<td><strong>필수</strong></td>
+<td>음성 복제를 위한 참조 오디오 경로 또는 URL</td>
+</tr>
+<tr>
+<td><code>ref_text</code></td>
+<td>string</td>
+<td><strong>필수</strong></td>
+<td>참조 오디오의 전사 텍스트</td>
+</tr>
+</tbody>
+</table>
+<h4 id="design-메서드">Design 메서드</h4>
+<p>자연어 설명으로 새로운 음성을 디자인합니다:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-to-speech</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  driver</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">custom</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  family</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">qwen</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cuda:0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">design</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.text as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    instructions</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.instructions as text}</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>타입</th>
+<th>기본값</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>instructions</code></td>
+<td>string</td>
+<td><strong>필수</strong></td>
+<td>원하는 음성에 대한 자연어 설명</td>
+</tr>
+</tbody>
+</table>
+<h4 id="지원-모델-qwen-패밀리">지원 모델 (Qwen 패밀리)</h4>
+<table>
+<thead>
+<tr>
+<th>모델</th>
+<th>메서드</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice</code></td>
+<td><code>generate</code></td>
+<td>스타일 제어가 가능한 내장 음성</td>
+</tr>
+<tr>
+<td><code>Qwen/Qwen3-TTS-12Hz-1.7B-Base</code></td>
+<td><code>clone</code></td>
+<td>참조 오디오에서 음성 복제</td>
+</tr>
+<tr>
+<td><code>Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign</code></td>
+<td><code>design</code></td>
+<td>텍스트 설명으로 음성 디자인</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1039-face-embedding">10.3.9 face-embedding</h3>
+<p>얼굴 이미지에서 특징 벡터를 추출합니다.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">face-embedding</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">buffalo_l</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    image</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.image as image}</span></span></code></pre>
+<hr />
+<h2 id="104-모델-설정-디바이스-정밀도-배치-크기">10.4 모델 설정 (디바이스, 정밀도, 배치 크기)</h2>
+<h3 id="디바이스-설정">디바이스 설정</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cuda</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">         # 'cuda', 'cpu', 'mps' (Apple Silicon)</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device_mode</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">single</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 'single', 'auto' (multi-GPU)</span></span></code></pre>
+<p><strong>디바이스 옵션:</strong></p>
+<ul>
+<li><code>cuda</code>: NVIDIA GPU</li>
+<li><code>cpu</code>: CPU만 사용</li>
+<li><code>mps</code>: Apple Silicon GPU (M1/M2/M3)</li>
+</ul>
+<p><strong>디바이스 모드:</strong></p>
+<ul>
+<li><code>single</code>: 단일 GPU 사용</li>
+<li><code>auto</code>: 여러 GPU에 자동 분산</li>
+</ul>
+<p>다중 GPU 예제:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-70b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cuda</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device_mode</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">auto</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 자동으로 여러 GPU에 모델 분산</span></span></code></pre>
+<h3 id="정밀도-설정">정밀도 설정</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  precision</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">float16</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 'auto', 'float32', 'float16', 'bfloat16'</span></span></code></pre>
+<p><strong>정밀도 옵션:</strong></p>
+<ul>
+<li><code>auto</code>: 자동 선택 (GPU는 float16, CPU는 float32)</li>
+<li><code>float32</code>: 최고 정확도, 가장 많은 메모리 사용</li>
+<li><code>float16</code>: 절반 메모리, 빠른 추론 (CUDA)</li>
+<li><code>bfloat16</code>: float16 대안, 더 안정적 (최신 GPU)</li>
+</ul>
+<p>정밀도 비교:</p>
+<table>
+<thead>
+<tr>
+<th>정밀도</th>
+<th>메모리</th>
+<th>속도</th>
+<th>정확도</th>
+<th>권장 사용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>float32</td>
+<td>100%</td>
+<td>기준</td>
+<td>최고</td>
+<td>CPU, 높은 정확도 필요 시</td>
+</tr>
+<tr>
+<td>float16</td>
+<td>50%</td>
+<td>2배 빠름</td>
+<td>약간 감소</td>
+<td>CUDA GPU</td>
+</tr>
+<tr>
+<td>bfloat16</td>
+<td>50%</td>
+<td>2배 빠름</td>
+<td>float16보다 안정</td>
+<td>최신 GPU (A100, H100)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="양자화">양자화</h3>
+<p>메모리를 더 줄이고 속도를 높이기 위한 양자화:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  quantization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">int8</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 'none', 'int8', 'int4', 'nf4'</span></span></code></pre>
+<p><strong>양자화 옵션:</strong></p>
+<ul>
+<li><code>none</code>: 양자화 없음 (기본값)</li>
+<li><code>int8</code>: 8비트 정수 (bitsandbytes 필요)</li>
+<li><code>int4</code>: 4비트 정수 (bitsandbytes 필요)</li>
+<li><code>nf4</code>: 4비트 NormalFloat (QLoRA용)</li>
+</ul>
+<h3 id="배치-크기">배치 크기</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-classification</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">distilbert-base-uncased</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  batch_size</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">32</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 한 번에 처리할 입력 수</span></span></code></pre>
+<p>배치 크기 선택 가이드:</p>
+<ul>
+<li><strong>작은 배치 (1-8)</strong>: 낮은 레이턴시, 실시간 추론</li>
+<li><strong>중간 배치 (16-32)</strong>: 균형잡힌 처리량/레이턴시</li>
+<li><strong>큰 배치 (64+)</strong>: 최대 처리량, 배치 처리</li>
+</ul>
+<h3 id="저메모리-로딩">저메모리 로딩</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-70b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  low_cpu_mem_usage</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # CPU RAM 사용 최소화</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cuda</span></span></code></pre>
+<hr />
+<h2 id="105-lorapeft-어댑터-사용">10.5 LoRA/PEFT 어댑터 사용</h2>
+<p>LoRA (Low-Rank Adaptation)는 전체 모델을 파인튜닝하지 않고 작은 어댑터 모듈을 추가하여 모델을 특정 태스크에 맞게 조정하는 기법입니다.</p>
+<h3 id="lora-어댑터-적용">LoRA 어댑터 적용</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  peft_adapters</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">alpaca</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">tloen/alpaca-lora-7b</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      weight</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">1.0</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span></code></pre>
+<h3 id="다중-lora-어댑터">다중 LoRA 어댑터</h3>
+<p>여러 LoRA 어댑터를 동시에 적용할 수 있습니다:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">huggingface</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    repository</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-7b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    token</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.HUGGINGFACE_TOKEN}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  peft_adapters</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">alpaca</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">tloen/alpaca-lora-7b</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      weight</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.7</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">assistant</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">plncmm/guanaco-lora-7b</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      weight</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.8</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span></code></pre>
+<h3 id="어댑터-가중치">어댑터 가중치</h3>
+<p><code>weight</code> 파라미터로 어댑터의 영향력을 조절합니다:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">peft_adapters</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">style-adapter</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">user/style-lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    weight</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.5</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 50% 영향력</span></span></code></pre>
+<ul>
+<li><code>weight: 0.0</code>: 어댑터 비활성화</li>
+<li><code>weight: 0.5</code>: 50% 적용</li>
+<li><code>weight: 1.0</code>: 100% 적용 (기본값)</li>
+</ul>
+<h3 id="로컬-lora-어댑터">로컬 LoRA 어댑터</h3>
+<p>로컬 파일 시스템의 어댑터 사용:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">peft_adapters</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">custom-lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">local</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/path/to/lora/adapter</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    weight</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">1.0</span></span></code></pre>
+<h3 id="lora-사용-사례">LoRA 사용 사례</h3>
+<p><strong>1. 도메인 적응</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 의료 도메인에 특화된 모델</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">peft_adapters</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">medical</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">medalpaca/medalpaca-lora-7b</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    weight</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">1.0</span></span></code></pre>
+<p><strong>2. 스타일 제어</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 여러 작문 스타일 조합</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">peft_adapters</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">formal</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">user/formal-writing-lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    weight</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.6</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">technical</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">user/technical-lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    weight</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.4</span></span></code></pre>
+<p><strong>3. 다국어 지원</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 한국어 지원 강화</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">peft_adapters</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    name</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">korean</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">beomi/llama-2-ko-7b-lora</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    weight</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">1.0</span></span></code></pre>
+<hr />
+<h2 id="106-모델-서빙-프레임워크">10.6 모델 서빙 프레임워크</h2>
+<p>대규모 프로덕션 환경이나 고성능 추론이 필요한 경우, 전용 모델 서빙 프레임워크를 사용할 수 있습니다.</p>
+<blockquote>
+<p><strong>중요:</strong> vLLM, Ollama 등의 모델 서빙 프레임워크는 로컬 모델을 사용하지만, <code>model</code> 컴포넌트가 아닌 <code>http-server</code>나 <code>http-client</code> 컴포넌트를 통해 HTTP API로 접근합니다. 이는 별도의 서버 프로세스가 모델을 로드하고 서빙하기 때문입니다.</p>
+</blockquote>
+<h3 id="vllm">vLLM</h3>
+<p>vLLM은 대규모 언어 모델을 위한 고성능 추론 엔진입니다.</p>
+<h4 id="vllm-특징">vLLM 특징</h4>
+<ul>
+<li><strong>PagedAttention</strong>: 메모리 효율적인 어텐션 메커니즘</li>
+<li><strong>연속 배칭</strong>: 높은 처리량</li>
+<li><strong>빠른 추론</strong>: 최적화된 CUDA 커널</li>
+<li><strong>OpenAI 호환 API</strong>: 기존 코드와 쉽게 통합</li>
+</ul>
+<h4 id="vllm-설정-예제">vLLM 설정 예제</h4>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  manage</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    install</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">bash</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">-c</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">|</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        eval "$(pyenv init -)" &#x26;&#x26;</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        (pyenv activate vllm 2>/dev/null || pyenv virtualenv $(python --version | cut -d' ' -f2) vllm) &#x26;&#x26;</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        pyenv activate vllm &#x26;&#x26;</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        pip install vllm</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    start</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">bash</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">-c</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">|</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        eval "$(pyenv init -)" &#x26;&#x26;</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        pyenv activate vllm &#x26;&#x26;</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        python -m vllm.entrypoints.openai.api_server</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">          --model Qwen/Qwen2-7B-Instruct</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">          --port 8000</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">          --served-model-name qwen2-7b-instruct</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">          --max-model-len 2048</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">8000</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/v1/chat/completions</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    Content-Type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">application/json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">qwen2-7b-instruct</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    messages</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">role</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">user</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">        content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    max_tokens</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">512</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    temperature</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.temperature as number | 0.7}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    streaming</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  stream_format</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response[].choices[0].delta.content}</span></span></code></pre>
+<h4 id="vllm-파라미터">vLLM 파라미터</h4>
+<p><strong>서버 파라미터:</strong></p>
+<ul>
+<li><code>--model</code>: 모델 이름 또는 경로</li>
+<li><code>--port</code>: 서버 포트</li>
+<li><code>--host</code>: 바인드 호스트</li>
+<li><code>--served-model-name</code>: API에서 사용할 모델 이름</li>
+<li><code>--max-model-len</code>: 최대 시퀀스 길이</li>
+<li><code>--tensor-parallel-size</code>: Tensor parallelism (다중 GPU)</li>
+<li><code>--dtype</code>: 데이터 타입 (auto, float16, bfloat16)</li>
+</ul>
+<p><strong>추론 파라미터:</strong></p>
+<ul>
+<li><code>max_tokens</code>: 최대 생성 토큰 수</li>
+<li><code>temperature</code>: 생성 랜덤성</li>
+<li><code>top_p</code>: Nucleus sampling</li>
+<li><code>streaming</code>: 스트리밍 응답 여부</li>
+</ul>
+<h3 id="ollama">Ollama</h3>
+<p>Ollama는 로컬에서 대형 언어 모델을 실행하기 위한 간단한 도구입니다.</p>
+<h4 id="ollama-특징">Ollama 특징</h4>
+<ul>
+<li><strong>간편한 설치</strong>: 원클릭 설치</li>
+<li><strong>모델 라이브러리</strong>: 사전 최적화된 모델 제공</li>
+<li><strong>낮은 진입장벽</strong>: 복잡한 설정 불필요</li>
+<li><strong>REST API</strong>: 간단한 HTTP 인터페이스</li>
+</ul>
+<h4 id="ollama-자동-관리-http-server-컴포넌트">Ollama 자동 관리 (http-server 컴포넌트)</h4>
+<p>model-compose가 Ollama를 자동으로 설치하고 실행하는 경우:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  manage</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    install</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">bash</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">-c</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">      - </span><span style="--shiki-light:#D73A49;--shiki-dark:#FF7B72">|</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        # macOS/Linux</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        curl -fsSL https://ollama.ai/install.sh | sh</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        # 모델 다운로드</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">        ollama pull llama2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    start</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">ollama</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">, </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">serve</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">11434</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/api/generate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    Content-Type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">application/json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">llama2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    prompt</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    stream</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">false</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    response</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.response}</span></span></code></pre>
+<p><strong>스트리밍 예제:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  manage</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    start</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">ollama</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">, </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">serve</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">11434</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/api/generate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">llama2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    prompt</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    stream</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  stream_format</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response[].response}</span></span></code></pre>
+<p><strong>채팅 API:</strong></p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-server</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  manage</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    start</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: [ </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">ollama</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">, </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">serve</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3"> ]</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  port</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">11434</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  path</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/api/chat</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">llama2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    messages</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.messages}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    message</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.message.content}</span></span></code></pre>
+<h4 id="기존-ollama-서버-사용-http-client">기존 Ollama 서버 사용 (http-client)</h4>
+<p>이미 실행 중인 Ollama 서버가 있는 경우:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http://localhost:11434/api/generate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">llama2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    prompt</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    response</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.response}</span></span></code></pre>
+<h3 id="tgi-text-generation-inference">TGI (Text Generation Inference)</h3>
+<p>HuggingFace의 프로덕션 레벨 추론 서버입니다.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  endpoint</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http://localhost:8080/generate</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  method</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">POST</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    Content-Type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">application/json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    inputs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    parameters</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      max_new_tokens</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">512</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      temperature</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.7</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      top_p</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">0.9</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    generated_text</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.generated_text}</span></span></code></pre>
+<h3 id="프레임워크-비교">프레임워크 비교</h3>
+<table>
+<thead>
+<tr>
+<th>프레임워크</th>
+<th>장점</th>
+<th>단점</th>
+<th>권장 사용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>vLLM</strong></td>
+<td>최고 성능, 높은 처리량</td>
+<td>설정 복잡도, CUDA 전용</td>
+<td>프로덕션, 대규모 서비스</td>
+</tr>
+<tr>
+<td><strong>Ollama</strong></td>
+<td>간편한 설치, 낮은 진입장벽</td>
+<td>제한적인 모델, 제한적인 제어</td>
+<td>개발, 프로토타입, 개인 사용</td>
+</tr>
+<tr>
+<td><strong>TGI</strong></td>
+<td>HuggingFace 통합, 안정성</td>
+<td>vLLM보다 느림</td>
+<td>HuggingFace 생태계 사용 시</td>
+</tr>
+<tr>
+<td><strong>transformers</strong></td>
+<td>최대 호환성, 커스터마이징</td>
+<td>낮은 성능</td>
+<td>연구, 실험, 커스텀 모델</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="107-성능-최적화-팁">10.7 성능 최적화 팁</h2>
+<h3 id="1-적절한-정밀도-선택">1. 적절한 정밀도 선택</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># GPU가 있는 경우</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">large-model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  precision</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">float16</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 또는 bfloat16 (최신 GPU)</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cuda</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># CPU만 있는 경우</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">small-model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  precision</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">float32</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # CPU는 float32가 더 안정적</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cpu</span></span></code></pre>
+<h3 id="2-양자화-활용">2. 양자화 활용</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 메모리가 제한적인 경우</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-13b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  quantization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">int8</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 메모리 사용량 약 50% 감소</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cuda</span></span></code></pre>
+<h3 id="3-적절한-배치-크기">3. 적절한 배치 크기</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 처리량 최적화</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-classification</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">bert-base</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  batch_size</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">32</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # GPU 메모리에 맞게 조정</span></span></code></pre>
+<h3 id="4-모델-캐싱">4. 모델 캐싱</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 모델 재사용을 위한 캐싱</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    provider</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">huggingface</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    repository</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">gpt2</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    cache_dir</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">/data/model-cache</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 고속 SSD 사용</span></span></code></pre>
+<h3 id="5-다중-gpu-활용">5. 다중 GPU 활용</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># 모델 병렬화</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  task</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">text-generation</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">meta-llama/Llama-2-70b-hf</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">cuda</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  device_mode</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">auto</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # 자동으로 여러 GPU에 분산</span></span></code></pre>
+<h3 id="일반적인-성능-문제와-해결책">일반적인 성능 문제와 해결책</h3>
+<table>
+<thead>
+<tr>
+<th>문제</th>
+<th>원인</th>
+<th>해결책</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>느린 첫 실행</td>
+<td>모델 다운로드, 컴파일</td>
+<td>모델 사전 다운로드, 워밍업</td>
+</tr>
+<tr>
+<td>OOM (Out of Memory)</td>
+<td>모델이 GPU 메모리보다 큼</td>
+<td>양자화, 정밀도 낮추기, 작은 배치</td>
+</tr>
+<tr>
+<td>낮은 처리량</td>
+<td>작은 배치 크기</td>
+<td>배치 크기 증가</td>
+</tr>
+<tr>
+<td>높은 레이턴시</td>
+<td>큰 배치 크기</td>
+<td>배치 크기 감소, 실시간 처리</td>
+</tr>
+<tr>
+<td>불안정한 출력</td>
+<td>float16 정밀도 문제</td>
+<td>bfloat16 또는 float32 사용</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="다음-단계">다음 단계</h2>
+<p>실습해보세요:</p>
+<ul>
+<li>HuggingFace Hub에서 다양한 모델 테스트</li>
+<li>양자화 및 정밀도 설정 실험</li>
+<li>LoRA 어댑터 로드 및 병합</li>
+<li>배치 처리로 처리량 최적화</li>
+</ul>
+<hr />
+<p><strong>다음 장</strong>: <a href="/model-compose/ko/user-guide/11-model-training">11. 모델 훈련</a></p>
+</article><nav class="flex justify-between gap-4 mt-12 pt-6 border-t border-border"><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent" href="/model-compose/ko/user-guide/09-webui-configuration"><div class="text-muted text-[.78rem]">← <!-- -->Previous</div><div class="font-semibold text-accent">9장: Web UI 구성</div></a><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent text-right" href="/model-compose/ko/user-guide/11-model-training"><div class="text-muted text-[.78rem]">Next<!-- --> →</div><div class="font-semibold text-accent">11. 모델 훈련</div></a></nav><script>document.querySelectorAll('[data-copy-md]').forEach(function(b){b.addEventListener('click',async function(){try{var r=await fetch(b.getAttribute('data-copy-md'));var t=await r.text();await navigator.clipboard.writeText(t);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1500);}catch(e){alert('Copy failed: '+e);}});});document.querySelectorAll('.prose pre').forEach(function(pre){if(pre.querySelector('.copy-code'))return;var b=document.createElement('button');b.className='copy-code';b.textContent='Copy';b.addEventListener('click',async function(){var c=pre.querySelector('code');try{await navigator.clipboard.writeText(c?c.innerText:pre.innerText);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1200);}catch(e){}});pre.appendChild(b);});document.querySelectorAll('.tabs').forEach(function(t){t.querySelectorAll('.tab-btn').forEach(function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-tab');t.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-tab')===i);});t.querySelectorAll('.tab-panel').forEach(function(p){p.hidden=p.getAttribute('data-tab')!==i;});});});});(function(){var blocks=document.querySelectorAll('code.language-mermaid');if(!blocks.length)return;var items=[];blocks.forEach(function(c){var pre=c.closest('pre')||c;var h=document.createElement('div');h.className='mermaid-diagram';pre.replaceWith(h);items.push({src:c.textContent,holder:h});});var lib,id=0;function load(){return lib||(lib=import("https://esm.sh/mermaid@11").then(function(m){return m.default;}));}function theme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'default';}function run(){load().then(function(mermaid){mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:theme()});items.forEach(function(it){mermaid.render('kura-mmd-'+(id++),it.src).then(function(r){it.holder.innerHTML=r.svg;}).catch(function(e){it.holder.innerHTML='<pre class="mermaid-error">'+String((e&&e.message)||e)+'</pre>';});});}).catch(function(){});}run();var cur=document.documentElement.getAttribute('data-theme');new MutationObserver(function(){var t=document.documentElement.getAttribute('data-theme');if(t!==cur){cur=t;run();}}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></main><aside class="sticky top-14 max-h-[calc(100vh-56px)] overflow-y-auto px-4 py-8 max-lg:hidden"><p class="text-[.72rem] font-bold tracking-wider uppercase text-muted mb-2.5">On this page</p><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#101-%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8-%EA%B0%9C%EC%9A%94">10.1 로컬 모델 개요</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EC%9D%B4%EB%9E%80">로컬 모델이란?</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EC%A7%80%EC%9B%90-%EB%AA%A8%EB%8D%B8-%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B2%84">지원 모델 드라이버</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EC%A7%80%EC%9B%90-%EB%AA%A8%EB%8D%B8-%ED%8F%AC%EB%A7%B7">지원 모델 포맷</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EC%9D%98-%EC%9E%A5%EB%8B%A8%EC%A0%90">로컬 모델의 장단점</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EA%B8%B0%EB%B3%B8-%EC%82%AC%EC%9A%A9%EB%B2%95">기본 사용법</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#102-%EB%AA%A8%EB%8D%B8-%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%A4%80%EB%B9%84">10.2 모델 설치 및 준비</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EB%AA%A8%EB%8D%B8-%EC%86%8C%EC%8A%A4-%EC%A7%80%EC%A0%95-%EB%B0%A9%EB%B2%95">모델 소스 지정 방법</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#1-huggingface-hub-provider-huggingface">1. HuggingFace Hub (provider: huggingface)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#2-%EB%A1%9C%EC%BB%AC-%ED%8C%8C%EC%9D%BC-provider-local">2. 로컬 파일 (provider: local)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#huggingface-%EB%AA%A8%EB%8D%B8-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C">HuggingFace 모델 다운로드</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%ED%94%84%EB%9D%BC%EC%9D%B4%EB%B9%97-%EB%AA%A8%EB%8D%B8-%EC%A0%91%EA%B7%BC">프라이빗 모델 접근</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%ED%8A%B9%EC%A0%95-%EB%AA%A8%EB%8D%B8-%EB%B2%84%EC%A0%84-%EC%82%AC%EC%9A%A9">특정 모델 버전 사용</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EC%98%A4%ED%94%84%EB%9D%BC%EC%9D%B8-%EB%AA%A8%EB%93%9C">오프라인 모드</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#103-%EC%A7%80%EC%9B%90-%ED%83%9C%EC%8A%A4%ED%81%AC-%EC%9C%A0%ED%98%95">10.3 지원 태스크 유형</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1031-text-generation">10.3.1 text-generation</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1032-chat-completion">10.3.2 chat-completion</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1033-text-classification">10.3.3 text-classification</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1034-text-embedding">10.3.4 text-embedding</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1035-image-to-text">10.3.5 image-to-text</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1036-text-to-image">10.3.6 text-to-image</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1037-image-upscale">10.3.7 image-upscale</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1038-text-to-speech">10.3.8 text-to-speech</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#generate-%EB%A9%94%EC%84%9C%EB%93%9C">Generate 메서드</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#clone-%EB%A9%94%EC%84%9C%EB%93%9C">Clone 메서드</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#design-%EB%A9%94%EC%84%9C%EB%93%9C">Design 메서드</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%EC%A7%80%EC%9B%90-%EB%AA%A8%EB%8D%B8-qwen-%ED%8C%A8%EB%B0%80%EB%A6%AC">지원 모델 (Qwen 패밀리)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1039-face-embedding">10.3.9 face-embedding</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#104-%EB%AA%A8%EB%8D%B8-%EC%84%A4%EC%A0%95-%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4-%EC%A0%95%EB%B0%80%EB%8F%84-%EB%B0%B0%EC%B9%98-%ED%81%AC%EA%B8%B0">10.4 모델 설정 (디바이스, 정밀도, 배치 크기)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4-%EC%84%A4%EC%A0%95">디바이스 설정</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EC%A0%95%EB%B0%80%EB%8F%84-%EC%84%A4%EC%A0%95">정밀도 설정</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EC%96%91%EC%9E%90%ED%99%94">양자화</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EB%B0%B0%EC%B9%98-%ED%81%AC%EA%B8%B0">배치 크기</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EC%A0%80%EB%A9%94%EB%AA%A8%EB%A6%AC-%EB%A1%9C%EB%94%A9">저메모리 로딩</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#105-lorapeft-%EC%96%B4%EB%8C%91%ED%84%B0-%EC%82%AC%EC%9A%A9">10.5 LoRA/PEFT 어댑터 사용</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#lora-%EC%96%B4%EB%8C%91%ED%84%B0-%EC%A0%81%EC%9A%A9">LoRA 어댑터 적용</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EB%8B%A4%EC%A4%91-lora-%EC%96%B4%EB%8C%91%ED%84%B0">다중 LoRA 어댑터</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EC%96%B4%EB%8C%91%ED%84%B0-%EA%B0%80%EC%A4%91%EC%B9%98">어댑터 가중치</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EB%A1%9C%EC%BB%AC-lora-%EC%96%B4%EB%8C%91%ED%84%B0">로컬 LoRA 어댑터</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#lora-%EC%82%AC%EC%9A%A9-%EC%82%AC%EB%A1%80">LoRA 사용 사례</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#106-%EB%AA%A8%EB%8D%B8-%EC%84%9C%EB%B9%99-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC">10.6 모델 서빙 프레임워크</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#vllm">vLLM</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#vllm-%ED%8A%B9%EC%A7%95">vLLM 특징</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#vllm-%EC%84%A4%EC%A0%95-%EC%98%88%EC%A0%9C">vLLM 설정 예제</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#vllm-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0">vLLM 파라미터</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#ollama">Ollama</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#ollama-%ED%8A%B9%EC%A7%95">Ollama 특징</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#ollama-%EC%9E%90%EB%8F%99-%EA%B4%80%EB%A6%AC-http-server-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8">Ollama 자동 관리 (http-server 컴포넌트)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-6 text-[.82rem]" href="#%EA%B8%B0%EC%A1%B4-ollama-%EC%84%9C%EB%B2%84-%EC%82%AC%EC%9A%A9-http-client">기존 Ollama 서버 사용 (http-client)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#tgi-text-generation-inference">TGI (Text Generation Inference)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC-%EB%B9%84%EA%B5%90">프레임워크 비교</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#107-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94-%ED%8C%81">10.7 성능 최적화 팁</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1-%EC%A0%81%EC%A0%88%ED%95%9C-%EC%A0%95%EB%B0%80%EB%8F%84-%EC%84%A0%ED%83%9D">1. 적절한 정밀도 선택</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#2-%EC%96%91%EC%9E%90%ED%99%94-%ED%99%9C%EC%9A%A9">2. 양자화 활용</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#3-%EC%A0%81%EC%A0%88%ED%95%9C-%EB%B0%B0%EC%B9%98-%ED%81%AC%EA%B8%B0">3. 적절한 배치 크기</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#4-%EB%AA%A8%EB%8D%B8-%EC%BA%90%EC%8B%B1">4. 모델 캐싱</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#5-%EB%8B%A4%EC%A4%91-gpu-%ED%99%9C%EC%9A%A9">5. 다중 GPU 활용</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-%EC%84%B1%EB%8A%A5-%EB%AC%B8%EC%A0%9C%EC%99%80-%ED%95%B4%EA%B2%B0%EC%B1%85">일반적인 성능 문제와 해결책</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#%EB%8B%A4%EC%9D%8C-%EB%8B%A8%EA%B3%84">다음 단계</a></aside></div></div><footer class="border-t border-border mt-8"><div class="flex items-center justify-between flex-wrap gap-4 max-w-[1280px] mx-auto px-6 py-5 max-md:px-4"><nav class="flex items-center gap-[1.1rem] text-[.85rem]"><a class="text-muted hover:text-fg" href="/model-compose/llms.txt">llms.txt</a><button type="button" class="inline-flex items-center justify-center w-[30px] h-[30px] p-0 text-[.95rem] leading-none border border-border rounded-lg bg-surface text-fg cursor-pointer hover:bg-hover" data-theme-toggle="true" aria-label="Toggle theme"></button></nav><a class="text-muted text-[.85rem] hover:text-accent" href="https://kura.build/" target="_blank" rel="noreferrer">Powered by Kura</a></div></footer><script>document.addEventListener('keydown',function(e){if(e.key==='/' && !document.documentElement.dataset.ctrlk && !/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){e.preventDefault();var s=document.querySelector('.search-box');if(s)s.focus();}});(function(){var b=document.querySelector('[data-theme-toggle]');if(!b)return;var d=document.documentElement,order=['system','light','dark'],icon={system:'🖥',light:'☀',dark:'☾'};function pref(){return d.getAttribute('data-theme-pref')||'system';}function res(p){return p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';}function set(p){d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',res(p));try{localStorage.setItem('kura-theme',p);}catch(e){}b.textContent=icon[p];b.setAttribute('title','Theme: '+p);}set(pref());b.addEventListener('click',function(){set(order[(order.indexOf(pref())+1)%order.length]);});try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(pref()==='system')d.setAttribute('data-theme',res('system'));});}catch(e){}})();document.addEventListener('click',function(e){var t=e.target;document.querySelectorAll('details[data-menu][open]').forEach(function(d){if(!d.contains(t))d.removeAttribute('open');});var it=t.closest&&t.closest('details[data-menu] a, details[data-menu] [data-copy-md]');if(it){var dd=it.closest('details[data-menu]');if(dd)setTimeout(function(){dd.removeAttribute('open');},0);}});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details[data-menu][open]').forEach(function(d){d.removeAttribute('open');});});(function(){var root=document.documentElement;function opener(){return document.querySelector('[data-drawer-open]');}function items(){var d=document.getElementById('docs-nav');if(!d)return[];return[].filter.call(d.querySelectorAll('a[href],button:not([disabled]),summary,[tabindex]:not([tabindex="-1"])'),function(el){return el.offsetParent!==null;});}function set(o){var was=root.classList.contains('drawer-open');root.classList.toggle('drawer-open',o);var b=opener();if(b)b.setAttribute('aria-expanded',o?'true':'false');if(o){var f=items();if(f[0])f[0].focus();}else if(was&&b)b.focus();}document.addEventListener('click',function(e){if(e.target.closest('[data-drawer-open]')){e.preventDefault();set(!root.classList.contains('drawer-open'));return;}if(e.target.closest('[data-drawer-close]')){set(false);return;}if(e.target.closest('#docs-nav a'))set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);return;}if(e.key==='Tab'&&root.classList.contains('drawer-open')){var f=items();if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}else if(f.indexOf(document.activeElement)<0){e.preventDefault();first.focus();}}});})();(function(){
+  function trim(p){return p.length>1&&p.endsWith('/')?p.slice(0,-1):p;}
+  function sync(){
+    var path=trim(location.pathname), tab=null;
+    var links=document.querySelectorAll('.sidebar a[href],[data-tabbar] a[href]');
+    for(var i=0;i<links.length;i++){var a=links[i],on=trim(a.getAttribute('href'))===path;
+      if(on){a.setAttribute('aria-current','page');var g=a.closest('[data-tab]');if(g)tab=g.getAttribute('data-tab');}
+      else a.removeAttribute('aria-current');}
+    if(tab!=null){
+      document.querySelectorAll('[data-tab]').forEach(function(g){g.hidden=g.getAttribute('data-tab')!==tab;});
+      document.querySelectorAll('[data-tabbar] a').forEach(function(a){
+        if(a.getAttribute('data-tab-key')===tab)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    }
+    // expand the folder(s) holding the active page. Iterate EVERY aria-current sidebar link, not
+    // just the first: a folder-as-page link lives in a <details>, but the mobile tab-bar link (also
+    // in .sidebar, earlier in the DOM) has no folder ancestor — querySelector would pick that one
+    // and expand nothing. forEach opens each link's folder chain; tab links are harmless no-ops.
+    document.querySelectorAll('.sidebar a[aria-current="page"]').forEach(function(cur){
+      var d=cur.closest('details.folder');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details.folder');}});
+    // rewrite the locale-switch links to THIS page's equivalent path (swap the locale prefix)
+    var ll=document.querySelectorAll('[data-locale-home]');
+    if(ll.length){var lc=document.querySelector('[data-locale-home][data-locale-active]'),cp=lc?lc.getAttribute('data-locale-home'):'/';cp=cp==='/'?'':cp;
+      var rest=location.pathname;if(cp&&rest.indexOf(cp)===0)rest=rest.slice(cp.length)||'/';
+      ll.forEach(function(a){var h=a.getAttribute('data-locale-home'),p=h==='/'?'':h;a.setAttribute('href',rest==='/'?(p||'/'):(p+rest));});}
+    // mobile nav-context: "Active tab / Page title" (the shell can't know the page server-side)
+    var nc=document.querySelector('[data-nav-context]');
+    if(nc){var at=document.querySelector('[data-tabbar] a[aria-current="page"]'),h1=document.querySelector('main h1');
+      nc.textContent=[at&&at.textContent.trim(),h1&&h1.textContent.trim()].filter(Boolean).join(' / ');}
+  }
+  sync();
+  var outlet=document.querySelector('[data-june-outlet]');
+  if(outlet) new MutationObserver(sync).observe(outlet,{childList:true,subtree:true});
+})();</script><script type="module" src="/model-compose/_june/client.519429d3.js"></script><script type="application/json" id="june-webmcp">[{"name":"search_docs","description":"Hybrid keyword + semantic search over the docs. Returns the most relevant passages with their doc slug, title, and relevance score.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"A natural-language question or keywords."},"topK":{"type":"integer","description":"Number of results to return (default 5)."},"locale":{"type":"string","description":"Optional locale — scopes results to that locale's view (its translations plus untranslated defaults)."}},"required":["query"]}},{"name":"get_page","description":"Fetch one doc page as the authored Markdown source by its slug (e.g. introduction, search, agents).","inputSchema":{"type":"object","properties":{"slug":{"type":"string","description":"The page slug."},"locale":{"type":"string","description":"Optional locale — returns that variant when it exists."}},"required":["slug"]}},{"name":"list_docs","description":"List every doc page with its slug, title, section, and `sources` (the code paths it documents). The map for finding which pages a code change affects.","inputSchema":{"type":"object","properties":{}}}]</script><script>(function(){var mc=navigator.modelContext;if(!mc||!mc.registerTool)return;var el=document.getElementById('june-webmcp');if(!el)return;var tools;try{tools=JSON.parse(el.textContent)}catch(e){return}var ac=new AbortController();tools.forEach(function(t){mc.registerTool({name:t.name,description:t.description,inputSchema:t.inputSchema,execute:function(args){return fetch('/mcp',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:t.name,arguments:args}})}).then(function(r){return r.json()}).then(function(j){return j.result})}},{signal:ac.signal})})})();</script></body></html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="icon" href="/model-compose/favicon.svg" type="image/svg+xml"/><title>Table of Contents - model-compose</title><meta name="description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><link rel="alternate" hrefLang="en" href="/user-guide/00-table-of-contents"/><link rel="alternate" hrefLang="zh-cn" href="/zh-cn/user-guide/00-table-of-contents"/><link rel="alternate" hrefLang="ko" href="/ko/user-guide/00-table-of-contents"/><link rel="alternate" hrefLang="x-default" href="/user-guide/00-table-of-contents"/><meta property="og:title" content="Table of Contents"/><meta property="og:description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><meta property="og:type" content="article"/><script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}]}</script><script>(function(){if(HTMLScriptElement.supports&&HTMLScriptElement.supports('speculationrules'))return;var seen=new Set();document.addEventListener('pointerover',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||seen.has(u.pathname)||u.pathname===location.pathname)return;if(/.(md|json)$/.test(u.pathname)||u.pathname==='/mcp')return;seen.add(u.pathname);var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname+u.search;document.head.appendChild(l);},{passive:true});})();</script><style>
+          @view-transition { navigation: auto; }
+          ::view-transition-group(root),
+          ::view-transition-old(root),
+          ::view-transition-new(root) { animation-duration: 120ms; }
+          @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) { animation: none !important; }
+          }
+</style><link rel="stylesheet" href="/model-compose/_june/global.ab0a5eb2.css"/></head><body><script>(function(){try{var p=localStorage.getItem('kura-theme')||'system';var d=document.documentElement;d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',(p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches))?'dark':'light');}catch(e){}})();</script><header class="sticky top-0 z-20 flex items-center gap-4 h-14 px-5 bg-topbar-bg backdrop-blur-sm border-b border-border max-md:px-4 max-md:gap-2.5"><a class="flex items-center gap-1.5 font-bold text-[1.05rem]" href="/model-compose/">model-compose<!-- --> <span class="font-normal text-muted text-[.85rem]">Docs</span></a><form class="ml-auto max-md:ml-2 max-md:flex-1 max-md:min-w-0" action="/model-compose/search" method="get"><input class="w-[280px] max-w-[40vw] px-3 py-2 text-[.9rem] border border-border rounded-lg bg-surface-2 text-fg max-md:w-full max-md:max-w-none search-box" placeholder="Search docs…  (press /)" aria-label="Search" data-search-endpoint="/model-compose/search.json" data-doc-base="/model-compose/" data-search-static="1" data-locale="en" name="q"/></form><nav class="flex items-center gap-4 text-muted text-[.9rem]"><details class="relative" data-menu="true"><summary class="chevron cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 border border-border rounded-lg text-fg-soft text-[.85rem] whitespace-nowrap hover:text-fg">English</summary><div class="absolute right-0 top-[calc(100%+.4rem)] min-w-36 flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl z-30"><a data-june-no-router="true" data-locale-home="/model-compose" data-locale-active="" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-accent font-semibold" href="/model-compose" hrefLang="en">English</a><a data-june-no-router="true" data-locale-home="/model-compose/zh-cn" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/zh-cn" hrefLang="zh-cn">简体中文</a><a data-june-no-router="true" data-locale-home="/model-compose/ko" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/ko" hrefLang="ko">한국어</a></div></details></nav></header><button class="hidden max-md:flex items-center gap-2.5 w-full px-4 py-2.5 bg-bg border-0 border-b border-border text-fg-soft text-[.9rem] text-left cursor-pointer focus-visible:outline-none focus-visible:bg-hover" data-drawer-open="true" aria-controls="docs-nav" aria-expanded="false"><span class="text-[1.05rem] leading-none" aria-hidden="true">☰</span><span class="font-semibold text-fg flex-none">Navigation</span><span class="nav-bar-context text-muted flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" data-nav-context="true"></span></button><div class="drawer-backdrop" data-drawer-close="true" aria-hidden="true"></div><div class="grid grid-cols-[248px_minmax(0,1fr)_220px] max-lg:grid-cols-[248px_minmax(0,1fr)] max-md:grid-cols-1 items-start max-w-[1280px] mx-auto"><aside class="sidebar sticky top-14 h-[calc(100vh-56px)] overflow-y-auto px-4 py-6 border-r border-border" id="docs-nav"><div data-tab="_"><div class="mb-5"><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/">model-compose</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">Reference</p><ul class="flex flex-col gap-px"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><a class="flex-1 min-w-0 text-inherit" href="/model-compose/reference/compose">Compose</a></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><span class="flex-1 min-w-0">Components</span></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/agent">Agent Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/datasets">Datasets Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/file-store">File Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/graph-store">Graph Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/http-client">HTTP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/http-server">HTTP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/image-processor">Image Processor Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/key-value-store">Key-Value Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/mcp-client">MCP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/mcp-server">MCP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model">Model Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model-memory">Model Memory Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model-tokenizer">Model Tokenizer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model-trainer">Model Trainer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/search-engine">Search Engine Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/shell">Shell Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/text-splitter">Text Splitter Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/vector-store">Vector Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/video-scene-detector">Video Scene Detector Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/web-browser">Web Browser Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/web-scraper">Web Scraper Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/workflow">Workflow Component</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/component">Component Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/controller">Controller Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/gateway">Gateway Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/language-codes">Language Codes</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/listener">Listener Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/logger">Logger Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/system">System Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/tracer">Tracer Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/workflow">Workflow Configuration Reference</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/cli">Model-Compose CLI Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/websocket">WebSocket Interface Reference</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">User guide</p><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide">Model-Compose User Guide</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/00-table-of-contents">Table of Contents</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/01-getting-started">Chapter 1: Getting Started</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/02-core-concepts">Chapter 2: Core Concepts</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/03-cli-usage">Chapter 3: CLI Usage</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/04-component-configuration">Chapter 4: Component Configuration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/05-writing-workflows">Chapter 5: Writing Workflows</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/06-workflow-schema">Chapter 6: Workflow Schema</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/07-controller-configuration">Chapter 7: Controller Configuration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/08-websocket-interface">Chapter 8: WebSocket Interface</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/09-webui-configuration">Chapter 9: Web UI Configuration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/10-local-ai-models">Chapter 10: Working with Local AI Models</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/11-model-training">11. Model Training</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/12-external-service-integration">Chapter 12: External Service Integration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/13-streaming-mode">13. Streaming Mode</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/14-variable-binding">14. Variable Binding</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/15-system-integration">15. System Integration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/16-deployment">16. Deployment</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/17-practical-examples">17. Practical Examples</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/18-troubleshooting">18. Troubleshooting</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/19-appendix">19. Appendix</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/image-handling">Image Handling Guide</a></li></ul></div></div></aside><div data-june-outlet=""><main class="w-auto max-w-none m-0 min-w-0 px-10 pt-8 pb-20 max-md:px-4 max-md:pt-5 max-md:pb-12"><details class="hidden max-lg:block mb-5 border border-border rounded-xl overflow-hidden"><summary class="chevron flex justify-between items-center cursor-pointer px-3.5 py-2.5 text-[.85rem] font-semibold text-fg-soft">On this page</summary><div class="flex flex-col px-3.5 pt-1 pb-2.5 border-t border-border"><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#1-getting-started">1. Getting Started</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#2-core-concepts">2. Core Concepts</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#3-cli-usage">3. CLI Usage</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#4-component-configuration">4. Component Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#5-writing-workflows">5. Writing Workflows</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#6-workflow-schema">6. Workflow Schema</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#7-controller-configuration">7. Controller Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#8-websocket-interface">8. WebSocket Interface</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#9-web-ui-configuration">9. Web UI Configuration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#10-working-with-local-ai-models">10. Working with Local AI Models</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#11-model-training">11. Model Training</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#12-external-service-integration">12. External Service Integration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#13-streaming-mode">13. Streaming Mode</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#14-variable-binding">14. Variable Binding</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#15-system-integration">15. System Integration</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#16-deployment">16. Deployment</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#17-practical-examples">17. Practical Examples</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#18-troubleshooting">18. Troubleshooting</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#19-appendix">19. Appendix</a></div></details><div class="flex items-center justify-between gap-4 mb-6"><div class="prose"><h1 class="!m-0">Table of Contents</h1></div><div class="relative inline-flex items-stretch flex-none"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[.85rem] border border-border border-r-0 rounded-l-lg bg-surface text-fg-soft cursor-pointer hover:bg-hover hover:text-fg" data-copy-md="/model-compose/user-guide/00-table-of-contents.md"><svg class="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>Copy Markdown</button><details class="relative inline-flex items-stretch" data-menu="true"><summary class="chevron inline-flex items-center justify-center w-[30px] border border-border rounded-r-lg bg-surface text-muted cursor-pointer hover:bg-hover hover:text-fg" aria-label="More actions"></summary><div class="absolute right-0 top-[calc(100%+.4rem)] z-30 min-w-[17rem] flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl"><button class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" data-copy-md="/model-compose/user-guide/00-table-of-contents.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg><span class="flex flex-col min-w-0"><span class="font-semibold text-[.9rem] text-fg">Copy Markdown</span><span class="text-[.8rem] text-muted">Copy this page as Markdown for LLMs</span></span></button><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="/model-compose/user-guide/00-table-of-contents.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M16 21H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6l4 4v12a2 2 0 0 1-2 2z"></path><path d="M9 13h6M9 17h4"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">View as Markdown<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">View this page as plain text</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://chatgpt.com/?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20Table%20of%20Contents" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in ChatGPT<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask ChatGPT about this page</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://claude.ai/new?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%20Table%20of%20Contents" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in Claude<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask Claude about this page</span></span></a></div></details></div></div><article class="prose"><p>This document outlines the structure of the model-compose user guide.</p>
+<hr />
+<h2 id="1-getting-started">1. <a href="/model-compose/user-guide/01-getting-started">Getting Started</a></h2>
+<ul>
+<li>1.1 <a href="/model-compose/user-guide/01-getting-started#11-introduction-and-overview">Introduction and Overview</a></li>
+<li>1.2 <a href="/model-compose/user-guide/01-getting-started#12-installation">Installation</a></li>
+<li>1.3 <a href="/model-compose/user-guide/01-getting-started#13-running-your-first-workflow">Running Your First Workflow</a>
+<ul>
+<li>1.3.1 <a href="/model-compose/user-guide/01-getting-started#131-simple-example-openai-api-call">Simple Example (OpenAI API Call)</a></li>
+<li>1.3.2 <a href="/model-compose/user-guide/01-getting-started#132-running-a-workflow-run-command">Running a Workflow (run command)</a></li>
+<li>1.3.3 <a href="/model-compose/user-guide/01-getting-started#133-starting-the-controller-and-using-web-ui">Starting the Controller and Using Web UI</a></li>
+</ul>
+</li>
+<li>1.4 <a href="/model-compose/user-guide/01-getting-started#14-basic-concepts">Basic Concepts</a></li>
+</ul>
+<h2 id="2-core-concepts">2. <a href="/model-compose/user-guide/02-core-concepts">Core Concepts</a></h2>
+<ul>
+<li>2.1 <a href="/model-compose/user-guide/02-core-concepts#21-model-composeyml-structure">model-compose.yml Structure</a></li>
+<li>2.2 <a href="/model-compose/user-guide/02-core-concepts#22-controller">Controller</a></li>
+<li>2.3 <a href="/model-compose/user-guide/02-core-concepts#23-components">Components</a></li>
+<li>2.4 <a href="/model-compose/user-guide/02-core-concepts#24-workflows">Workflows</a></li>
+<li>2.5 <a href="/model-compose/user-guide/02-core-concepts#25-jobs">Jobs</a></li>
+<li>2.6 <a href="/model-compose/user-guide/02-core-concepts#26-data-flow-and-variable-binding">Data Flow and Variable Binding</a></li>
+</ul>
+<h2 id="3-cli-usage">3. <a href="/model-compose/user-guide/03-cli-usage">CLI Usage</a></h2>
+<ul>
+<li>3.1 <a href="/model-compose/user-guide/03-cli-usage#31-basic-commands">Basic Commands</a></li>
+<li>3.2 <a href="/model-compose/user-guide/03-cli-usage#32-up-command">up Command</a></li>
+<li>3.3 <a href="/model-compose/user-guide/03-cli-usage#33-down-command">down Command</a></li>
+<li>3.4 <a href="/model-compose/user-guide/03-cli-usage#34-start-command">start Command</a></li>
+<li>3.5 <a href="/model-compose/user-guide/03-cli-usage#35-stop-command">stop Command</a></li>
+<li>3.6 <a href="/model-compose/user-guide/03-cli-usage#36-run-command">run Command</a></li>
+<li>3.7 <a href="/model-compose/user-guide/03-cli-usage#37-environment-variable-management">Environment Variable Management</a></li>
+<li>3.8 <a href="/model-compose/user-guide/03-cli-usage#38-configuration-file-specification">Configuration File Specification</a></li>
+<li>3.9 <a href="/model-compose/user-guide/03-cli-usage#39-debugging-options">Debugging Options</a></li>
+<li>3.10 <a href="/model-compose/user-guide/03-cli-usage#310-practical-examples">Practical Examples</a></li>
+<li>3.11 <a href="/model-compose/user-guide/03-cli-usage#311-command-quick-reference">Command Quick Reference</a></li>
+</ul>
+<h2 id="4-component-configuration">4. <a href="/model-compose/user-guide/04-component-configuration">Component Configuration</a></h2>
+<ul>
+<li>4.1 <a href="/model-compose/user-guide/04-component-configuration#41-component-types">Component Types</a></li>
+<li>4.2 <a href="/model-compose/user-guide/04-component-configuration#42-defining-components">Defining Components</a></li>
+<li>4.3 <a href="/model-compose/user-guide/04-component-configuration#43-inputoutput-mapping">Input/Output Mapping</a></li>
+<li>4.4 <a href="/model-compose/user-guide/04-component-configuration#44-reusability-patterns">Reusability Patterns</a></li>
+<li>4.5 <a href="/model-compose/user-guide/04-component-configuration#45-component-best-practices">Component Best Practices</a></li>
+</ul>
+<h2 id="5-writing-workflows">5. <a href="/model-compose/user-guide/05-writing-workflows">Writing Workflows</a></h2>
+<ul>
+<li>5.1 <a href="/model-compose/user-guide/05-writing-workflows#51-what-is-a-workflow">What is a Workflow?</a></li>
+<li>5.2 <a href="/model-compose/user-guide/05-writing-workflows#52-single-job-workflows">Single-Job Workflows</a></li>
+<li>5.3 <a href="/model-compose/user-guide/05-writing-workflows#53-multi-step-workflows">Multi-Step Workflows</a></li>
+<li>5.4 <a href="/model-compose/user-guide/05-writing-workflows#54-data-passing-between-jobs">Data Passing Between Jobs</a></li>
+<li>5.5 <a href="/model-compose/user-guide/05-writing-workflows#55-job-types">Job Types</a></li>
+<li>5.6 <a href="/model-compose/user-guide/05-writing-workflows#56-conditional-execution">Conditional Execution</a></li>
+<li>5.7 <a href="/model-compose/user-guide/05-writing-workflows#57-streaming-mode">Streaming Mode</a></li>
+<li>5.8 <a href="/model-compose/user-guide/05-writing-workflows#58-error-handling">Error Handling</a></li>
+<li>5.9 <a href="/model-compose/user-guide/05-writing-workflows#59-workflow-best-practices">Workflow Best Practices</a></li>
+</ul>
+<h2 id="6-workflow-schema">6. <a href="/model-compose/user-guide/06-workflow-schema">Workflow Schema</a></h2>
+<ul>
+<li>6.1 <a href="/model-compose/user-guide/06-workflow-schema#61-what-is-a-workflow-schema">What is a Workflow Schema?</a></li>
+<li>6.2 <a href="/model-compose/user-guide/06-workflow-schema#62-retrieving-the-schema">Retrieving the Schema</a></li>
+<li>6.3 <a href="/model-compose/user-guide/06-workflow-schema#63-input-schema">Input Schema</a></li>
+<li>6.4 <a href="/model-compose/user-guide/06-workflow-schema#64-output-schema">Output Schema</a></li>
+<li>6.5 <a href="/model-compose/user-guide/06-workflow-schema#65-schema-in-practice">Schema in Practice</a></li>
+<li>6.6 <a href="/model-compose/user-guide/06-workflow-schema#66-practical-examples">Practical Examples</a></li>
+<li>6.7 <a href="/model-compose/user-guide/06-workflow-schema#67-workflow-metadata-fields">Workflow Metadata Fields</a></li>
+<li>6.8 <a href="/model-compose/user-guide/06-workflow-schema#68-best-practices">Best Practices</a></li>
+</ul>
+<h2 id="7-controller-configuration">7. <a href="/model-compose/user-guide/07-controller-configuration">Controller Configuration</a></h2>
+<ul>
+<li>7.1 <a href="/model-compose/user-guide/07-controller-configuration#71-http-server">HTTP Server</a></li>
+<li>7.2 <a href="/model-compose/user-guide/07-controller-configuration#72-mcp-server">MCP Server</a></li>
+<li>7.3 <a href="/model-compose/user-guide/07-controller-configuration#73-queue-subscriber">Queue Subscriber</a></li>
+<li>7.4 <a href="/model-compose/user-guide/07-controller-configuration#74-queue-dispatch-distributed-deployment">Queue Dispatch (Distributed Deployment)</a></li>
+<li>7.5 <a href="/model-compose/user-guide/07-controller-configuration#75-queue-streaming">Queue Streaming</a></li>
+<li>7.6 <a href="/model-compose/user-guide/07-controller-configuration#76-concurrency-control">Concurrency Control</a></li>
+<li>7.7 <a href="/model-compose/user-guide/07-controller-configuration#77-port-and-host-configuration">Port and Host Configuration</a></li>
+<li>7.8 <a href="/model-compose/user-guide/07-controller-configuration#78-controller-best-practices">Controller Best Practices</a></li>
+</ul>
+<h2 id="8-websocket-interface">8. <a href="/model-compose/user-guide/08-websocket-interface">WebSocket Interface</a></h2>
+<ul>
+<li>8.1 <a href="/model-compose/user-guide/08-websocket-interface#81-websocket-overview">WebSocket Overview</a>
+<ul>
+<li>8.1.1 <a href="/model-compose/user-guide/08-websocket-interface#811-what-is-the-websocket-interface">What is the WebSocket Interface?</a></li>
+<li>8.1.2 <a href="/model-compose/user-guide/08-websocket-interface#812-websocket-vs-rest-api">WebSocket vs REST API</a></li>
+<li>8.1.3 <a href="/model-compose/user-guide/08-websocket-interface#813-how-it-works">How It Works</a></li>
+</ul>
+</li>
+<li>8.2 <a href="/model-compose/user-guide/08-websocket-interface#82-configuration">Configuration</a>
+<ul>
+<li>8.2.1 <a href="/model-compose/user-guide/08-websocket-interface#821-enabling-websocket">Enabling WebSocket</a></li>
+<li>8.2.2 <a href="/model-compose/user-guide/08-websocket-interface#822-websocket-configuration-options">WebSocket Configuration Options</a></li>
+<li>8.2.3 <a href="/model-compose/user-guide/08-websocket-interface#823-configuration-examples">Configuration Examples</a></li>
+</ul>
+</li>
+<li>8.3 <a href="/model-compose/user-guide/08-websocket-interface#83-connecting-to-websocket">Connecting to WebSocket</a>
+<ul>
+<li>8.3.1 <a href="/model-compose/user-guide/08-websocket-interface#831-basic-connection">Basic Connection</a></li>
+<li>8.3.2 <a href="/model-compose/user-guide/08-websocket-interface#832-session-id">Session ID</a></li>
+<li>8.3.3 <a href="/model-compose/user-guide/08-websocket-interface#833-auto-subscribe-on-connect">Auto-Subscribe on Connect</a></li>
+</ul>
+</li>
+<li>8.4 <a href="/model-compose/user-guide/08-websocket-interface#84-websocket-messages">WebSocket Messages</a>
+<ul>
+<li>8.4.1 <a href="/model-compose/user-guide/08-websocket-interface#841-message-format">Message Format</a></li>
+<li>8.4.2 <a href="/model-compose/user-guide/08-websocket-interface#842-client--server-messages">Client → Server Messages</a></li>
+<li>8.4.3 <a href="/model-compose/user-guide/08-websocket-interface#843-server--client-messages">Server → Client Messages</a></li>
+</ul>
+</li>
+<li>8.5 <a href="/model-compose/user-guide/08-websocket-interface#85-rest-api-integration">REST API Integration</a>
+<ul>
+<li>8.5.1 <a href="/model-compose/user-guide/08-websocket-interface#851-subscribe_task-parameter"><code>subscribe_task</code> Parameter</a></li>
+<li>8.5.2 <a href="/model-compose/user-guide/08-websocket-interface#852-wait_for_completion-and-subscribe_task-combinations"><code>wait_for_completion</code> and <code>subscribe_task</code> Combinations</a></li>
+<li>8.5.3 <a href="/model-compose/user-guide/08-websocket-interface#853-pattern-websocket-first--rest-execution">Pattern: WebSocket First + REST Execution</a></li>
+</ul>
+</li>
+<li>8.6 <a href="/model-compose/user-guide/08-websocket-interface#86-usage-patterns">Usage Patterns</a>
+<ul>
+<li>8.6.1 <a href="/model-compose/user-guide/08-websocket-interface#861-pattern-1-execute-and-monitor-via-websocket">Pattern 1: Execute and Monitor via WebSocket</a></li>
+<li>8.6.2 <a href="/model-compose/user-guide/08-websocket-interface#862-pattern-2-interactive-interruptresume">Pattern 2: Interactive Interrupt/Resume</a></li>
+<li>8.6.3 <a href="/model-compose/user-guide/08-websocket-interface#863-pattern-3-subscribe-to-existing-task">Pattern 3: Subscribe to Existing Task</a></li>
+<li>8.6.4 <a href="/model-compose/user-guide/08-websocket-interface#864-pattern-4-multi-task-dashboard">Pattern 4: Multi-Task Dashboard</a></li>
+</ul>
+</li>
+<li>8.7 <a href="/model-compose/user-guide/08-websocket-interface#87-connection-management">Connection Management</a>
+<ul>
+<li>8.7.1 <a href="/model-compose/user-guide/08-websocket-interface#871-session-and-reconnection">Session and Reconnection</a></li>
+<li>8.7.2 <a href="/model-compose/user-guide/08-websocket-interface#872-connection-lifecycle">Connection Lifecycle</a></li>
+<li>8.7.3 <a href="/model-compose/user-guide/08-websocket-interface#873-connection-limits">Connection Limits</a></li>
+<li>8.7.4 <a href="/model-compose/user-guide/08-websocket-interface#874-keep-alive-with-ping">Keep-Alive with Ping</a></li>
+</ul>
+</li>
+<li>8.8 <a href="/model-compose/user-guide/08-websocket-interface#88-security-considerations">Security Considerations</a>
+<ul>
+<li>8.8.1 <a href="/model-compose/user-guide/08-websocket-interface#881-session-id-security">Session ID Security</a></li>
+<li>8.8.2 <a href="/model-compose/user-guide/08-websocket-interface#882-cors-and-origins">CORS and Origins</a></li>
+<li>8.8.3 <a href="/model-compose/user-guide/08-websocket-interface#883-production-recommendations">Production Recommendations</a></li>
+</ul>
+</li>
+<li>8.9 <a href="/model-compose/user-guide/08-websocket-interface#89-best-practices">Best Practices</a></li>
+</ul>
+<h2 id="9-web-ui-configuration">9. <a href="/model-compose/user-guide/09-webui-configuration">Web UI Configuration</a></h2>
+<ul>
+<li>9.1 <a href="/model-compose/user-guide/09-webui-configuration#91-web-ui-overview">Web UI Overview</a></li>
+<li>9.2 <a href="/model-compose/user-guide/09-webui-configuration#92-gradio-driver">Gradio Driver</a></li>
+<li>9.3 <a href="/model-compose/user-guide/09-webui-configuration#93-static-file-driver">Static File Driver</a></li>
+<li>9.4 <a href="/model-compose/user-guide/09-webui-configuration#94-web-ui-deployment-via-reverse-proxy">Web UI Deployment via Reverse Proxy</a></li>
+</ul>
+<h2 id="10-working-with-local-ai-models">10. <a href="/model-compose/user-guide/10-local-ai-models">Working with Local AI Models</a></h2>
+<ul>
+<li>10.1 <a href="/model-compose/user-guide/10-local-ai-models#101-local-model-overview">Local Model Overview</a></li>
+<li>10.2 <a href="/model-compose/user-guide/10-local-ai-models#102-model-installation-and-setup">Model Installation and Setup</a></li>
+<li>10.3 <a href="/model-compose/user-guide/10-local-ai-models#103-supported-task-types">Supported Task Types</a></li>
+<li>10.4 <a href="/model-compose/user-guide/10-local-ai-models#104-model-configuration-device-precision-batch-size">Model Configuration (Device, Precision, Batch Size)</a></li>
+<li>10.5 <a href="/model-compose/user-guide/10-local-ai-models#105-using-lorapeft-adapters">Using LoRA/PEFT Adapters</a></li>
+<li>10.6 <a href="/model-compose/user-guide/10-local-ai-models#106-model-serving-frameworks">Model Serving Frameworks</a></li>
+<li>10.7 <a href="/model-compose/user-guide/10-local-ai-models#107-performance-optimization-tips">Performance Optimization Tips</a></li>
+</ul>
+<h2 id="11-model-training">11. <a href="/model-compose/user-guide/11-model-training">Model Training</a></h2>
+<ul>
+<li>11.1 <a href="/model-compose/user-guide/11-model-training#111-training-overview">Training Overview</a></li>
+<li>11.2 <a href="/model-compose/user-guide/11-model-training#112-dataset-preparation">Dataset Preparation</a>
+<ul>
+<li>11.2.1 <a href="/model-compose/user-guide/11-model-training#1121-dataset-component-overview">Dataset Component Overview</a></li>
+<li>11.2.2 <a href="/model-compose/user-guide/11-model-training#1122-loading-huggingface-datasets">Loading HuggingFace Datasets</a></li>
+<li>11.2.3 <a href="/model-compose/user-guide/11-model-training#1123-loading-local-datasets">Loading Local Datasets</a></li>
+<li>11.2.4 <a href="/model-compose/user-guide/11-model-training#1124-dataset-manipulation">Dataset Manipulation</a></li>
+<li>11.2.5 <a href="/model-compose/user-guide/11-model-training#1125-dataset-formats">Dataset Formats</a></li>
+</ul>
+</li>
+<li>11.3 <a href="/model-compose/user-guide/11-model-training#113-training-configuration">Training Configuration</a>
+<ul>
+<li>11.3.1 <a href="/model-compose/user-guide/11-model-training#1131-basic-training-configuration">Basic Training Configuration</a></li>
+<li>11.3.2 <a href="/model-compose/user-guide/11-model-training#1132-optimizer-configuration">Optimizer Configuration</a></li>
+<li>11.3.3 <a href="/model-compose/user-guide/11-model-training#1133-learning-rate-scheduler">Learning Rate Scheduler</a></li>
+<li>11.3.4 <a href="/model-compose/user-guide/11-model-training#1134-optimization-settings">Optimization Settings</a></li>
+<li>11.3.5 <a href="/model-compose/user-guide/11-model-training#1135-evaluation-and-saving">Evaluation and Saving</a></li>
+<li>11.3.6 <a href="/model-compose/user-guide/11-model-training#1136-memory-optimization">Memory Optimization</a></li>
+<li>11.3.7 <a href="/model-compose/user-guide/11-model-training#1137-reproducibility-settings">Reproducibility Settings</a></li>
+</ul>
+</li>
+<li>11.4 <a href="/model-compose/user-guide/11-model-training#114-fine-tuning">Fine-tuning</a>
+<ul>
+<li>11.4.1 <a href="/model-compose/user-guide/11-model-training#1141-sft-supervised-fine-tuning">SFT (Supervised Fine-Tuning)</a></li>
+<li>11.4.2 <a href="/model-compose/user-guide/11-model-training#1142-sequence-packing">Sequence Packing</a></li>
+</ul>
+</li>
+<li>11.5 <a href="/model-compose/user-guide/11-model-training#115-lora-training">LoRA Training</a>
+<ul>
+<li>11.5.1 <a href="/model-compose/user-guide/11-model-training#1151-lora-overview">LoRA Overview</a></li>
+<li>11.5.2 <a href="/model-compose/user-guide/11-model-training#1152-basic-lora-configuration">Basic LoRA Configuration</a></li>
+<li>11.5.3 <a href="/model-compose/user-guide/11-model-training#1153-target-module-configuration">Target Module Configuration</a></li>
+<li>11.5.4 <a href="/model-compose/user-guide/11-model-training#1154-lora-bias-configuration">LoRA Bias Configuration</a></li>
+<li>11.5.5 <a href="/model-compose/user-guide/11-model-training#1155-qlora-quantized-lora">QLoRA (Quantized LoRA)</a></li>
+<li>11.5.6 <a href="/model-compose/user-guide/11-model-training#1156-lora-hyperparameter-guide">LoRA Hyperparameter Guide</a></li>
+</ul>
+</li>
+<li>11.6 <a href="/model-compose/user-guide/11-model-training#116-training-monitoring">Training Monitoring</a></li>
+<li>11.7 <a href="/model-compose/user-guide/11-model-training#117-checkpoint-management">Checkpoint Management</a></li>
+<li>11.8 <a href="/model-compose/user-guide/11-model-training#118-practical-examples">Practical Examples</a></li>
+</ul>
+<h2 id="12-external-service-integration">12. <a href="/model-compose/user-guide/12-external-service-integration">External Service Integration</a></h2>
+<ul>
+<li>12.1 <a href="/model-compose/user-guide/12-external-service-integration#121-openai-api">OpenAI API</a>
+<ul>
+<li>12.1.1 <a href="/model-compose/user-guide/12-external-service-integration#1211-chat-completions">Chat Completions</a></li>
+<li>12.1.2 <a href="/model-compose/user-guide/12-external-service-integration#1212-image-generation-dall-e">Image Generation (DALL-E)</a></li>
+<li>12.1.3 <a href="/model-compose/user-guide/12-external-service-integration#1213-audio-tts-transcriptions">Audio (TTS, Transcriptions)</a></li>
+</ul>
+</li>
+<li>12.2 <a href="/model-compose/user-guide/12-external-service-integration#122-anthropic-claude-api">Anthropic Claude API</a></li>
+<li>12.3 <a href="/model-compose/user-guide/12-external-service-integration#123-google-gemini-api">Google Gemini API</a></li>
+<li>12.4 <a href="/model-compose/user-guide/12-external-service-integration#124-elevenlabs-tts">ElevenLabs (TTS)</a></li>
+<li>12.5 <a href="/model-compose/user-guide/12-external-service-integration#125-stability-ai-image-generation">Stability AI (Image Generation)</a></li>
+<li>12.6 <a href="/model-compose/user-guide/12-external-service-integration#126-replicate">Replicate</a></li>
+<li>12.7 <a href="/model-compose/user-guide/12-external-service-integration#127-custom-http-api">Custom HTTP API</a></li>
+<li>12.8 <a href="/model-compose/user-guide/12-external-service-integration#128-external-service-integration-best-practices">External Service Integration Best Practices</a></li>
+</ul>
+<h2 id="13-streaming-mode">13. <a href="/model-compose/user-guide/13-streaming-mode">Streaming Mode</a></h2>
+<ul>
+<li>13.1 <a href="/model-compose/user-guide/13-streaming-mode#131-streaming-overview">Streaming Overview</a>
+<ul>
+<li>13.1.1 <a href="/model-compose/user-guide/13-streaming-mode#1311-what-is-streaming">What is Streaming?</a></li>
+<li>13.1.2 <a href="/model-compose/user-guide/13-streaming-mode#1312-supported-components">Supported Components</a></li>
+<li>13.1.3 <a href="/model-compose/user-guide/13-streaming-mode#1313-streaming-protocol">Streaming Protocol</a></li>
+</ul>
+</li>
+<li>13.2 <a href="/model-compose/user-guide/13-streaming-mode#132-component-specific-streaming-configuration">Component-Specific Streaming Configuration</a>
+<ul>
+<li>13.2.1 <a href="/model-compose/user-guide/13-streaming-mode#1321-model-components">Model Components</a></li>
+<li>13.2.2 <a href="/model-compose/user-guide/13-streaming-mode#1322-http-components">HTTP Components</a></li>
+</ul>
+</li>
+<li>13.3 <a href="/model-compose/user-guide/13-streaming-mode#133-using-streaming-in-workflows">Using Streaming in Workflows</a>
+<ul>
+<li>13.3.1 <a href="/model-compose/user-guide/13-streaming-mode#1331-basic-streaming-workflow">Basic Streaming Workflow</a></li>
+<li>13.3.2 <a href="/model-compose/user-guide/13-streaming-mode#1332-multi-step-workflow-streaming">Multi-Step Workflow Streaming</a></li>
+<li>13.3.3 <a href="/model-compose/user-guide/13-streaming-mode#1333-conditional-streaming">Conditional Streaming</a></li>
+</ul>
+</li>
+<li>13.4 <a href="/model-compose/user-guide/13-streaming-mode#134-processing-streaming-responses">Processing Streaming Responses</a>
+<ul>
+<li>13.4.1 <a href="/model-compose/user-guide/13-streaming-mode#1341-api-endpoints">API Endpoints</a></li>
+<li>13.4.2 <a href="/model-compose/user-guide/13-streaming-mode#1342-client-implementation-javascript">Client Implementation (JavaScript)</a></li>
+<li>13.4.3 <a href="/model-compose/user-guide/13-streaming-mode#1343-client-implementation-python">Client Implementation (Python)</a></li>
+<li>13.4.4 <a href="/model-compose/user-guide/13-streaming-mode#1344-web-ui-integration">Web UI Integration</a></li>
+</ul>
+</li>
+<li>13.5 <a href="/model-compose/user-guide/13-streaming-mode#135-performance-and-optimization">Performance and Optimization</a>
+<ul>
+<li>13.5.1 <a href="/model-compose/user-guide/13-streaming-mode#1351-model-streaming-optimization">Model Streaming Optimization</a></li>
+<li>13.5.2 <a href="/model-compose/user-guide/13-streaming-mode#1352-http-streaming-optimization">HTTP Streaming Optimization</a></li>
+<li>13.5.3 <a href="/model-compose/user-guide/13-streaming-mode#1353-memory-management">Memory Management</a></li>
+<li>13.5.4 <a href="/model-compose/user-guide/13-streaming-mode#1354-network-optimization">Network Optimization</a></li>
+<li>13.5.5 <a href="/model-compose/user-guide/13-streaming-mode#1355-error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li>13.6 <a href="/model-compose/user-guide/13-streaming-mode#136-real-world-examples">Real-World Examples</a>
+<ul>
+<li>13.6.1 <a href="/model-compose/user-guide/13-streaming-mode#1361-real-time-translation-streaming">Real-time Translation Streaming</a></li>
+<li>13.6.2 <a href="/model-compose/user-guide/13-streaming-mode#1362-openai--claude-combination">OpenAI + Claude Combination</a></li>
+<li>13.6.3 <a href="/model-compose/user-guide/13-streaming-mode#1363-local-model-streaming-server">Local Model Streaming Server</a></li>
+</ul>
+</li>
+<li>13.7 <a href="/model-compose/user-guide/13-streaming-mode#137-distributed-streaming-queue-streaming">Distributed Streaming (Queue Streaming)</a></li>
+<li>13.8 <a href="/model-compose/user-guide/13-streaming-mode#138-streaming-best-practices">Streaming Best Practices</a></li>
+</ul>
+<h2 id="14-variable-binding">14. <a href="/model-compose/user-guide/14-variable-binding">Variable Binding</a></h2>
+<ul>
+<li>14.1 <a href="/model-compose/user-guide/14-variable-binding#141-syntax-overview">Syntax Overview</a></li>
+<li>14.2 <a href="/model-compose/user-guide/14-variable-binding#142-variable-sources">Variable Sources</a>
+<ul>
+<li>14.2.1 <a href="/model-compose/user-guide/14-variable-binding#1421-workflow-input">Workflow Input</a></li>
+<li>14.2.2 <a href="/model-compose/user-guide/14-variable-binding#1422-component-response-variables">Component Response Variables</a></li>
+<li>14.2.3 <a href="/model-compose/user-guide/14-variable-binding#1423-previous-job-outputs">Previous Job Outputs</a></li>
+<li>14.2.4 <a href="/model-compose/user-guide/14-variable-binding#1424-environment-variables">Environment Variables</a></li>
+<li>14.2.5 <a href="/model-compose/user-guide/14-variable-binding#1425-streaming-chunk-references">Streaming Chunk References</a></li>
+</ul>
+</li>
+<li>14.3 <a href="/model-compose/user-guide/14-variable-binding#143-path-access">Path Access</a></li>
+<li>14.4 <a href="/model-compose/user-guide/14-variable-binding#144-type-conversion">Type Conversion</a>
+<ul>
+<li>14.4.1 <a href="/model-compose/user-guide/14-variable-binding#1441-primitive-types">Primitive Types</a></li>
+<li>14.4.2 <a href="/model-compose/user-guide/14-variable-binding#1442-object-array-projection">Object Array Projection</a></li>
+<li>14.4.3 <a href="/model-compose/user-guide/14-variable-binding#1443-media-types">Media Types</a></li>
+<li>14.4.4 <a href="/model-compose/user-guide/14-variable-binding#1444-attributes">Attributes</a></li>
+<li>14.4.5 <a href="/model-compose/user-guide/14-variable-binding#1445-base64-type-vs-base64-format">Base64 Type vs Base64 Format</a></li>
+</ul>
+</li>
+<li>14.5 <a href="/model-compose/user-guide/14-variable-binding#145-format-and-context-semantics">Format and Context Semantics</a>
+<ul>
+<li>14.5.1 <a href="/model-compose/user-guide/14-variable-binding#1451-format-values">Format Values</a></li>
+<li>14.5.2 <a href="/model-compose/user-guide/14-variable-binding#1452-input-context">Input Context</a></li>
+<li>14.5.3 <a href="/model-compose/user-guide/14-variable-binding#1453-componentjob-output-context">Component/Job Output Context</a></li>
+<li>14.5.4 <a href="/model-compose/user-guide/14-variable-binding#1454-workflow-output-context">Workflow Output Context</a></li>
+</ul>
+</li>
+<li>14.6 <a href="/model-compose/user-guide/14-variable-binding#146-default-values">Default Values</a>
+<ul>
+<li>14.6.1 <a href="/model-compose/user-guide/14-variable-binding#1461-literal-default-values">Literal Default Values</a></li>
+<li>14.6.2 <a href="/model-compose/user-guide/14-variable-binding#1462-environment-variable-default-values">Environment Variable Default Values</a></li>
+<li>14.6.3 <a href="/model-compose/user-guide/14-variable-binding#1463-nested-default-values-environment-variable--literal">Nested Default Values</a></li>
+</ul>
+</li>
+<li>14.7 <a href="/model-compose/user-guide/14-variable-binding#147-metadata-and-ui-hints">Metadata and UI Hints</a>
+<ul>
+<li>14.7.1 <a href="/model-compose/user-guide/14-variable-binding#1471-annotations">Annotations</a></li>
+<li>14.7.2 <a href="/model-compose/user-guide/14-variable-binding#1472-select-dropdown">Select (Dropdown)</a></li>
+<li>14.7.3 <a href="/model-compose/user-guide/14-variable-binding#1473-slider">Slider</a></li>
+<li>14.7.4 <a href="/model-compose/user-guide/14-variable-binding#1474-textarea">Textarea</a></li>
+</ul>
+</li>
+<li>14.8 <a href="/model-compose/user-guide/14-variable-binding#148-practical-examples">Practical Examples</a></li>
+</ul>
+<h2 id="15-system-integration">15. <a href="/model-compose/user-guide/15-system-integration">System Integration</a></h2>
+<ul>
+<li>15.1 <a href="/model-compose/user-guide/15-system-integration#151-listener-overview">Listener Overview</a></li>
+<li>15.2 <a href="/model-compose/user-guide/15-system-integration#152-http-callback-listener">HTTP Callback Listener</a>
+<ul>
+<li>15.2.1 <a href="/model-compose/user-guide/15-system-integration#1521-http-callback-overview">HTTP Callback Overview</a></li>
+<li>15.2.2 <a href="/model-compose/user-guide/15-system-integration#1522-basic-http-callback-configuration">Basic HTTP Callback Configuration</a></li>
+<li>15.2.3 <a href="/model-compose/user-guide/15-system-integration#1523-callback-endpoint-configuration">Callback Endpoint Configuration</a></li>
+<li>15.2.4 <a href="/model-compose/user-guide/15-system-integration#1524-callback-field-descriptions">Callback Field Descriptions</a></li>
+<li>15.2.5 <a href="/model-compose/user-guide/15-system-integration#1525-bulk-callback-processing">Bulk Callback Processing</a></li>
+<li>15.2.6 <a href="/model-compose/user-guide/15-system-integration#1526-advanced-http-callback-configuration">Advanced HTTP Callback Configuration</a></li>
+<li>15.2.7 <a href="/model-compose/user-guide/15-system-integration#1527-how-http-callback-works">How HTTP Callback Works</a></li>
+<li>15.2.8 <a href="/model-compose/user-guide/15-system-integration#1528-callback-data-mapping">Callback Data Mapping</a></li>
+</ul>
+</li>
+<li>15.3 <a href="/model-compose/user-guide/15-system-integration#153-http-trigger-listener">HTTP Trigger Listener</a>
+<ul>
+<li>15.3.1 <a href="/model-compose/user-guide/15-system-integration#1531-http-trigger-overview">HTTP Trigger Overview</a></li>
+<li>15.3.2 <a href="/model-compose/user-guide/15-system-integration#1532-basic-http-trigger-configuration">Basic HTTP Trigger Configuration</a></li>
+<li>15.3.3 <a href="/model-compose/user-guide/15-system-integration#1533-trigger-endpoint-configuration">Trigger Endpoint Configuration</a></li>
+<li>15.3.4 <a href="/model-compose/user-guide/15-system-integration#1534-trigger-field-descriptions">Trigger Field Descriptions</a></li>
+<li>15.3.5 <a href="/model-compose/user-guide/15-system-integration#1535-bulk-trigger-processing">Bulk Trigger Processing</a></li>
+<li>15.3.6 <a href="/model-compose/user-guide/15-system-integration#1536-how-http-trigger-works">How HTTP Trigger Works</a></li>
+<li>15.3.7 <a href="/model-compose/user-guide/15-system-integration#1537-input-data-mapping">Input Data Mapping</a></li>
+<li>15.3.8 <a href="/model-compose/user-guide/15-system-integration#1538-practical-examples">Practical Examples</a></li>
+</ul>
+</li>
+<li>15.4 <a href="/model-compose/user-guide/15-system-integration#154-gateways---http-tunneling">Gateways - HTTP Tunneling</a>
+<ul>
+<li>15.4.1 <a href="/model-compose/user-guide/15-system-integration#1541-gateway-overview">Gateway Overview</a></li>
+<li>15.4.2 <a href="/model-compose/user-guide/15-system-integration#1542-http-tunnel---ngrok">HTTP Tunnel - ngrok</a></li>
+<li>15.4.3 <a href="/model-compose/user-guide/15-system-integration#1543-http-tunnel---cloudflare">HTTP Tunnel - Cloudflare</a></li>
+<li>15.4.4 <a href="/model-compose/user-guide/15-system-integration#1544-ssh-tunnel">SSH Tunnel</a></li>
+<li>15.4.5 <a href="/model-compose/user-guide/15-system-integration#1545-advanced-gateway-configuration">Advanced Gateway Configuration</a></li>
+<li>15.4.6 <a href="/model-compose/user-guide/15-system-integration#1546-real-world-example-slack-bot-webhook">Real-world Example: Slack Bot Webhook</a></li>
+</ul>
+</li>
+<li>15.5 <a href="/model-compose/user-guide/15-system-integration#155-using-listeners-and-gateways-together">Using Listeners and Gateways Together</a>
+<ul>
+<li>15.5.1 <a href="/model-compose/user-guide/15-system-integration#1551-integration-example-async-image-processing">Integration Example: Async Image Processing</a></li>
+<li>15.5.2 <a href="/model-compose/user-guide/15-system-integration#1552-architecture-diagram">Architecture Diagram</a></li>
+<li>15.5.3 <a href="/model-compose/user-guide/15-system-integration#1553-production-environment-considerations">Production Environment Considerations</a></li>
+</ul>
+</li>
+<li>15.6 <a href="/model-compose/user-guide/15-system-integration#156-system-integration-best-practices">System Integration Best Practices</a></li>
+<li>15.7 <a href="/model-compose/user-guide/15-system-integration#157-systems---infrastructure-management">Systems - Infrastructure Management</a>
+<ul>
+<li>15.7.1 <a href="/model-compose/user-guide/15-system-integration#1571-systems-overview">Systems Overview</a></li>
+<li>15.7.2 <a href="/model-compose/user-guide/15-system-integration#1572-docker-compose-system">Docker Compose System</a></li>
+<li>15.7.3 <a href="/model-compose/user-guide/15-system-integration#1573-multiple-systems">Multiple Systems</a></li>
+<li>15.7.4 <a href="/model-compose/user-guide/15-system-integration#1574-complete-example-browser-automation">Complete Example: Browser Automation</a></li>
+<li>15.7.5 <a href="/model-compose/user-guide/15-system-integration#1575-lifecycle-order">Lifecycle Order</a></li>
+<li>15.7.6 <a href="/model-compose/user-guide/15-system-integration#1576-prerequisites">Prerequisites</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="16-deployment">16. <a href="/model-compose/user-guide/16-deployment">Deployment</a></h2>
+<ul>
+<li>16.1 <a href="/model-compose/user-guide/16-deployment#161-local-execution">Local Execution</a>
+<ul>
+<li>16.1.1 <a href="/model-compose/user-guide/16-deployment#1611-basic-execution">Basic Execution</a></li>
+<li>16.1.2 <a href="/model-compose/user-guide/16-deployment#1612-environment-variable-management">Environment Variable Management</a></li>
+<li>16.1.3 <a href="/model-compose/user-guide/16-deployment#1613-specifying-configuration-file">Specifying Configuration File</a></li>
+<li>16.1.4 <a href="/model-compose/user-guide/16-deployment#1614-running-workflow-standalone">Running Workflow Standalone</a></li>
+<li>16.1.5 <a href="/model-compose/user-guide/16-deployment#1615-debugging-options">Debugging Options</a></li>
+</ul>
+</li>
+<li>16.2 <a href="/model-compose/user-guide/16-deployment#162-docker-runtime">Docker Runtime</a>
+<ul>
+<li>16.2.1 <a href="/model-compose/user-guide/16-deployment#1621-basic-docker-configuration">Basic Docker Configuration</a></li>
+<li>16.2.2 <a href="/model-compose/user-guide/16-deployment#1622-advanced-docker-options">Advanced Docker Options</a></li>
+<li>16.2.3 <a href="/model-compose/user-guide/16-deployment#1623-volumes-and-environment-variables">Volumes and Environment Variables</a></li>
+</ul>
+</li>
+<li>16.3 <a href="/model-compose/user-guide/16-deployment#163-docker-container-build-and-deployment">Docker Container Build and Deployment</a>
+<ul>
+<li>16.3.1 <a href="/model-compose/user-guide/16-deployment#1631-automatic-build-process">Automatic Build Process</a></li>
+<li>16.3.2 <a href="/model-compose/user-guide/16-deployment#1632-using-custom-dockerfile">Using Custom Dockerfile</a></li>
+<li>16.3.3 <a href="/model-compose/user-guide/16-deployment#1633-multi-stage-build">Multi-stage Build</a></li>
+<li>16.3.4 <a href="/model-compose/user-guide/16-deployment#1634-using-image-registry">Using Image Registry</a></li>
+<li>16.3.5 <a href="/model-compose/user-guide/16-deployment#1635-private-registry-authentication">Private Registry Authentication</a></li>
+</ul>
+</li>
+<li>16.4 <a href="/model-compose/user-guide/16-deployment#164-production-environment-considerations">Production Environment Considerations</a>
+<ul>
+<li>16.4.1 <a href="/model-compose/user-guide/16-deployment#1641-concurrency-control">Concurrency Control</a></li>
+<li>16.4.2 <a href="/model-compose/user-guide/16-deployment#1642-resource-limits">Resource Limits</a></li>
+<li>16.4.3 <a href="/model-compose/user-guide/16-deployment#1643-restart-policy">Restart Policy</a></li>
+<li>16.4.4 <a href="/model-compose/user-guide/16-deployment#1644-health-check">Health Check</a></li>
+<li>16.4.5 <a href="/model-compose/user-guide/16-deployment#1645-security-considerations">Security Considerations</a></li>
+<li>16.4.6 <a href="/model-compose/user-guide/16-deployment#1646-data-persistence">Data Persistence</a></li>
+</ul>
+</li>
+<li>16.5 <a href="/model-compose/user-guide/16-deployment#165-monitoring-and-logging">Monitoring and Logging</a>
+<ul>
+<li>16.5.1 <a href="/model-compose/user-guide/16-deployment#1651-logger-configuration">Logger Configuration</a></li>
+<li>16.5.2 <a href="/model-compose/user-guide/16-deployment#1652-docker-container-logs">Docker Container Logs</a></li>
+<li>16.5.3 <a href="/model-compose/user-guide/16-deployment#1653-workflow-execution-logging">Workflow Execution Logging</a></li>
+<li>16.5.4 <a href="/model-compose/user-guide/16-deployment#1654-metrics-collection">Metrics Collection</a></li>
+<li>16.5.5 <a href="/model-compose/user-guide/16-deployment#1655-external-monitoring-systems">External Monitoring Systems</a></li>
+<li>16.5.6 <a href="/model-compose/user-guide/16-deployment#1656-tracer-configuration">Tracer Configuration</a></li>
+</ul>
+</li>
+<li>16.6 <a href="/model-compose/user-guide/16-deployment#166-deployment-best-practices">Deployment Best Practices</a></li>
+</ul>
+<h2 id="17-practical-examples">17. <a href="/model-compose/user-guide/17-practical-examples">Practical Examples</a></h2>
+<ul>
+<li>17.1 <a href="/model-compose/user-guide/17-practical-examples#171-building-a-chatbot">Building a Chatbot</a>
+<ul>
+<li>17.1.1 <a href="/model-compose/user-guide/17-practical-examples#1711-openai-gpt-4o-chatbot">OpenAI GPT-4o Chatbot</a></li>
+<li>17.1.2 <a href="/model-compose/user-guide/17-practical-examples#1712-streaming-chatbot">Streaming Chatbot</a></li>
+</ul>
+</li>
+<li>17.2 <a href="/model-compose/user-guide/17-practical-examples#172-voice-generation-pipeline">Voice Generation Pipeline</a>
+<ul>
+<li>17.2.1 <a href="/model-compose/user-guide/17-practical-examples#1721-text-to-speech-openai-tts">Text-to-Speech (OpenAI TTS)</a></li>
+<li>17.2.2 <a href="/model-compose/user-guide/17-practical-examples#1722-inspiring-quote-voice-generation">Inspiring Quote Voice Generation</a></li>
+</ul>
+</li>
+<li>17.3 <a href="/model-compose/user-guide/17-practical-examples#173-image-analysis-and-editing">Image Analysis and Editing</a>
+<ul>
+<li>17.3.1 <a href="/model-compose/user-guide/17-practical-examples#1731-image-captioning-image-to-text">Image Captioning (Image-to-Text)</a></li>
+<li>17.3.2 <a href="/model-compose/user-guide/17-practical-examples#1732-image-editing-openai-dall-e">Image Editing (OpenAI DALL-E)</a></li>
+</ul>
+</li>
+<li>17.4 <a href="/model-compose/user-guide/17-practical-examples#174-rag-system-using-vector-db">RAG System (Using Vector DB)</a>
+<ul>
+<li>17.4.1 <a href="/model-compose/user-guide/17-practical-examples#1741-text-embedding-search-with-chromadb">Text Embedding Search with ChromaDB</a></li>
+<li>17.4.2 <a href="/model-compose/user-guide/17-practical-examples#1742-rag-system-with-milvus">RAG System with Milvus</a></li>
+</ul>
+</li>
+<li>17.5 <a href="/model-compose/user-guide/17-practical-examples#175-slack-bot-mcp">Slack Bot (MCP)</a>
+<ul>
+<li>17.5.1 <a href="/model-compose/user-guide/17-practical-examples#1751-building-a-slack-bot-with-mcp-server">Building a Slack Bot with MCP Server</a></li>
+<li>17.5.2 <a href="/model-compose/user-guide/17-practical-examples#1752-ai-powered-slack-auto-reply-bot">AI-Powered Slack Auto-Reply Bot</a></li>
+</ul>
+</li>
+<li>17.6 <a href="/model-compose/user-guide/17-practical-examples#176-multimodal-workflows">Multimodal Workflows</a>
+<ul>
+<li>17.6.1 <a href="/model-compose/user-guide/17-practical-examples#1761-image--text--speech-pipeline">Image → Text → Speech Pipeline</a></li>
+<li>17.6.2 <a href="/model-compose/user-guide/17-practical-examples#1762-speech--text--translation--speech-pipeline">Speech → Text → Translation → Speech Pipeline</a></li>
+</ul>
+</li>
+<li>17.7 <a href="/model-compose/user-guide/17-practical-examples#177-browser-automation">Browser Automation</a>
+<ul>
+<li>17.7.1 <a href="/model-compose/user-guide/17-practical-examples#1771-web-scraping-with-captcha-fallback">Web Scraping with CAPTCHA Fallback</a></li>
+<li>17.7.2 <a href="/model-compose/user-guide/17-practical-examples#1772-login-and-scrape-protected-content">Login and Scrape Protected Content</a></li>
+<li>17.7.3 <a href="/model-compose/user-guide/17-practical-examples#1773-ai-powered-web-content-analysis">AI-Powered Web Content Analysis</a></li>
+</ul>
+</li>
+<li>17.8 <a href="/model-compose/user-guide/17-practical-examples#178-key-value-store-caching--sessions">Key-Value Store (Caching &amp; Sessions)</a>
+<ul>
+<li>17.8.1 <a href="/model-compose/user-guide/17-practical-examples#1781-api-response-caching">API Response Caching</a></li>
+<li>17.8.2 <a href="/model-compose/user-guide/17-practical-examples#1782-session-management">Session Management</a></li>
+</ul>
+</li>
+<li>17.9 <a href="/model-compose/user-guide/17-practical-examples#179-graph-store-knowledge-graphs--social-networks">Graph Store (Knowledge Graphs &amp; Social Networks)</a>
+<ul>
+<li>17.9.1 <a href="/model-compose/user-guide/17-practical-examples#1791-knowledge-graph-with-neo4j">Knowledge Graph with Neo4j</a></li>
+<li>17.9.2 <a href="/model-compose/user-guide/17-practical-examples#1792-social-graph-with-arangodb">Social Graph with ArangoDB</a></li>
+</ul>
+</li>
+<li>17.10 <a href="/model-compose/user-guide/17-practical-examples#1710-chatbot-with-conversation-memory">Chatbot with Conversation Memory</a>
+<ul>
+<li>17.10.1 <a href="/model-compose/user-guide/17-practical-examples#17101-stateful-chatbot-model-memory">Stateful Chatbot (model-memory)</a></li>
+<li>17.10.2 <a href="/model-compose/user-guide/17-practical-examples#17102-multi-user-chat-with-redis-memory">Multi-User Chat with Redis Memory</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="18-troubleshooting">18. <a href="/model-compose/user-guide/18-troubleshooting">Troubleshooting</a></h2>
+<ul>
+<li>18.1 <a href="/model-compose/user-guide/18-troubleshooting#181-frequently-asked-questions-faq">Frequently Asked Questions (FAQ)</a>
+<ul>
+<li>18.1.1 <a href="/model-compose/user-guide/18-troubleshooting#1811-installation-and-environment-setup">Installation and Environment Setup</a></li>
+<li>18.1.2 <a href="/model-compose/user-guide/18-troubleshooting#1812-component-configuration">Component Configuration</a></li>
+<li>18.1.3 <a href="/model-compose/user-guide/18-troubleshooting#1813-workflow-execution">Workflow Execution</a></li>
+<li>18.1.4 <a href="/model-compose/user-guide/18-troubleshooting#1814-web-ui">Web UI</a></li>
+<li>18.1.5 <a href="/model-compose/user-guide/18-troubleshooting#1815-listeners-and-gateways">Listeners and Gateways</a></li>
+</ul>
+</li>
+<li>18.2 <a href="/model-compose/user-guide/18-troubleshooting#182-common-errors-and-solutions">Common Errors and Solutions</a>
+<ul>
+<li>18.2.1 <a href="/model-compose/user-guide/18-troubleshooting#1821-model-loading-errors">Model Loading Errors</a></li>
+<li>18.2.2 <a href="/model-compose/user-guide/18-troubleshooting#1822-network-errors">Network Errors</a></li>
+<li>18.2.3 <a href="/model-compose/user-guide/18-troubleshooting#1823-configuration-file-errors">Configuration File Errors</a></li>
+<li>18.2.4 <a href="/model-compose/user-guide/18-troubleshooting#1824-variable-binding-errors">Variable Binding Errors</a></li>
+<li>18.2.5 <a href="/model-compose/user-guide/18-troubleshooting#1825-docker-runtime-errors">Docker Runtime Errors</a></li>
+</ul>
+</li>
+<li>18.3 <a href="/model-compose/user-guide/18-troubleshooting#183-debugging-tips">Debugging Tips</a>
+<ul>
+<li>18.3.1 <a href="/model-compose/user-guide/18-troubleshooting#1831-enable-logging">Enable Logging</a></li>
+<li>18.3.2 <a href="/model-compose/user-guide/18-troubleshooting#1832-check-variable-values">Check Variable Values</a></li>
+<li>18.3.3 <a href="/model-compose/user-guide/18-troubleshooting#1833-step-by-step-execution">Step-by-Step Execution</a></li>
+<li>18.3.4 <a href="/model-compose/user-guide/18-troubleshooting#1834-check-api-responses">Check API Responses</a></li>
+<li>18.3.5 <a href="/model-compose/user-guide/18-troubleshooting#1835-docker-container-logs">Docker Container Logs</a></li>
+<li>18.3.6 <a href="/model-compose/user-guide/18-troubleshooting#1836-verify-environment-variables">Verify Environment Variables</a></li>
+<li>18.3.7 <a href="/model-compose/user-guide/18-troubleshooting#1837-check-port-conflicts">Check Port Conflicts</a></li>
+<li>18.3.8 <a href="/model-compose/user-guide/18-troubleshooting#1838-verify-dependencies">Verify Dependencies</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="19-appendix">19. <a href="/model-compose/user-guide/19-appendix">Appendix</a></h2>
+<ul>
+<li>19.1 <a href="/model-compose/user-guide/19-appendix#191-complete-configuration-file-schema">Complete Configuration File Schema</a>
+<ul>
+<li>19.1.1 <a href="/model-compose/user-guide/19-appendix#1911-top-level-structure">Top-Level Structure</a></li>
+<li>19.1.2 <a href="/model-compose/user-guide/19-appendix#1912-controller-schema">Controller Schema</a></li>
+<li>19.1.3 <a href="/model-compose/user-guide/19-appendix#1913-component-schema">Component Schema</a></li>
+<li>19.1.4 <a href="/model-compose/user-guide/19-appendix#1914-workflow-schema">Workflow Schema</a></li>
+<li>19.1.5 <a href="/model-compose/user-guide/19-appendix#1915-listener-schema">Listener Schema</a></li>
+<li>19.1.6 <a href="/model-compose/user-guide/19-appendix#1916-gateway-schema">Gateway Schema</a></li>
+<li>19.1.7 <a href="/model-compose/user-guide/19-appendix#1917-logger-schema">Logger Schema</a></li>
+<li>19.1.8 <a href="/model-compose/user-guide/19-appendix#1918-tracer-schema">Tracer Schema</a></li>
+<li>19.1.9 <a href="/model-compose/user-guide/19-appendix#1919-runtime-schema">Runtime Schema</a></li>
+</ul>
+</li>
+</ul>
+<hr />
+<p><strong>Note</strong>: Sections marked with &quot;TBD&quot; are placeholders for features currently under development.</p>
+</article><nav class="flex justify-between gap-4 mt-12 pt-6 border-t border-border"><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent" href="/model-compose/user-guide"><div class="text-muted text-[.78rem]">← <!-- -->Previous</div><div class="font-semibold text-accent">Model-Compose User Guide</div></a><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent text-right" href="/model-compose/user-guide/01-getting-started"><div class="text-muted text-[.78rem]">Next<!-- --> →</div><div class="font-semibold text-accent">Chapter 1: Getting Started</div></a></nav><script>document.querySelectorAll('[data-copy-md]').forEach(function(b){b.addEventListener('click',async function(){try{var r=await fetch(b.getAttribute('data-copy-md'));var t=await r.text();await navigator.clipboard.writeText(t);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1500);}catch(e){alert('Copy failed: '+e);}});});document.querySelectorAll('.prose pre').forEach(function(pre){if(pre.querySelector('.copy-code'))return;var b=document.createElement('button');b.className='copy-code';b.textContent='Copy';b.addEventListener('click',async function(){var c=pre.querySelector('code');try{await navigator.clipboard.writeText(c?c.innerText:pre.innerText);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1200);}catch(e){}});pre.appendChild(b);});document.querySelectorAll('.tabs').forEach(function(t){t.querySelectorAll('.tab-btn').forEach(function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-tab');t.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-tab')===i);});t.querySelectorAll('.tab-panel').forEach(function(p){p.hidden=p.getAttribute('data-tab')!==i;});});});});(function(){var blocks=document.querySelectorAll('code.language-mermaid');if(!blocks.length)return;var items=[];blocks.forEach(function(c){var pre=c.closest('pre')||c;var h=document.createElement('div');h.className='mermaid-diagram';pre.replaceWith(h);items.push({src:c.textContent,holder:h});});var lib,id=0;function load(){return lib||(lib=import("https://esm.sh/mermaid@11").then(function(m){return m.default;}));}function theme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'default';}function run(){load().then(function(mermaid){mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:theme()});items.forEach(function(it){mermaid.render('kura-mmd-'+(id++),it.src).then(function(r){it.holder.innerHTML=r.svg;}).catch(function(e){it.holder.innerHTML='<pre class="mermaid-error">'+String((e&&e.message)||e)+'</pre>';});});}).catch(function(){});}run();var cur=document.documentElement.getAttribute('data-theme');new MutationObserver(function(){var t=document.documentElement.getAttribute('data-theme');if(t!==cur){cur=t;run();}}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></main><aside class="sticky top-14 max-h-[calc(100vh-56px)] overflow-y-auto px-4 py-8 max-lg:hidden"><p class="text-[.72rem] font-bold tracking-wider uppercase text-muted mb-2.5">On this page</p><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#1-getting-started">1. Getting Started</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#2-core-concepts">2. Core Concepts</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#3-cli-usage">3. CLI Usage</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#4-component-configuration">4. Component Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#5-writing-workflows">5. Writing Workflows</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#6-workflow-schema">6. Workflow Schema</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#7-controller-configuration">7. Controller Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#8-websocket-interface">8. WebSocket Interface</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#9-web-ui-configuration">9. Web UI Configuration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#10-working-with-local-ai-models">10. Working with Local AI Models</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#11-model-training">11. Model Training</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#12-external-service-integration">12. External Service Integration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#13-streaming-mode">13. Streaming Mode</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#14-variable-binding">14. Variable Binding</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#15-system-integration">15. System Integration</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#16-deployment">16. Deployment</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#17-practical-examples">17. Practical Examples</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#18-troubleshooting">18. Troubleshooting</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#19-appendix">19. Appendix</a></aside></div></div><footer class="border-t border-border mt-8"><div class="flex items-center justify-between flex-wrap gap-4 max-w-[1280px] mx-auto px-6 py-5 max-md:px-4"><nav class="flex items-center gap-[1.1rem] text-[.85rem]"><a class="text-muted hover:text-fg" href="/model-compose/llms.txt">llms.txt</a><button type="button" class="inline-flex items-center justify-center w-[30px] h-[30px] p-0 text-[.95rem] leading-none border border-border rounded-lg bg-surface text-fg cursor-pointer hover:bg-hover" data-theme-toggle="true" aria-label="Toggle theme"></button></nav><a class="text-muted text-[.85rem] hover:text-accent" href="https://kura.build/" target="_blank" rel="noreferrer">Powered by Kura</a></div></footer><script>document.addEventListener('keydown',function(e){if(e.key==='/' && !document.documentElement.dataset.ctrlk && !/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){e.preventDefault();var s=document.querySelector('.search-box');if(s)s.focus();}});(function(){var b=document.querySelector('[data-theme-toggle]');if(!b)return;var d=document.documentElement,order=['system','light','dark'],icon={system:'🖥',light:'☀',dark:'☾'};function pref(){return d.getAttribute('data-theme-pref')||'system';}function res(p){return p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';}function set(p){d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',res(p));try{localStorage.setItem('kura-theme',p);}catch(e){}b.textContent=icon[p];b.setAttribute('title','Theme: '+p);}set(pref());b.addEventListener('click',function(){set(order[(order.indexOf(pref())+1)%order.length]);});try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(pref()==='system')d.setAttribute('data-theme',res('system'));});}catch(e){}})();document.addEventListener('click',function(e){var t=e.target;document.querySelectorAll('details[data-menu][open]').forEach(function(d){if(!d.contains(t))d.removeAttribute('open');});var it=t.closest&&t.closest('details[data-menu] a, details[data-menu] [data-copy-md]');if(it){var dd=it.closest('details[data-menu]');if(dd)setTimeout(function(){dd.removeAttribute('open');},0);}});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details[data-menu][open]').forEach(function(d){d.removeAttribute('open');});});(function(){var root=document.documentElement;function opener(){return document.querySelector('[data-drawer-open]');}function items(){var d=document.getElementById('docs-nav');if(!d)return[];return[].filter.call(d.querySelectorAll('a[href],button:not([disabled]),summary,[tabindex]:not([tabindex="-1"])'),function(el){return el.offsetParent!==null;});}function set(o){var was=root.classList.contains('drawer-open');root.classList.toggle('drawer-open',o);var b=opener();if(b)b.setAttribute('aria-expanded',o?'true':'false');if(o){var f=items();if(f[0])f[0].focus();}else if(was&&b)b.focus();}document.addEventListener('click',function(e){if(e.target.closest('[data-drawer-open]')){e.preventDefault();set(!root.classList.contains('drawer-open'));return;}if(e.target.closest('[data-drawer-close]')){set(false);return;}if(e.target.closest('#docs-nav a'))set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);return;}if(e.key==='Tab'&&root.classList.contains('drawer-open')){var f=items();if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}else if(f.indexOf(document.activeElement)<0){e.preventDefault();first.focus();}}});})();(function(){
+  function trim(p){return p.length>1&&p.endsWith('/')?p.slice(0,-1):p;}
+  function sync(){
+    var path=trim(location.pathname), tab=null;
+    var links=document.querySelectorAll('.sidebar a[href],[data-tabbar] a[href]');
+    for(var i=0;i<links.length;i++){var a=links[i],on=trim(a.getAttribute('href'))===path;
+      if(on){a.setAttribute('aria-current','page');var g=a.closest('[data-tab]');if(g)tab=g.getAttribute('data-tab');}
+      else a.removeAttribute('aria-current');}
+    if(tab!=null){
+      document.querySelectorAll('[data-tab]').forEach(function(g){g.hidden=g.getAttribute('data-tab')!==tab;});
+      document.querySelectorAll('[data-tabbar] a').forEach(function(a){
+        if(a.getAttribute('data-tab-key')===tab)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    }
+    // expand the folder(s) holding the active page. Iterate EVERY aria-current sidebar link, not
+    // just the first: a folder-as-page link lives in a <details>, but the mobile tab-bar link (also
+    // in .sidebar, earlier in the DOM) has no folder ancestor — querySelector would pick that one
+    // and expand nothing. forEach opens each link's folder chain; tab links are harmless no-ops.
+    document.querySelectorAll('.sidebar a[aria-current="page"]').forEach(function(cur){
+      var d=cur.closest('details.folder');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details.folder');}});
+    // rewrite the locale-switch links to THIS page's equivalent path (swap the locale prefix)
+    var ll=document.querySelectorAll('[data-locale-home]');
+    if(ll.length){var lc=document.querySelector('[data-locale-home][data-locale-active]'),cp=lc?lc.getAttribute('data-locale-home'):'/';cp=cp==='/'?'':cp;
+      var rest=location.pathname;if(cp&&rest.indexOf(cp)===0)rest=rest.slice(cp.length)||'/';
+      ll.forEach(function(a){var h=a.getAttribute('data-locale-home'),p=h==='/'?'':h;a.setAttribute('href',rest==='/'?(p||'/'):(p+rest));});}
+    // mobile nav-context: "Active tab / Page title" (the shell can't know the page server-side)
+    var nc=document.querySelector('[data-nav-context]');
+    if(nc){var at=document.querySelector('[data-tabbar] a[aria-current="page"]'),h1=document.querySelector('main h1');
+      nc.textContent=[at&&at.textContent.trim(),h1&&h1.textContent.trim()].filter(Boolean).join(' / ');}
+  }
+  sync();
+  var outlet=document.querySelector('[data-june-outlet]');
+  if(outlet) new MutationObserver(sync).observe(outlet,{childList:true,subtree:true});
+})();</script><script type="module" src="/model-compose/_june/client.519429d3.js"></script><script type="application/json" id="june-webmcp">[{"name":"search_docs","description":"Hybrid keyword + semantic search over the docs. Returns the most relevant passages with their doc slug, title, and relevance score.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"A natural-language question or keywords."},"topK":{"type":"integer","description":"Number of results to return (default 5)."},"locale":{"type":"string","description":"Optional locale — scopes results to that locale's view (its translations plus untranslated defaults)."}},"required":["query"]}},{"name":"get_page","description":"Fetch one doc page as the authored Markdown source by its slug (e.g. introduction, search, agents).","inputSchema":{"type":"object","properties":{"slug":{"type":"string","description":"The page slug."},"locale":{"type":"string","description":"Optional locale — returns that variant when it exists."}},"required":["slug"]}},{"name":"list_docs","description":"List every doc page with its slug, title, section, and `sources` (the code paths it documents). The map for finding which pages a code change affects.","inputSchema":{"type":"object","properties":{}}}]</script><script>(function(){var mc=navigator.modelContext;if(!mc||!mc.registerTool)return;var el=document.getElementById('june-webmcp');if(!el)return;var tools;try{tools=JSON.parse(el.textContent)}catch(e){return}var ac=new AbortController();tools.forEach(function(t){mc.registerTool({name:t.name,description:t.description,inputSchema:t.inputSchema,execute:function(args){return fetch('/mcp',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:t.name,arguments:args}})}).then(function(r){return r.json()}).then(function(j){return j.result})}},{signal:ac.signal})})})();</script></body></html>

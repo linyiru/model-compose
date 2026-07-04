@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://prerender.june/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prerender.june/"/>
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://prerender.june/zh-cn"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prerender.june/ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prerender.june/"/>
+  </url>
+  <url>
+    <loc>https://prerender.june/search</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prerender.june/search"/>
+    <xhtml:link rel="alternate" hreflang="zh-cn" href="https://prerender.june/zh-cn/search"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://prerender.june/ko/search"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://prerender.june/search"/>
+  </url>
+</urlset>

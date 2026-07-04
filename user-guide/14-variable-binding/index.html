@@ -1,0 +1,604 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="icon" href="/model-compose/favicon.svg" type="image/svg+xml"/><title>14. Variable Binding - model-compose</title><meta name="description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><link rel="alternate" hrefLang="en" href="/user-guide/14-variable-binding"/><link rel="alternate" hrefLang="zh-cn" href="/zh-cn/user-guide/14-variable-binding"/><link rel="alternate" hrefLang="ko" href="/ko/user-guide/14-variable-binding"/><link rel="alternate" hrefLang="x-default" href="/user-guide/14-variable-binding"/><meta property="og:title" content="14. Variable Binding"/><meta property="og:description" content="Portable AI runtime inspired by docker-compose: compose agents, RAG pipelines, and MCP servers in one YAML file."/><meta property="og:type" content="article"/><script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.md"}},{"not":{"href_matches":"/*.json"}},{"not":{"href_matches":"/*.txt"}},{"not":{"href_matches":"/*.xml"}},{"not":{"href_matches":"/mcp"}}]},"eagerness":"moderate"}]}</script><script>(function(){if(HTMLScriptElement.supports&&HTMLScriptElement.supports('speculationrules'))return;var seen=new Set();document.addEventListener('pointerover',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||seen.has(u.pathname)||u.pathname===location.pathname)return;if(/.(md|json)$/.test(u.pathname)||u.pathname==='/mcp')return;seen.add(u.pathname);var l=document.createElement('link');l.rel='prefetch';l.href=u.pathname+u.search;document.head.appendChild(l);},{passive:true});})();</script><style>
+          @view-transition { navigation: auto; }
+          ::view-transition-group(root),
+          ::view-transition-old(root),
+          ::view-transition-new(root) { animation-duration: 120ms; }
+          @media (prefers-reduced-motion: reduce) {
+            ::view-transition-group(*),
+            ::view-transition-old(*),
+            ::view-transition-new(*) { animation: none !important; }
+          }
+</style><link rel="stylesheet" href="/model-compose/_june/global.ab0a5eb2.css"/></head><body><script>(function(){try{var p=localStorage.getItem('kura-theme')||'system';var d=document.documentElement;d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',(p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches))?'dark':'light');}catch(e){}})();</script><header class="sticky top-0 z-20 flex items-center gap-4 h-14 px-5 bg-topbar-bg backdrop-blur-sm border-b border-border max-md:px-4 max-md:gap-2.5"><a class="flex items-center gap-1.5 font-bold text-[1.05rem]" href="/model-compose/">model-compose<!-- --> <span class="font-normal text-muted text-[.85rem]">Docs</span></a><form class="ml-auto max-md:ml-2 max-md:flex-1 max-md:min-w-0" action="/model-compose/search" method="get"><input class="w-[280px] max-w-[40vw] px-3 py-2 text-[.9rem] border border-border rounded-lg bg-surface-2 text-fg max-md:w-full max-md:max-w-none search-box" placeholder="Search docs…  (press /)" aria-label="Search" data-search-endpoint="/model-compose/search.json" data-doc-base="/model-compose/" data-search-static="1" data-locale="en" name="q"/></form><nav class="flex items-center gap-4 text-muted text-[.9rem]"><details class="relative" data-menu="true"><summary class="chevron cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 border border-border rounded-lg text-fg-soft text-[.85rem] whitespace-nowrap hover:text-fg">English</summary><div class="absolute right-0 top-[calc(100%+.4rem)] min-w-36 flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl z-30"><a data-june-no-router="true" data-locale-home="/model-compose" data-locale-active="" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-accent font-semibold" href="/model-compose" hrefLang="en">English</a><a data-june-no-router="true" data-locale-home="/model-compose/zh-cn" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/zh-cn" hrefLang="zh-cn">简体中文</a><a data-june-no-router="true" data-locale-home="/model-compose/ko" class="px-2 py-1.5 rounded-md text-[.85rem] whitespace-nowrap text-fg-soft hover:bg-hover hover:text-fg" href="/model-compose/ko" hrefLang="ko">한국어</a></div></details></nav></header><button class="hidden max-md:flex items-center gap-2.5 w-full px-4 py-2.5 bg-bg border-0 border-b border-border text-fg-soft text-[.9rem] text-left cursor-pointer focus-visible:outline-none focus-visible:bg-hover" data-drawer-open="true" aria-controls="docs-nav" aria-expanded="false"><span class="text-[1.05rem] leading-none" aria-hidden="true">☰</span><span class="font-semibold text-fg flex-none">Navigation</span><span class="nav-bar-context text-muted flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" data-nav-context="true"></span></button><div class="drawer-backdrop" data-drawer-close="true" aria-hidden="true"></div><div class="grid grid-cols-[248px_minmax(0,1fr)_220px] max-lg:grid-cols-[248px_minmax(0,1fr)] max-md:grid-cols-1 items-start max-w-[1280px] mx-auto"><aside class="sidebar sticky top-14 h-[calc(100vh-56px)] overflow-y-auto px-4 py-6 border-r border-border" id="docs-nav"><div data-tab="_"><div class="mb-5"><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/">model-compose</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">Reference</p><ul class="flex flex-col gap-px"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><a class="flex-1 min-w-0 text-inherit" href="/model-compose/reference/compose">Compose</a></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><details class="folder" open=""><summary class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm folder-title text-fg-soft cursor-pointer hover:bg-hover"><span class="flex-1 min-w-0">Components</span></summary><ul class="flex flex-col gap-px mt-px ml-2 pl-2.5 border-l border-border"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/agent">Agent Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/datasets">Datasets Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/file-store">File Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/graph-store">Graph Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/http-client">HTTP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/http-server">HTTP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/image-processor">Image Processor Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/key-value-store">Key-Value Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/mcp-client">MCP Client Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/mcp-server">MCP Server Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model">Model Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model-memory">Model Memory Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model-tokenizer">Model Tokenizer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/model-trainer">Model Trainer Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/search-engine">Search Engine Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/shell">Shell Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/text-splitter">Text Splitter Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/vector-store">Vector Store Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/video-scene-detector">Video Scene Detector Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/web-browser">Web Browser Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/web-scraper">Web Scraper Component</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/components/workflow">Workflow Component</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/component">Component Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/controller">Controller Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/gateway">Gateway Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/language-codes">Language Codes</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/listener">Listener Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/logger">Logger Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/system">System Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/tracer">Tracer Configuration Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/compose/workflow">Workflow Configuration Reference</a></li></ul></details></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/cli">Model-Compose CLI Reference</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/reference/websocket">WebSocket Interface Reference</a></li></ul></div><div class="mb-5"><p class="mb-1.5 ml-2 text-sm font-semibold text-fg">User guide</p><ul class="flex flex-col gap-px"><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide">Model-Compose User Guide</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/00-table-of-contents">Table of Contents</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/01-getting-started">Chapter 1: Getting Started</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/02-core-concepts">Chapter 2: Core Concepts</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/03-cli-usage">Chapter 3: CLI Usage</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/04-component-configuration">Chapter 4: Component Configuration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/05-writing-workflows">Chapter 5: Writing Workflows</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/06-workflow-schema">Chapter 6: Workflow Schema</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/07-controller-configuration">Chapter 7: Controller Configuration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/08-websocket-interface">Chapter 8: WebSocket Interface</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/09-webui-configuration">Chapter 9: Web UI Configuration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/10-local-ai-models">Chapter 10: Working with Local AI Models</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/11-model-training">11. Model Training</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/12-external-service-integration">Chapter 12: External Service Integration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/13-streaming-mode">13. Streaming Mode</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/14-variable-binding">14. Variable Binding</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/15-system-integration">15. System Integration</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/16-deployment">16. Deployment</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/17-practical-examples">17. Practical Examples</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/18-troubleshooting">18. Troubleshooting</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/19-appendix">19. Appendix</a></li><li><a class="flex items-center gap-1.5 leading-6 px-2 py-1.5 rounded-md text-sm text-fg-soft hover:bg-hover" href="/model-compose/user-guide/image-handling">Image Handling Guide</a></li></ul></div></div></aside><div data-june-outlet=""><main class="w-auto max-w-none m-0 min-w-0 px-10 pt-8 pb-20 max-md:px-4 max-md:pt-5 max-md:pb-12"><details class="hidden max-lg:block mb-5 border border-border rounded-xl overflow-hidden"><summary class="chevron flex justify-between items-center cursor-pointer px-3.5 py-2.5 text-[.85rem] font-semibold text-fg-soft">On this page</summary><div class="flex flex-col px-3.5 pt-1 pb-2.5 border-t border-border"><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#141-syntax-overview">14.1 Syntax Overview</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#142-variable-sources">14.2 Variable Sources</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1421-workflow-input">14.2.1 Workflow Input</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1422-component-response-variables">14.2.2 Component Response Variables</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1423-previous-job-outputs">14.2.3 Previous Job Outputs</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1424-environment-variables">14.2.4 Environment Variables</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1425-streaming-chunk-references">14.2.5 Streaming Chunk References</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#143-path-access">14.3 Path Access</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#144-type-conversion">14.4 Type Conversion</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1441-primitive-types">14.4.1 Primitive Types</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1442-object-array-projection">14.4.2 Object Array Projection</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1443-media-types">14.4.3 Media Types</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1444-attributes">14.4.4 Attributes</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1445-base64-type-vs-base64-format">14.4.5 Base64 Type vs Base64 Format</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#145-format-and-context-semantics">14.5 Format and Context Semantics</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1451-format-values">14.5.1 Format Values</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1452-input-context">14.5.2 Input Context</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1453-componentjob-output-context">14.5.3 Component/Job Output Context</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1454-workflow-output-context">14.5.4 Workflow Output Context</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#146-default-values">14.6 Default Values</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1461-literal-default-values">14.6.1 Literal Default Values</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1462-environment-variable-default-values">14.6.2 Environment Variable Default Values</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1463-nested-default-values-environment-variable--literal">14.6.3 Nested Default Values (Environment Variable + Literal)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#147-metadata-and-ui-hints">14.7 Metadata and UI Hints</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1471-annotations">14.7.1 Annotations</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1472-select-dropdown">14.7.2 Select (Dropdown)</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1473-slider">14.7.3 Slider</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1474-textarea">14.7.4 Textarea</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent" href="#148-practical-examples">14.8 Practical Examples</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1481-openai-api-call">14.8.1 OpenAI API Call</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1482-image-processing-pipeline">14.8.2 Image Processing Pipeline</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1483-streaming-response">14.8.3 Streaming Response</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1484-vector-search-result-format">14.8.4 Vector Search Result Format</a><a class="py-1.5 text-muted text-[.85rem] hover:text-accent pl-3.5" href="#1485-conditional-default-values">14.8.5 Conditional Default Values</a></div></details><div class="flex items-center justify-between gap-4 mb-6"><div class="prose"><h1 class="!m-0">14. Variable Binding</h1></div><div class="relative inline-flex items-stretch flex-none"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[.85rem] border border-border border-r-0 rounded-l-lg bg-surface text-fg-soft cursor-pointer hover:bg-hover hover:text-fg" data-copy-md="/model-compose/user-guide/14-variable-binding.md"><svg class="" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>Copy Markdown</button><details class="relative inline-flex items-stretch" data-menu="true"><summary class="chevron inline-flex items-center justify-center w-[30px] border border-border rounded-r-lg bg-surface text-muted cursor-pointer hover:bg-hover hover:text-fg" aria-label="More actions"></summary><div class="absolute right-0 top-[calc(100%+.4rem)] z-30 min-w-[17rem] flex flex-col gap-px p-1.5 bg-surface border border-border rounded-xl shadow-xl"><button class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" data-copy-md="/model-compose/user-guide/14-variable-binding.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg><span class="flex flex-col min-w-0"><span class="font-semibold text-[.9rem] text-fg">Copy Markdown</span><span class="text-[.8rem] text-muted">Copy this page as Markdown for LLMs</span></span></button><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="/model-compose/user-guide/14-variable-binding.md"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M16 21H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6l4 4v12a2 2 0 0 1-2 2z"></path><path d="M9 13h6M9 17h4"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">View as Markdown<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">View this page as plain text</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://chatgpt.com/?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%2014.%20Variable%20Binding" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in ChatGPT<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask ChatGPT about this page</span></span></a><a class="flex items-start gap-2.5 w-full px-2.5 py-2 rounded-lg bg-transparent border-0 text-fg-soft text-left cursor-pointer hover:bg-hover" href="https://claude.ai/new?q=Please%20read%20this%20doc%20and%20answer%20my%20questions%3A%2014.%20Variable%20Binding" target="_blank" rel="noreferrer"><svg class="flex-none mt-0.5 text-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path></svg><span class="flex flex-col min-w-0"><span class="inline-flex items-center gap-1 font-semibold text-[.9rem] text-fg">Open in Claude<!-- --> <svg class="text-muted" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></span><span class="text-[.8rem] text-muted">Ask Claude about this page</span></span></a></div></details></div></div><article class="prose"><p>This chapter provides a detailed explanation of model-compose's variable binding syntax. Variable binding is a core feature that uses the <code>${...}</code> syntax to reference and transform data.</p>
+<hr />
+<h2 id="141-syntax-overview">14.1 Syntax Overview</h2>
+<p>Variable binding specifies a <strong>data source</strong> (<code>key.path</code>), and optionally adds <strong>type conversion</strong> (<code>as type/subtype[attrs];format</code>), <strong>default value</strong> (<code>| default</code>), and <strong>metadata</strong> (<code>@(annotation)</code>).</p>
+<p><strong>Full Syntax</strong>:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code><span class="line"><span>${key.path as type/subtype[attrs];format | default @(annotation)}</span></span></code></pre>
+<p>All elements except the data source (<code>key.path</code>) are optional.</p>
+<p><strong>Progressive Examples</strong>:</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.name}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">                              # Data source only</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.avatar as image/png}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">               # With type and subtype</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.photo as image;base64}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">             # With format</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.count | 0}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">                         # With default value</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.email @(description "Email")}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">      # With metadata</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.profile as image/jpeg;url | ${env.DEFAULT_AVATAR} @(description "Profile Picture")}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">  # All combined</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>key</strong></td>
+<td>Data source</td>
+<td><code>input</code>, <code>response</code>, <code>result</code>, <code>env</code>, <code>jobs</code></td>
+</tr>
+<tr>
+<td><strong>path</strong></td>
+<td>Nested field access with dot notation and array indexing</td>
+<td><code>.user.name</code>, <code>.data[0].id</code></td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>Data type (<a href="#144-type-conversion">14.4</a>)</td>
+<td><code>image</code>, <code>audio</code>, <code>text</code>, <code>json</code></td>
+</tr>
+<tr>
+<td><strong>subtype</strong></td>
+<td>Detailed format of the type</td>
+<td><code>jpeg</code>, <code>png</code>, <code>mp3</code>, <code>pcm</code></td>
+</tr>
+<tr>
+<td><strong>attrs</strong></td>
+<td>Additional parameters in brackets</td>
+<td><code>sample_rate=24000,channels=1</code></td>
+</tr>
+<tr>
+<td><strong>format</strong></td>
+<td>Encoding state of the data (<a href="#145-format-and-context-semantics">14.5</a>)</td>
+<td><code>base64</code>, <code>url</code>, <code>path</code>, <code>sse-json</code></td>
+</tr>
+<tr>
+<td><strong>default</strong></td>
+<td>Fallback value when value is missing (<a href="#146-default-values">14.6</a>)</td>
+<td><code>0</code>, <code>&quot;gpt-4o&quot;</code>, <code>${env.FALLBACK}</code></td>
+</tr>
+<tr>
+<td><strong>annotation</strong></td>
+<td>Metadata for MCP/UI (<a href="#147-metadata-and-ui-hints">14.7</a>)</td>
+<td><code>@(description &quot;Username&quot;)</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="142-variable-sources">14.2 Variable Sources</h2>
+<h3 id="1421-workflow-input">14.2.1 Workflow Input</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">                    # Entire input object</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.field}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">              # field property of input</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.user.email}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">         # Nested path</span></span></code></pre>
+<h3 id="1422-component-response-variables">14.2.2 Component Response Variables</h3>
+<p>Different component types use different variable names to reference response data.</p>
+<table>
+<thead>
+<tr>
+<th>Component Type</th>
+<th>Variable Source</th>
+<th>Streaming Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>http-client</code></td>
+<td><code>${response}</code></td>
+<td><code>${response[]}</code></td>
+<td>HTTP response data</td>
+</tr>
+<tr>
+<td><code>http-server</code></td>
+<td><code>${response}</code></td>
+<td><code>${response[]}</code></td>
+<td>Managed HTTP server response</td>
+</tr>
+<tr>
+<td><code>websocket-client</code></td>
+<td><code>${response}</code></td>
+<td><code>${response[]}</code></td>
+<td>WebSocket received data</td>
+</tr>
+<tr>
+<td><code>websocket-server</code></td>
+<td><code>${response}</code></td>
+<td><code>${response[]}</code></td>
+<td>Managed WebSocket server data</td>
+</tr>
+<tr>
+<td><code>mcp-client</code></td>
+<td><code>${response}</code></td>
+<td>-</td>
+<td>MCP response data</td>
+</tr>
+<tr>
+<td><code>mcp-server</code></td>
+<td><code>${response}</code></td>
+<td>-</td>
+<td>Managed MCP server response</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td><code>${result}</code></td>
+<td><code>${result[]}</code></td>
+<td>Model inference result</td>
+</tr>
+<tr>
+<td><code>model-trainer</code></td>
+<td><code>${result}</code></td>
+<td>-</td>
+<td>Training result metrics</td>
+</tr>
+<tr>
+<td><code>vector-store</code></td>
+<td><code>${response}</code></td>
+<td>-</td>
+<td>Vector search/insert result</td>
+</tr>
+<tr>
+<td><code>datasets</code></td>
+<td><code>${result}</code></td>
+<td>-</td>
+<td>Dataset samples</td>
+</tr>
+<tr>
+<td><code>text-splitter</code></td>
+<td><code>${result}</code></td>
+<td>-</td>
+<td>Split text chunks</td>
+</tr>
+<tr>
+<td><code>image-processor</code></td>
+<td><code>${result}</code></td>
+<td>-</td>
+<td>Processed image</td>
+</tr>
+<tr>
+<td><code>workflow</code></td>
+<td><code>${output}</code></td>
+<td>-</td>
+<td>Sub-workflow output</td>
+</tr>
+<tr>
+<td><code>shell</code></td>
+<td><code>${stdout}</code>, <code>${stderr}</code></td>
+<td>-</td>
+<td>Command execution result</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Rules</strong>:</p>
+<ul>
+<li>HTTP-based components (<code>http-client</code>, <code>http-server</code>, <code>vector-store</code>, <code>mcp-client</code>) → <code>${response}</code></li>
+<li>Local execution components (<code>model</code>, <code>datasets</code>, <code>text-splitter</code>, <code>image-processor</code>) → <code>${result}</code></li>
+<li>Shell commands → <code>${stdout}</code> or <code>${stderr}</code></li>
+<li>Workflow invocation → <code>${output}</code></li>
+</ul>
+<h3 id="1423-previous-job-outputs">14.2.3 Previous Job Outputs</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${jobs.job-id.output}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">           # Specific job output</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${jobs.job-id.output.field}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">     # Specific field of job output</span></span></code></pre>
+<h3 id="1424-environment-variables">14.2.4 Environment Variables</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.OPENAI_API_KEY}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">       # Environment variable</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${env.PORT | 8080}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">          # With default value</span></span></code></pre>
+<h3 id="1425-streaming-chunk-references">14.2.5 Streaming Chunk References</h3>
+<p>Append <code>[]</code> to the variable name to receive data as a stream of chunks instead of a single value.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response[]}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">               # HTTP streaming chunks</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result[]}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">                 # Model streaming chunks</span></span></code></pre>
+<p>Components that support streaming:</p>
+<ul>
+<li><code>http-client</code> / <code>http-server</code> → <code>${response[]}</code></li>
+<li><code>websocket-client</code> / <code>websocket-server</code> → <code>${response[]}</code></li>
+<li><code>model</code> (with streaming: true) → <code>${result[]}</code></li>
+</ul>
+<hr />
+<h2 id="143-path-access">14.3 Path Access</h2>
+<p>Variable paths support dot notation for nested objects and bracket notation for array indexing.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.choices[0].message.content}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">     # Nested object + array index</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.data[-1].id}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">                    # Negative index (last element)</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.users[0].name}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">                     # First element's name field</span></span></code></pre>
+<hr />
+<h2 id="144-type-conversion">14.4 Type Conversion</h2>
+<p>Type conversion transforms variable values into specific data types using the <code>as</code> keyword.</p>
+<h3 id="1441-primitive-types">14.4.1 Primitive Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td>Convert to string</td>
+<td><code>${input.message as text}</code></td>
+</tr>
+<tr>
+<td><code>number</code></td>
+<td>Convert to float</td>
+<td><code>${input.price as number}</code></td>
+</tr>
+<tr>
+<td><code>integer</code></td>
+<td>Convert to integer</td>
+<td><code>${input.count as integer}</code></td>
+</tr>
+<tr>
+<td><code>boolean</code></td>
+<td>Convert to boolean (<code>&quot;true&quot;</code>, <code>&quot;1&quot;</code> → true)</td>
+<td><code>${input.enabled as boolean}</code></td>
+</tr>
+<tr>
+<td><code>json</code></td>
+<td>Parse JSON string to object</td>
+<td><code>${input.data as json}</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="1442-object-array-projection">14.4.2 Object Array Projection</h3>
+<p>Extract specific fields from an array of objects using <code>subtype</code> as comma-separated field paths.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Extract specific fields from object array</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.users as object[]/id,name}</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Result: [{"id": 1, "name": "John"}, {"id": 2, "name": "Jane"}]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Nested path support (last segment becomes the key name)</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.data as object[]/user.id,user.email,status}</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Result: [{"id": 1, "email": "john@example.com", "status": "active"}, ...]</span></span></code></pre>
+<h3 id="1443-media-types">14.4.3 Media Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Subtype</th>
+<th>Format</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image</code></td>
+<td><code>png</code>, <code>jpg</code>, <code>webp</code></td>
+<td><code>base64</code>, <code>url</code>, <code>path</code></td>
+<td><code>${input.photo as image/jpg}</code></td>
+</tr>
+<tr>
+<td><code>audio</code></td>
+<td><code>mp3</code>, <code>wav</code>, <code>ogg</code>, <code>pcm</code></td>
+<td><code>base64</code>, <code>url</code>, <code>path</code></td>
+<td><code>${output as audio/mp3;base64}</code></td>
+</tr>
+<tr>
+<td><code>video</code></td>
+<td><code>mp4</code>, <code>webm</code></td>
+<td><code>base64</code>, <code>url</code>, <code>path</code></td>
+<td><code>${result as video/mp4}</code></td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>any</td>
+<td><code>base64</code>, <code>url</code>, <code>path</code></td>
+<td><code>${input.document as file}</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="1444-attributes">14.4.4 Attributes</h3>
+<p>Attributes provide additional key-value parameters using bracket syntax: <code>type/subtype[key=value,...]</code>. They are passed as a dictionary alongside type and subtype, allowing extra context for type conversion and downstream processing.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># PCM audio with encoding parameters</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response[] as audio/pcm[sample_rate=24000,channels=1,bit_depth=16]}</span></span></code></pre>
+<h3 id="1445-base64-type-vs-base64-format">14.4.5 Base64 Type vs Base64 Format</h3>
+<p>These are different concepts:</p>
+<ul>
+<li><strong><code>base64</code> type</strong> (<code>${value as base64}</code>) — <strong>Encodes</strong> the value to a base64 string. Always performed regardless of context.</li>
+<li><strong><code>base64</code> format</strong> (<code>${value as image;base64}</code>) — Indicates the value <strong>is already</strong> base64 encoded. In input context, the system decodes it; in output context, it is preserved as metadata.</li>
+</ul>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Encode binary data TO base64 (type)</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output as base64}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Tell the system this data IS base64-encoded (format) — decoded in input context</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.photo as image;base64}</span></span></code></pre>
+<hr />
+<h2 id="145-format-and-context-semantics">14.5 Format and Context Semantics</h2>
+<p>Format specifiers describe the <strong>encoding state</strong> of the data. The same <code>as type;format</code> syntax behaves differently depending on where it is used.</p>
+<h3 id="1451-format-values">14.5.1 Format Values</h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base64</code></td>
+<td>Data is base64 encoded</td>
+<td><code>${input.photo as image;base64}</code></td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>Data is a URL to be fetched</td>
+<td><code>${input.avatar as image;url}</code></td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>Data is a file path</td>
+<td><code>${output.path as audio;path}</code></td>
+</tr>
+<tr>
+<td><code>stream</code></td>
+<td>Data is a stream</td>
+<td><code>${output as audio;stream}</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> <code>sse-text</code> and <code>sse-json</code> are <strong>types</strong>, not formats. Use <code>${output as sse-text}</code> or <code>${output as sse-json}</code> to convert a value to an SSE stream.</p>
+</blockquote>
+<h3 id="1452-input-context">14.5.2 Input Context</h3>
+<p>In component action <code>input</code>, format tells the system <strong>how the incoming data is currently encoded</strong>. The system converts it to the form the component expects.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Format</th>
+<th>Input Value</th>
+<th>What Happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image</code></td>
+<td><code>base64</code></td>
+<td>base64 string</td>
+<td>Decoded and saved as a temporary file</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td><code>url</code></td>
+<td>URL string</td>
+<td>Downloaded and saved as a temporary file</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td><code>path</code></td>
+<td>file path</td>
+<td>Used directly as a file reference</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>(none)</td>
+<td>bytes / stream</td>
+<td>Saved as a temporary file</td>
+</tr>
+<tr>
+<td><code>audio</code></td>
+<td><code>base64</code></td>
+<td>base64 string</td>
+<td>Decoded and saved as a temporary file</td>
+</tr>
+<tr>
+<td><code>audio</code></td>
+<td><code>url</code></td>
+<td>URL string</td>
+<td>Downloaded and saved as a temporary file</td>
+</tr>
+</tbody>
+</table>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># "the data is a base64-encoded image" → system decodes it to a file</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  image</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.photo as image;base64}</span></span></code></pre>
+<h3 id="1453-componentjob-output-context">14.5.3 Component/Job Output Context</h3>
+<p>In component/job action <code>output</code>, media file conversion is <strong>not performed</strong>. The value is passed through with only basic type conversion (e.g., <code>integer</code>, <code>json</code>, <code>base64</code> encoding). The format is preserved as metadata for downstream consumers.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Format</th>
+<th>What Happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image</code></td>
+<td><code>base64</code></td>
+<td>Value passed through as-is (no decoding)</td>
+</tr>
+<tr>
+<td><code>audio</code></td>
+<td><code>path</code></td>
+<td>File object rendered to its file path</td>
+</tr>
+<tr>
+<td><code>sse-text</code></td>
+<td>(none)</td>
+<td>Wraps value as SSE text stream</td>
+</tr>
+<tr>
+<td><code>sse-json</code></td>
+<td>(none)</td>
+<td>Wraps value as SSE JSON stream</td>
+</tr>
+<tr>
+<td><code>base64</code></td>
+<td>(any)</td>
+<td>Value encoded to base64 string (always performed)</td>
+</tr>
+</tbody>
+</table>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># "tell consumers this is a base64-encoded image"</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${result as image;base64}</span></span></code></pre>
+<h3 id="1454-workflow-output-context">14.5.4 Workflow Output Context</h3>
+<p>Workflow output variables define <code>type</code> and <code>format</code> in the workflow schema. These are consumed by <strong>controller adapters</strong> to determine how to display and transmit the data:</p>
+<table>
+<thead>
+<tr>
+<th>Consumer</th>
+<th>Format</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Web UI</strong></td>
+<td><code>sse-text</code></td>
+<td>Accumulate text chunks incrementally</td>
+</tr>
+<tr>
+<td><strong>Web UI</strong></td>
+<td><code>sse-json</code></td>
+<td>Parse each chunk as JSON, extract field via <code>subtype</code> path</td>
+</tr>
+<tr>
+<td><strong>Web UI</strong></td>
+<td><code>base64</code></td>
+<td>Decode base64 to display image/audio</td>
+</tr>
+<tr>
+<td><strong>Web UI</strong></td>
+<td><code>url</code></td>
+<td>Fetch URL to display image/audio</td>
+</tr>
+<tr>
+<td><strong>Web UI</strong></td>
+<td><code>path</code></td>
+<td>Use file path directly</td>
+</tr>
+<tr>
+<td><strong>HTTP API</strong></td>
+<td>(any)</td>
+<td>Format is not used; transmission is determined by the output data type</td>
+</tr>
+</tbody>
+</table>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Web UI accumulates text chunks; HTTP API sends as SSE</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output as sse-text}</span></span></code></pre>
+<hr />
+<h2 id="146-default-values">14.6 Default Values</h2>
+<p>Default values provide fallback data when a variable is missing or null. Using the pipe (<code>|</code>) operator, you can specify literal values or reference environment variables.</p>
+<h3 id="1461-literal-default-values">14.6.1 Literal Default Values</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.temperature | 0.7}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">             # Number</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.model | "gpt-4o"}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">              # String</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.enabled | true}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">                # Boolean</span></span></code></pre>
+<h3 id="1462-environment-variable-default-values">14.6.2 Environment Variable Default Values</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.channel | ${env.DEFAULT_CHANNEL}}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">     # Use environment variable as default</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.api_key | ${env.API_KEY}}</span><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E">             # Use environment variable as default</span></span></code></pre>
+<h3 id="1463-nested-default-values-environment-variable--literal">14.6.3 Nested Default Values (Environment Variable + Literal)</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.api_key | ${env.API_KEY | "default-key"}}</span></span></code></pre>
+<hr />
+<h2 id="147-metadata-and-ui-hints">14.7 Metadata and UI Hints</h2>
+<h3 id="1471-annotations">14.7.1 Annotations</h3>
+<p>Used to provide parameter descriptions for MCP servers.</p>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.channel @(description Slack channel ID)}</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.limit as integer | 10 @(description Maximum number of results)}</span></span></code></pre>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  prompt</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text @(description The text prompt for generation)}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  temperature</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.temperature as number | 0.7 @(description Controls randomness (0-2))}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_tokens</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.max_tokens as integer | 100 @(description Maximum tokens to generate)}</span></span></code></pre>
+<h3 id="1472-select-dropdown">14.7.2 Select (Dropdown)</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.voice as select/alloy,echo,fable,onyx,nova,shimmer}</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.model as select/gpt-4o,gpt-4o-mini,o1-mini}</span></span>
+<span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.size as select/256x256,512x512,1024x1024 | 1024x1024}</span></span></code></pre>
+<h3 id="1473-slider">14.7.3 Slider</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.temperature as slider/0,2,0.1 | 0.7}</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Format: slider/min,max,step | default</span></span></code></pre>
+<h3 id="1474-textarea">14.7.4 Textarea</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Web UI renders text type as a textarea widget</span></span></code></pre>
+<hr />
+<h2 id="148-practical-examples">14.8 Practical Examples</h2>
+<h3 id="1481-openai-api-call">14.8.1 OpenAI API Call</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.model as select/gpt-4o,gpt-4o-mini,o1-mini | gpt-4o}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  messages</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">    - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">role</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">user</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      content</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.prompt as text}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  temperature</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.temperature as slider/0,2,0.1 | 0.7}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  max_tokens</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.max_tokens as integer | 1000}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  message</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response.choices[0].message.content}</span></span></code></pre>
+<h3 id="1482-image-processing-pipeline">14.8.2 Image Processing Pipeline</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">jobs</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">analyze</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">vision-model</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      image</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.image as image/jpg}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">  - </span><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">id</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">enhance</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">image-editor</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    input</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      image</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.image as image/jpg}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      prompt</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${jobs.analyze.output.description}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output as image/png;base64}</span></span></code></pre>
+<h3 id="1483-streaming-response">14.8.3 Streaming Response</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">workflow</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${output as sse-text}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      stream</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79C0FF">true</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    stream_format</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">json</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response[].choices[0].delta.content}</span></span></code></pre>
+<h3 id="1484-vector-search-result-format">14.8.4 Vector Search Result Format</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">vector-store</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">search</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  output</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${response as object[]/id,score,metadata.text}</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#8B949E"># Result: [{"id": "1", "score": 0.95, "text": "..."}, ...]</span></span></code></pre>
+<h3 id="1485-conditional-default-values">14.8.5 Conditional Default Values</h3>
+<pre class="shiki shiki-themes github-light github-dark-default" style="--shiki-light:#24292e;--shiki-dark:#e6edf3;--shiki-light-bg:#fff;--shiki-dark-bg:#0d1117" tabindex="0"><code class="language-yaml"><span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">component</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  type</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">http-client</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">  action</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    headers</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      Authorization</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">Bearer ${input.api_key | ${env.OPENAI_API_KEY}}</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">    body</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">:</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#7EE787">      model</span><span style="--shiki-light:#24292E;--shiki-dark:#E6EDF3">: </span><span style="--shiki-light:#032F62;--shiki-dark:#A5D6FF">${input.model | ${env.DEFAULT_MODEL | "gpt-4o"}}</span></span></code></pre>
+<hr />
+<p><strong>Next Chapter</strong>: <a href="/model-compose/user-guide/15-system-integration">15. System Integration</a></p>
+</article><nav class="flex justify-between gap-4 mt-12 pt-6 border-t border-border"><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent" href="/model-compose/user-guide/13-streaming-mode"><div class="text-muted text-[.78rem]">← <!-- -->Previous</div><div class="font-semibold text-accent">13. Streaming Mode</div></a><a class="flex-1 px-4 py-3.5 border border-border rounded-xl hover:border-accent text-right" href="/model-compose/user-guide/15-system-integration"><div class="text-muted text-[.78rem]">Next<!-- --> →</div><div class="font-semibold text-accent">15. System Integration</div></a></nav><script>document.querySelectorAll('[data-copy-md]').forEach(function(b){b.addEventListener('click',async function(){try{var r=await fetch(b.getAttribute('data-copy-md'));var t=await r.text();await navigator.clipboard.writeText(t);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1500);}catch(e){alert('Copy failed: '+e);}});});document.querySelectorAll('.prose pre').forEach(function(pre){if(pre.querySelector('.copy-code'))return;var b=document.createElement('button');b.className='copy-code';b.textContent='Copy';b.addEventListener('click',async function(){var c=pre.querySelector('code');try{await navigator.clipboard.writeText(c?c.innerText:pre.innerText);var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o;},1200);}catch(e){}});pre.appendChild(b);});document.querySelectorAll('.tabs').forEach(function(t){t.querySelectorAll('.tab-btn').forEach(function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-tab');t.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-tab')===i);});t.querySelectorAll('.tab-panel').forEach(function(p){p.hidden=p.getAttribute('data-tab')!==i;});});});});(function(){var blocks=document.querySelectorAll('code.language-mermaid');if(!blocks.length)return;var items=[];blocks.forEach(function(c){var pre=c.closest('pre')||c;var h=document.createElement('div');h.className='mermaid-diagram';pre.replaceWith(h);items.push({src:c.textContent,holder:h});});var lib,id=0;function load(){return lib||(lib=import("https://esm.sh/mermaid@11").then(function(m){return m.default;}));}function theme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'default';}function run(){load().then(function(mermaid){mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:theme()});items.forEach(function(it){mermaid.render('kura-mmd-'+(id++),it.src).then(function(r){it.holder.innerHTML=r.svg;}).catch(function(e){it.holder.innerHTML='<pre class="mermaid-error">'+String((e&&e.message)||e)+'</pre>';});});}).catch(function(){});}run();var cur=document.documentElement.getAttribute('data-theme');new MutationObserver(function(){var t=document.documentElement.getAttribute('data-theme');if(t!==cur){cur=t;run();}}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></main><aside class="sticky top-14 max-h-[calc(100vh-56px)] overflow-y-auto px-4 py-8 max-lg:hidden"><p class="text-[.72rem] font-bold tracking-wider uppercase text-muted mb-2.5">On this page</p><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#141-syntax-overview">14.1 Syntax Overview</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#142-variable-sources">14.2 Variable Sources</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1421-workflow-input">14.2.1 Workflow Input</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1422-component-response-variables">14.2.2 Component Response Variables</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1423-previous-job-outputs">14.2.3 Previous Job Outputs</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1424-environment-variables">14.2.4 Environment Variables</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1425-streaming-chunk-references">14.2.5 Streaming Chunk References</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#143-path-access">14.3 Path Access</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#144-type-conversion">14.4 Type Conversion</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1441-primitive-types">14.4.1 Primitive Types</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1442-object-array-projection">14.4.2 Object Array Projection</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1443-media-types">14.4.3 Media Types</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1444-attributes">14.4.4 Attributes</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1445-base64-type-vs-base64-format">14.4.5 Base64 Type vs Base64 Format</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#145-format-and-context-semantics">14.5 Format and Context Semantics</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1451-format-values">14.5.1 Format Values</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1452-input-context">14.5.2 Input Context</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1453-componentjob-output-context">14.5.3 Component/Job Output Context</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1454-workflow-output-context">14.5.4 Workflow Output Context</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#146-default-values">14.6 Default Values</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1461-literal-default-values">14.6.1 Literal Default Values</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1462-environment-variable-default-values">14.6.2 Environment Variable Default Values</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1463-nested-default-values-environment-variable--literal">14.6.3 Nested Default Values (Environment Variable + Literal)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#147-metadata-and-ui-hints">14.7 Metadata and UI Hints</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1471-annotations">14.7.1 Annotations</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1472-select-dropdown">14.7.2 Select (Dropdown)</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1473-slider">14.7.3 Slider</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1474-textarea">14.7.4 Textarea</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent" href="#148-practical-examples">14.8 Practical Examples</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1481-openai-api-call">14.8.1 OpenAI API Call</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1482-image-processing-pipeline">14.8.2 Image Processing Pipeline</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1483-streaming-response">14.8.3 Streaming Response</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1484-vector-search-result-format">14.8.4 Vector Search Result Format</a><a class="block py-1 text-muted text-[.85rem] hover:text-accent pl-3 text-[.82rem]" href="#1485-conditional-default-values">14.8.5 Conditional Default Values</a></aside></div></div><footer class="border-t border-border mt-8"><div class="flex items-center justify-between flex-wrap gap-4 max-w-[1280px] mx-auto px-6 py-5 max-md:px-4"><nav class="flex items-center gap-[1.1rem] text-[.85rem]"><a class="text-muted hover:text-fg" href="/model-compose/llms.txt">llms.txt</a><button type="button" class="inline-flex items-center justify-center w-[30px] h-[30px] p-0 text-[.95rem] leading-none border border-border rounded-lg bg-surface text-fg cursor-pointer hover:bg-hover" data-theme-toggle="true" aria-label="Toggle theme"></button></nav><a class="text-muted text-[.85rem] hover:text-accent" href="https://kura.build/" target="_blank" rel="noreferrer">Powered by Kura</a></div></footer><script>document.addEventListener('keydown',function(e){if(e.key==='/' && !document.documentElement.dataset.ctrlk && !/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){e.preventDefault();var s=document.querySelector('.search-box');if(s)s.focus();}});(function(){var b=document.querySelector('[data-theme-toggle]');if(!b)return;var d=document.documentElement,order=['system','light','dark'],icon={system:'🖥',light:'☀',dark:'☾'};function pref(){return d.getAttribute('data-theme-pref')||'system';}function res(p){return p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';}function set(p){d.setAttribute('data-theme-pref',p);d.setAttribute('data-theme',res(p));try{localStorage.setItem('kura-theme',p);}catch(e){}b.textContent=icon[p];b.setAttribute('title','Theme: '+p);}set(pref());b.addEventListener('click',function(){set(order[(order.indexOf(pref())+1)%order.length]);});try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(pref()==='system')d.setAttribute('data-theme',res('system'));});}catch(e){}})();document.addEventListener('click',function(e){var t=e.target;document.querySelectorAll('details[data-menu][open]').forEach(function(d){if(!d.contains(t))d.removeAttribute('open');});var it=t.closest&&t.closest('details[data-menu] a, details[data-menu] [data-copy-md]');if(it){var dd=it.closest('details[data-menu]');if(dd)setTimeout(function(){dd.removeAttribute('open');},0);}});document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('details[data-menu][open]').forEach(function(d){d.removeAttribute('open');});});(function(){var root=document.documentElement;function opener(){return document.querySelector('[data-drawer-open]');}function items(){var d=document.getElementById('docs-nav');if(!d)return[];return[].filter.call(d.querySelectorAll('a[href],button:not([disabled]),summary,[tabindex]:not([tabindex="-1"])'),function(el){return el.offsetParent!==null;});}function set(o){var was=root.classList.contains('drawer-open');root.classList.toggle('drawer-open',o);var b=opener();if(b)b.setAttribute('aria-expanded',o?'true':'false');if(o){var f=items();if(f[0])f[0].focus();}else if(was&&b)b.focus();}document.addEventListener('click',function(e){if(e.target.closest('[data-drawer-open]')){e.preventDefault();set(!root.classList.contains('drawer-open'));return;}if(e.target.closest('[data-drawer-close]')){set(false);return;}if(e.target.closest('#docs-nav a'))set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);return;}if(e.key==='Tab'&&root.classList.contains('drawer-open')){var f=items();if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}else if(f.indexOf(document.activeElement)<0){e.preventDefault();first.focus();}}});})();(function(){
+  function trim(p){return p.length>1&&p.endsWith('/')?p.slice(0,-1):p;}
+  function sync(){
+    var path=trim(location.pathname), tab=null;
+    var links=document.querySelectorAll('.sidebar a[href],[data-tabbar] a[href]');
+    for(var i=0;i<links.length;i++){var a=links[i],on=trim(a.getAttribute('href'))===path;
+      if(on){a.setAttribute('aria-current','page');var g=a.closest('[data-tab]');if(g)tab=g.getAttribute('data-tab');}
+      else a.removeAttribute('aria-current');}
+    if(tab!=null){
+      document.querySelectorAll('[data-tab]').forEach(function(g){g.hidden=g.getAttribute('data-tab')!==tab;});
+      document.querySelectorAll('[data-tabbar] a').forEach(function(a){
+        if(a.getAttribute('data-tab-key')===tab)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    }
+    // expand the folder(s) holding the active page. Iterate EVERY aria-current sidebar link, not
+    // just the first: a folder-as-page link lives in a <details>, but the mobile tab-bar link (also
+    // in .sidebar, earlier in the DOM) has no folder ancestor — querySelector would pick that one
+    // and expand nothing. forEach opens each link's folder chain; tab links are harmless no-ops.
+    document.querySelectorAll('.sidebar a[aria-current="page"]').forEach(function(cur){
+      var d=cur.closest('details.folder');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details.folder');}});
+    // rewrite the locale-switch links to THIS page's equivalent path (swap the locale prefix)
+    var ll=document.querySelectorAll('[data-locale-home]');
+    if(ll.length){var lc=document.querySelector('[data-locale-home][data-locale-active]'),cp=lc?lc.getAttribute('data-locale-home'):'/';cp=cp==='/'?'':cp;
+      var rest=location.pathname;if(cp&&rest.indexOf(cp)===0)rest=rest.slice(cp.length)||'/';
+      ll.forEach(function(a){var h=a.getAttribute('data-locale-home'),p=h==='/'?'':h;a.setAttribute('href',rest==='/'?(p||'/'):(p+rest));});}
+    // mobile nav-context: "Active tab / Page title" (the shell can't know the page server-side)
+    var nc=document.querySelector('[data-nav-context]');
+    if(nc){var at=document.querySelector('[data-tabbar] a[aria-current="page"]'),h1=document.querySelector('main h1');
+      nc.textContent=[at&&at.textContent.trim(),h1&&h1.textContent.trim()].filter(Boolean).join(' / ');}
+  }
+  sync();
+  var outlet=document.querySelector('[data-june-outlet]');
+  if(outlet) new MutationObserver(sync).observe(outlet,{childList:true,subtree:true});
+})();</script><script type="module" src="/model-compose/_june/client.519429d3.js"></script><script type="application/json" id="june-webmcp">[{"name":"search_docs","description":"Hybrid keyword + semantic search over the docs. Returns the most relevant passages with their doc slug, title, and relevance score.","inputSchema":{"type":"object","properties":{"query":{"type":"string","description":"A natural-language question or keywords."},"topK":{"type":"integer","description":"Number of results to return (default 5)."},"locale":{"type":"string","description":"Optional locale — scopes results to that locale's view (its translations plus untranslated defaults)."}},"required":["query"]}},{"name":"get_page","description":"Fetch one doc page as the authored Markdown source by its slug (e.g. introduction, search, agents).","inputSchema":{"type":"object","properties":{"slug":{"type":"string","description":"The page slug."},"locale":{"type":"string","description":"Optional locale — returns that variant when it exists."}},"required":["slug"]}},{"name":"list_docs","description":"List every doc page with its slug, title, section, and `sources` (the code paths it documents). The map for finding which pages a code change affects.","inputSchema":{"type":"object","properties":{}}}]</script><script>(function(){var mc=navigator.modelContext;if(!mc||!mc.registerTool)return;var el=document.getElementById('june-webmcp');if(!el)return;var tools;try{tools=JSON.parse(el.textContent)}catch(e){return}var ac=new AbortController();tools.forEach(function(t){mc.registerTool({name:t.name,description:t.description,inputSchema:t.inputSchema,execute:function(args){return fetch('/mcp',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:t.name,arguments:args}})}).then(function(r){return r.json()}).then(function(j){return j.result})}},{signal:ac.signal})})})();</script></body></html>
